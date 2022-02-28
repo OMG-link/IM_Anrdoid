@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IM</string>
+    <string name="frame_login_server_url">服务器</string>
+    <string name="frame_login_input_url">在此输入服务器地址</string>
+    <string name="frame_login_user_name">用户名</string>
+    <string name="frame_login_input_name">在此输入用户名</string>
+    <string name="frame_login_button_connect">连接</string>
+    <string name="frame_room_button_send">发送</string>
+    <string name="frame_room_input_chat">在此输入消息</string>
+    <string name="activity_room_file_not_support">[文件] %1$s(%2$s) \nAndroid版暂不支持文件相关功能</string>
+    <string name="activity_room_version_warning">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。 您是否要下载其他版本的客户端？</string>
+    <string name="activity_room_version_error">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。 \n这两个版本相互不兼容。\n您是否要下载其他版本的客户端？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+</resources>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">IM</string>
+    <string name="frame_login_server_url">Server URL</string>
+    <string name="frame_login_input_url">Url</string>
+    <string name="frame_login_user_name">User Name</string>
+    <string name="frame_login_input_name">Nickname</string>
+    <string name="frame_login_button_connect">CONNECT</string>
+    <string name="frame_room_button_send">SEND</string>
+    <string name="frame_room_input_chat">Input your message here</string>
+    <string name="activity_room_file_not_support">[File] %1$s(%2$s) \nDownload files in Android is not supported yet.</string>
+    <string name="activity_room_version_warning">The server runs on version "%1$s", while your client runs on version "%2$s". Do you want to download new version?</string>
+    <string name="activity_room_version_error">\"The server runs on version "%1$s", while your client runs on version "%2$s".\nThe two versions are not compatible with each other.\nDo you want to download a new version?\"</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+</resources>
