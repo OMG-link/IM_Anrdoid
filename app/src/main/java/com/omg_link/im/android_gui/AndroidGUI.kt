@@ -32,17 +32,17 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
     }
 
     override fun showMessageDialog(message: String) {
+        Log.d("AndroidGUI",message)
         val context = MainActivity.getActiveContext()
-        if(context==null){
-            Log.d("AndroidGUI",message)
-        }else{
+        if(context!=null){
             appCompatActivity.runOnUiThread {
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun showException(e: Exception) {
+        Log.d("AndroidGUI",e.toString())
         e.printStackTrace()
     }
 

@@ -42,7 +42,32 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:insetRight="6dp"
-            android:text="@string/frame_room_button_send" />
+            android:text="@string/frame_room_button_chat_send" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/roomImageSendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:insetLeft="3dp"
+            android:insetRight="3dp"
+            android:text="@string/frame_room_button_image_send" />
+
+        <Button
+            android:id="@+id/roomFileSendbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:insetLeft="3dp"
+            android:insetRight="3dp"
+            android:text="@string/frame_room_button_file_send" />
 
     </LinearLayout>
 

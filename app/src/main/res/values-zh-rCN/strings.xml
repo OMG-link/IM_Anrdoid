@@ -6,11 +6,23 @@
     <string name="frame_login_user_name">用户名</string>
     <string name="frame_login_input_name">在此输入用户名</string>
     <string name="frame_login_button_connect">连接</string>
-    <string name="frame_room_button_send">发送</string>
+    <string name="frame_room_button_chat_send">发送</string>
     <string name="frame_room_input_chat">在此输入消息</string>
     <string name="activity_room_file_not_support">[文件] %1$s(%2$s) \nAndroid版暂不支持文件相关功能</string>
     <string name="activity_room_version_warning">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。 您是否要下载其他版本的客户端？</string>
     <string name="activity_room_version_error">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。 \n这两个版本相互不兼容。\n您是否要下载其他版本的客户端？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="activity_room_image_download_failed">发送了一张图片，但未能成功下载。</string>
+    <string name="frame_room_button_image_send">图片</string>
+    <string name="frame_room_image_no_permission">未取得文件读取权限，请到设置中更改。</string>
+    <string name="frame_room_cannot_resolve_image">[图片] 无法解析图片</string>
+    <string name="frame_room_file_download_progress">正在下载： %1$s (%2$s/%3$s)</string>
+    <string name="frame_room_file_download_start">正在开始下载</string>
+    <string name="frame_room_file_download_succeed">文件 %1$s 已下载完成</string>
+    <string name="frame_room_file_download_failed">文件下载失败： %1$s</string>
+    <string name="frame_room_button_download">下载</string>
+    <string name="frame_room_button_open">打开</string>
+    <string name="frame_room_button_file_send">文件</string>
+    <string name="activity_room_cannot_open_file">没有合适的应用打开这个文件</string>
 </resources>
