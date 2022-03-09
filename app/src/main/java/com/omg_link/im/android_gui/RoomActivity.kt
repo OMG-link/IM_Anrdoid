@@ -193,7 +193,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 val message = ChatImageMessage(
                     sender,
                     stamp,
-                    handler.fileManager.getFile(task.receiverFileId).file.absolutePath
+                    handler.fileManager.getFile(task.receiverFileId).file.absolutePath,
+                    this@RoomActivity
                 )
                 messageRecyclerView.post {
                     val position = messageList.addByStamp(message)

@@ -82,17 +82,24 @@ object UriUtils {
                 return getDataColumn(context, contentUri, selection, selectionArgs)
             }
         } // MediaStore (and general)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return uriToFileApiQ(context, imageUri)
-        } else if ("content".equals(imageUri.scheme, ignoreCase = true)) {
-            // Return the remote address
-            return if (isGooglePhotosUri(imageUri)) {
-                imageUri.lastPathSegment
-            } else getDataColumn(context, imageUri, null, null)
-        } else if ("file".equals(imageUri.scheme, ignoreCase = true)) {
-            return imageUri.path
+        return when{
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+                uriToFileApiQ(context, imageUri)
+            }
+            "content".equals(imageUri.scheme, ignoreCase = true) -> {
+                if (isGooglePhotosUri(imageUri)) {
+                    imageUri.lastPathSegment
+                } else {
+                    getDataColumn(context, imageUri, null, null)
+                }
+            }
+            "file".equals(imageUri.scheme, ignoreCase = true) -> {
+                imageUri.path
+            }
+            else -> {
+                null
+            }
         }
-        return null
     }
 
     //此方法 只能用于4.4以下的版本

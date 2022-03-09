@@ -34,22 +34,17 @@ object AndroidUtils {
     /**
      * @author https://blog.csdn.net/DucklikeJAVA/article/details/48548109
      */
-    fun openFile(file: File, context: Context): Boolean {
+    fun openFile(file: File, context: Context, mimeType: String?): Boolean {
         try {
             val intent = Intent()
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             // 设置intent的Action属性
             intent.action = Intent.ACTION_VIEW
-            // 获取文件file的MIME类型
-            val fileExtensionFromUrl = MimeTypeMap
-                .getFileExtensionFromUrl(Uri.fromFile(file).toString())
-            val mimeTypeFromExtension = MimeTypeMap.getSingleton()
-                .getMimeTypeFromExtension(fileExtensionFromUrl)
             // 设置intent的data和Type属性。
             intent.setDataAndType(
                 UriUtils.getUriFromFile(file,context),
-                mimeTypeFromExtension
+                mimeType
             )
             // 跳转
             context.startActivity(intent) // 这里最好try一下，有可能会报错。
@@ -58,6 +53,15 @@ object AndroidUtils {
             return false;
         }
         return true;
+    }
+
+    fun openFile(file: File, context: Context): Boolean{
+        // 获取文件file的MIME类型
+        val fileExtensionFromUrl = MimeTypeMap
+            .getFileExtensionFromUrl(Uri.fromFile(file).toString())
+        val mimeTypeFromExtension = MimeTypeMap.getSingleton()
+            .getMimeTypeFromExtension(fileExtensionFromUrl)
+        return openFile(file,context,mimeTypeFromExtension)
     }
 
 }

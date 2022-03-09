@@ -1,13 +1,16 @@
 package com.omg_link.im.android_gui.tools
 
+import android.app.Activity
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.omg_link.im.R
+import com.omg_link.im.tools.AndroidUtils
+import java.io.File
 
-class ChatImageMessage(username: String, stamp: Long, val imagePath: String) : Message(username, stamp) {
+class ChatImageMessage(username: String, stamp: Long, val imagePath: String, val activity: Activity) : Message(username, stamp) {
 
     override fun onDataUpdated(holder: MessagePanelHolder) {
         super.onDataUpdated(holder)
@@ -23,6 +26,10 @@ class ChatImageMessage(username: String, stamp: Long, val imagePath: String) : M
             imageView.setImageBitmap(bitmap)
             imageView.adjustViewBounds =
                 (bitmap.width > imageView.maxWidth || bitmap.height > imageView.maxHeight)
+            imageView.setOnLongClickListener {
+                AndroidUtils.openFile(File(imagePath),activity,"image/*")
+                return@setOnLongClickListener true
+            }
             imageView.visibility = View.VISIBLE
         }
         holder.addView(view)
