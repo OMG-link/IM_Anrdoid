@@ -26,6 +26,7 @@ class ChatImageMessage(username: String, stamp: Long, val imagePath: String, val
             imageView.setImageBitmap(bitmap)
             imageView.adjustViewBounds =
                 (bitmap.width > imageView.maxWidth || bitmap.height > imageView.maxHeight)
+            imageView.scaleType = ImageView.ScaleType.FIT_START
             imageView.setOnLongClickListener {
                 AndroidUtils.openFile(File(imagePath),activity,"image/*")
                 return@setOnLongClickListener true
