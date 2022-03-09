@@ -69,8 +69,11 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
 
     override fun openInBrowser(uri: String) {
         val intent = Intent()
-        intent.action = "android.intent.action.VIEW"
-        intent.data = Uri.parse(uri)
+        intent.action = Intent.ACTION_VIEW
+        intent.setDataAndType(
+            Uri.parse(uri),
+            "text/html"
+        )
         appCompatActivity.startActivity(intent)
     }
 
