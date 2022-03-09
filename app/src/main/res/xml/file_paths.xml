@@ -5,5 +5,5 @@
         path="Download/" />
     <cache-path
         name="Cache"
-        path="IMCache/Download/" />
+        path="Download/" />
 </paths>
