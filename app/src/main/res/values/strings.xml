@@ -24,4 +24,5 @@
     <string name="frame_room_button_open">OPEN</string>
     <string name="frame_room_button_file_send">FILE</string>
     <string name="activity_room_cannot_open_file">Can not find a proper way to open the file.</string>
+    <string name="frame_login_download_other_version">DOWNLOAD OTHER VERSION</string>
 </resources>

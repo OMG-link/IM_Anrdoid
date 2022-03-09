@@ -30,6 +30,7 @@ class ConnectActivity : AppCompatActivity() {
         val urlInputArea: EditText = findViewById(R.id.urlInputArea)
         val nameInputArea: EditText = findViewById(R.id.nameInputArea)
         val connectButton: Button = findViewById(R.id.connectButton)
+        val downloadOtherVersionButton: Button = findViewById(R.id.downloadApkButton)
 
         urlInputArea.setText(Config.getUrl())
         nameInputArea.setText(Config.getUsername())
@@ -42,6 +43,10 @@ class ConnectActivity : AppCompatActivity() {
                     false
                 )
             }
+        }
+
+        downloadOtherVersionButton.setOnClickListener {
+            handler.gui.openInBrowser("https://www.omg-link.com/IM/")
         }
 
         /*val debugButton: Button = findViewById(R.id.debugButton)
