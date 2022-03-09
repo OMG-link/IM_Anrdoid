@@ -33,6 +33,7 @@
             android:inputType="textMultiLine"
             android:maxHeight="100sp"
             android:padding="7dp"
+            android:textColor="@color/black"
             android:textSize="16sp"
             tools:text="Input Area" />
 
