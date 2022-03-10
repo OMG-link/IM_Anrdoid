@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="middle"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorRoomChatText"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:textColor="@color/gray"
+            android:textColor="?attr/colorRoomChatSubHint"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/fileNameArea"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_weight="0"
-        android:textColor="@color/dark_gray"
+        android:textColor="?attr/colorRoomChatHint"
         android:textSize="16sp"
         tools:text="Download info" />
 

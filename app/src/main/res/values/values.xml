@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="color" name="colorLoginTitle" />
+    <attr format="color" name="colorLoginSubTitle" />
+    <attr format="color" name="colorLoginHint" />
+    <attr format="color" name="colorLoginInputAreaText" />
+    <attr format="color" name="colorRoomChatInfo" />
+    <attr format="color" name="colorRoomChatText" />
+    <attr format="color" name="colorRoomChatHint" />
+    <attr format="color" name="colorRoomChatSubHint" />
+    <attr format="color" name="colorRoomInputBlockBgr" />
+    <attr format="color" name="colorRoomInputAreaBgr" />
+    <attr format="color" name="colorRoomInputAreaText" />
+</resources>

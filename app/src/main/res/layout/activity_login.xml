@@ -25,6 +25,7 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/frame_login_server_url"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?attr/colorLoginHint"
                 tools:text="ServerUrl" />
 
             <EditText
@@ -34,7 +35,8 @@
                 android:width="300dp"
                 android:ems="10"
                 android:hint="@string/frame_login_input_url"
-                android:inputType="textUri" />
+                android:inputType="textUri"
+                android:textColor="?attr/colorLoginInputAreaText" />
         </TableRow>
 
         <TableRow
@@ -47,6 +49,7 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/frame_login_user_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?attr/colorLoginHint"
                 tools:text="Username" />
 
             <EditText
@@ -56,7 +59,8 @@
                 android:width="300dp"
                 android:ems="10"
                 android:hint="@string/frame_login_input_name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="?attr/colorLoginInputAreaText" />
         </TableRow>
 
         <TableRow
@@ -81,6 +85,7 @@
         android:contentDescription="title"
         android:text="IM"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="?attr/colorLoginTitle"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +98,7 @@
         android:layout_marginTop="20dp"
         android:text="Made by OMG_link"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?attr/colorLoginSubTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
