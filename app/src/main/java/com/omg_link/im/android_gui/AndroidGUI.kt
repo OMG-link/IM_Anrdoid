@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
-import java.io.File
 
 class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
     private val client: Client = Client(this)
@@ -33,7 +32,7 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
 
     override fun showMessageDialog(message: String) {
         Log.d("AndroidGUI",message)
-        val context = MainActivity.getActiveContext()
+        val context = MainActivity.getActiveActivity()
         if(context!=null){
             appCompatActivity.runOnUiThread {
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
@@ -48,7 +47,7 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
 
     override fun showConfirmDialog(message: String, callback: IConfirmDialogCallback) {
         appCompatActivity.runOnUiThread {
-            MainActivity.getActiveContext()?.let {
+            MainActivity.getActiveActivity()?.let {
                 AlertDialog.Builder(it)
                     .setMessage(message)
                     .setPositiveButton(appCompatActivity.resources.getString(R.string.yes)) { dialogInterface, _ ->
@@ -77,10 +76,6 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
         appCompatActivity.startActivity(intent)
     }
 
-    override fun onFileDownloaded(file: File) {
-        //do nothing
-    }
-
     override fun alertVersionMismatch(serverVersion: String?, clientVersion: String?) {
         showConfirmDialog(
             String.format(appCompatActivity.resources.getString(R.string.activity_room_version_warning),serverVersion,clientVersion),
@@ -102,12 +97,18 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
             String.format(appCompatActivity.resources.getString(R.string.activity_room_version_error),serverVersion,clientVersion),
             object : IConfirmDialogCallback{
                 override fun onPositiveInput() {
+                    val currentActivity = MainActivity.getActiveActivity()
+                    if(currentActivity is RoomActivity){
+                        currentActivity.finish()
+                    }
                     openInBrowser("https://www.omg-link.com:8888/IM/")
-                    appCompatActivity.finish()
                 }
 
                 override fun onNegativeInput() {
-                    appCompatActivity.finish()
+                    val currentActivity = MainActivity.getActiveActivity()
+                    if(currentActivity is RoomActivity){
+                        currentActivity.finish()
+                    }
                 }
 
             }

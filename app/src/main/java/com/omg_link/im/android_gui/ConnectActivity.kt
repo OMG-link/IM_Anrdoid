@@ -1,5 +1,6 @@
 package com.omg_link.im.android_gui
 
+import GUI.IConnectFrame
 import IM.Client
 import IM.Config
 import android.os.Bundle
@@ -10,7 +11,7 @@ import com.omg_link.im.MainActivity
 import com.omg_link.im.R
 import kotlin.concurrent.thread
 
-class ConnectActivity : AppCompatActivity() {
+class ConnectActivity : AppCompatActivity(),IConnectFrame {
 
     private val handler: Client
 
@@ -63,11 +64,18 @@ class ConnectActivity : AppCompatActivity() {
             })
         }*/
 
+        handler.connectFrame = this
+
     }
 
     override fun onResume() {
         super.onResume()
-        MainActivity.setActiveContext(this)
+        MainActivity.setActiveActivity(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MainActivity.removeActivity()
     }
 
 }

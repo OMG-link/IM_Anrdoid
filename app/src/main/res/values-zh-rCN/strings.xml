@@ -26,4 +26,5 @@
     <string name="frame_room_button_file_send">文件</string>
     <string name="activity_room_cannot_open_file">没有合适的应用打开这个文件</string>
     <string name="frame_login_download_other_version">下载其他版本</string>
+    <string name="frame_room_connecting_to_server">正在连接到服务器。</string>
 </resources>

@@ -28,11 +28,13 @@
             android:layout_weight="1"
             android:background="?attr/colorRoomInputAreaBgr"
             android:ems="10"
+            android:enabled="false"
             android:gravity="start|top"
             android:hint="@string/frame_room_input_chat"
             android:inputType="textMultiLine"
             android:maxHeight="100sp"
             android:padding="7dp"
+            android:text="@string/frame_room_connecting_to_server"
             android:textColor="?attr/colorRoomInputAreaText"
             android:textSize="16sp"
             tools:text="Input Area" />
@@ -42,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
+            android:enabled="false"
             android:insetRight="6dp"
             android:text="@string/frame_room_button_chat_send" />
 
@@ -57,6 +60,7 @@
             android:id="@+id/roomImageSendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:insetLeft="3dp"
             android:insetRight="3dp"
             android:text="@string/frame_room_button_image_send" />
@@ -66,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:enabled="false"
             android:insetLeft="3dp"
             android:insetRight="3dp"
             android:text="@string/frame_room_button_file_send" />

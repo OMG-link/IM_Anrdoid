@@ -147,20 +147,34 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             getFileActivity.launch("*/*")
         }
 
-        val activeClient = MainActivity.getActiveClient()
-            ?: throw RuntimeException("Failed to initialize connect activity: main client not found!")
-        activeClient.roomFrame = this
+        handler.roomFrame = this
 
     }
 
     override fun onResume() {
         super.onResume()
-        MainActivity.setActiveContext(this)
+        MainActivity.setActiveActivity(this)
+
+        if(handler.networkHandler?.isInterrupted == true){
+            finish()
+        }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         handler.networkHandler.interrupt()
+        MainActivity.removeActivity()
+    }
+
+    override fun onConnectionBuilt() {
+        runOnUiThread {
+            findViewById<Button>(R.id.roomChatSendButton).isEnabled = true
+            findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
+            findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
+            textInputArea.isEnabled = true
+            textInputArea.setText("")
+        }
     }
 
     override fun setVisible(b: Boolean) {

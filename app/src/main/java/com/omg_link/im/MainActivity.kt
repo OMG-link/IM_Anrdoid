@@ -2,12 +2,11 @@ package com.omg_link.im
 
 import IM.Client
 import IM.Config
-import android.content.Context
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.omg_link.im.android_gui.AndroidGUI
-import kotlin.system.exitProcess
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -21,14 +20,22 @@ class MainActivity : AppCompatActivity() {
             return activeClient
         }
 
-        private var activeContext: Context? = null
+        private var activityStack = Stack<Activity>()
 
-        fun setActiveContext(context: Context) {
-            activeContext = context
+        fun setActiveActivity(activity: Activity) {
+            activityStack.push(activity)
         }
 
-        fun getActiveContext(): Context?{
-            return activeContext
+        fun getActiveActivity(): Activity? {
+            return try{
+                activityStack.peek()
+            }catch (e:EmptyStackException){
+                null
+            }
+        }
+
+        fun removeActivity(){
+            activityStack.pop()
         }
 
     }
@@ -45,13 +52,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        MainActivity.setActiveContext(this)
+        MainActivity.setActiveActivity(this)
         AndroidGUI(this)
     }
 
     override fun onRestart() {
         super.onRestart()
         finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MainActivity.removeActivity()
     }
 
 }
