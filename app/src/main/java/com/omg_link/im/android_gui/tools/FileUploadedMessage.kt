@@ -18,7 +18,7 @@ import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
 
-enum class FilePanelState{
+private enum class FilePanelState{
     READY,DOWNLOADING,DOWNLOADED
 }
 
@@ -30,7 +30,7 @@ class FileUploadedMessage(
     var infoAreaHolder: TextView? = null
     lateinit var file:File
 
-    var panelState = FilePanelState.READY
+    private var panelState = FilePanelState.READY
     set(value) {
         field = value
         activity.runOnUiThread {
