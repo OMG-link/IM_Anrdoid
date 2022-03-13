@@ -7,13 +7,13 @@
 
     <attr format="color" name="colorRoomChatInfo" />
     <attr format="color" name="colorRoomChatText" />
-    <attr format="color" name="colorRoomChatHint" />
-    <attr format="color" name="colorRoomChatSubHint" />
+    <attr format="color" name="colorRoomDownloadProgress" />
+    <attr format="color" name="colorRoomDownloadFileSize" />
     <attr format="color" name="colorRoomInputBlockBgr" />
     <attr format="color" name="colorRoomInputAreaBgr" />
     <attr format="color" name="colorRoomInputAreaText" />
     <attr format="color" name="colorRoomBgr" />
-    <attr format="color" name="colorRoomBgrDarker" />
+    <attr format="color" name="colorRoomSystemInfoBgr" />
 
 
 </resources>
