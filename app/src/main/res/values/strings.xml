@@ -25,7 +25,7 @@
     <string name="frame_room_button_file_send">FILE</string>
     <string name="activity_room_cannot_open_file">Can not find a proper way to open the file.</string>
     <string name="frame_login_download_other_version">DOWNLOAD OTHER VERSION</string>
-    <string name="frame_room_connecting_to_server">Please wait while connecting to the server.</string>
+    <string name="frame_room_connecting_to_server">Please wait while connecting to the server...</string>
     <string name="frame_room_file_upload_progress">Uploading \"%1$s\" (%2$s/%3$s)</string>
     <string name="frame_room_file_upload_start">Starting to upload \"%1$s\"</string>
     <string name="frame_room_file_upload_failed">Failed to upload \"%1$s\" : %2$s</string>
