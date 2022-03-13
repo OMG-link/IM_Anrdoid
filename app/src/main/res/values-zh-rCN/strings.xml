@@ -27,4 +27,8 @@
     <string name="activity_room_cannot_open_file">没有合适的应用打开这个文件</string>
     <string name="frame_login_download_other_version">下载其他版本</string>
     <string name="frame_room_connecting_to_server">正在连接到服务器。</string>
+    <string name="frame_room_file_upload_progress">正在上传：%1$s (%2$s/%3$s)</string>
+    <string name="frame_room_file_upload_start">开始上传：%1$s</string>
+    <string name="frame_room_file_upload_failed">无法上传文件\"%1$s\"：%2$s</string>
+    <string name="frame_room_file_upload_succeed">文件\"%1$s\"已上传。</string>
 </resources>

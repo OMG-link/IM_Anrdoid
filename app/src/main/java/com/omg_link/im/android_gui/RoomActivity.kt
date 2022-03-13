@@ -259,11 +259,16 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun addFileTransferringPanel(
-        fileNameGetter: IStringGetter?,
+        fileNameGetter: IStringGetter,
         fileSize: Long
     ): IFileTransferringPanel {
-        //not implemented
-        return FileUploadPanel()
+        val message = FileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
+        messageRecyclerView.post {
+            val position = messageList.addByStamp(message)
+            adapter.notifyItemInserted(position)
+            messageRecyclerView.scrollToPosition(position)
+        }
+        return message
     }
 
     fun getHandler(): Client {

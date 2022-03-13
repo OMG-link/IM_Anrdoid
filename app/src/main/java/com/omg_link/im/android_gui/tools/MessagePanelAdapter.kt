@@ -40,6 +40,14 @@ class MessagePanelHolder private constructor(itemView: View) : RecyclerView.View
 
     private var currentMessage: Message? = null
 
+    fun hide(){
+        itemView.visibility = View.GONE
+    }
+
+    fun unhide(){
+        itemView.visibility = View.VISIBLE
+    }
+
     fun getColor(@ColorRes resId: Int): Int{
         return itemView.context.resources.getColor(resId,null)
     }
