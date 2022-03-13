@@ -106,6 +106,14 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     }
 
+    private fun showMessage(message: Message) {
+        messageRecyclerView.post {
+            val position = messageList.addByStamp(message)
+            adapter.notifyItemInserted(position)
+            messageRecyclerView.scrollToPosition(position)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
@@ -124,6 +132,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             thread { //禁止在主线程上进行网络操作
                 handler.sendChat(tempString)
             }
+            //DEBUG
+            showMessage(SystemMessage("Test"))
         }
 
         findViewById<Button>(R.id.roomImageSendButton).setOnClickListener {
@@ -189,12 +199,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun onMessageReceive(sender: String, stamp: Long, text: String) {
-        val message = TextMessage(sender, stamp, text)
-        messageRecyclerView.post {
-            val position = messageList.addByStamp(message)
-            adapter.notifyItemInserted(position)
-            messageRecyclerView.scrollToPosition(position)
-        }
+        showMessage(TextMessage(sender, stamp, text))
     }
 
     override fun onChatImageReceive(
@@ -204,17 +209,12 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     ): IDownloadCallback {
         return object : IDownloadCallback {
             override fun onSucceed(task: ClientFileReceiveTask) {
-                val message = ChatImageMessage(
+                showMessage(ChatImageMessage(
                     sender,
                     stamp,
                     handler.fileManager.getFile(task.receiverFileId).file.absolutePath,
                     this@RoomActivity
-                )
-                messageRecyclerView.post {
-                    val position = messageList.addByStamp(message)
-                    adapter.notifyItemInserted(position)
-                    messageRecyclerView.scrollToPosition(position)
-                }
+                ))
             }
 
             override fun onFailed(task: ClientFileReceiveTask?, reason: String) {
@@ -236,15 +236,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileName: String,
         fileSize: Long
     ) {
-        val message = FileUploadedMessage(
+        showMessage(FileUploadedMessage(
             sender,stamp,
             this,fileName,fileSize, fileId
-        )
-        messageRecyclerView.post {
-            val position = messageList.addByStamp(message)
-            adapter.notifyItemInserted(position)
-            messageRecyclerView.scrollToPosition(position)
-        }
+        ))
     }
 
     override fun onUserListUpdate(userList: Array<out String>) {
@@ -264,11 +259,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileSize: Long
     ): IFileTransferringPanel {
         val message = FileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
-        messageRecyclerView.post {
-            val position = messageList.addByStamp(message)
-            adapter.notifyItemInserted(position)
-            messageRecyclerView.scrollToPosition(position)
-        }
+        showMessage(message)
         return message
     }
 

@@ -34,6 +34,7 @@ class MessagePanelAdapter(private val data:List<Message>) : RecyclerView.Adapter
 }
 
 class MessagePanelHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
+    val infoBar = itemView.findViewById<LinearLayout>(R.id.messageInfo)
     val usernameArea = itemView.findViewById<TextView>(R.id.messageTvUsername)
     val timeArea = itemView.findViewById<TextView>(R.id.messageTvTime)
     val componentArea = itemView.findViewById<LinearLayout>(R.id.messageComponents)

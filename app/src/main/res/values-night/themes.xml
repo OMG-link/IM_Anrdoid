@@ -39,6 +39,9 @@
         <item name="colorRoomInputBlockBgr">@color/dark_gray</item>
         <item name="colorRoomInputAreaBgr">@color/black</item>
         <item name="colorRoomInputAreaText">@color/white</item>
+        <item name="colorRoomBgr">@color/black</item>
+        <item name="colorRoomBgrDarker">@color/dark_gray</item>
+
     </style>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.omg_link.im.android_gui.tools
 
+import android.view.View
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,6 +11,15 @@ abstract class Message(val username:String,val stamp:Long){
         onDataUpdated()
     }
 
+    /**
+     * Indicates whether the info bar should be displayed.
+     */
+    open val infoBarVisibility = View.VISIBLE
+
+    /**
+     * Test test{@link View.VISIBLE}
+     * @see View.VISIBLE
+     */
     open fun removeHolder(){
         currentHolder = null
     }
@@ -19,6 +29,7 @@ abstract class Message(val username:String,val stamp:Long){
     }
 
     protected open fun onDataUpdated(holder: MessagePanelHolder){
+        holder.infoBar.visibility = infoBarVisibility
         holder.usernameArea.text = username
         holder.timeArea.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
             Locale.CHINA).format(Date(stamp))

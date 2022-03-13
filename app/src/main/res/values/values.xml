@@ -4,6 +4,7 @@
     <attr format="color" name="colorLoginSubTitle" />
     <attr format="color" name="colorLoginHint" />
     <attr format="color" name="colorLoginInputAreaText" />
+
     <attr format="color" name="colorRoomChatInfo" />
     <attr format="color" name="colorRoomChatText" />
     <attr format="color" name="colorRoomChatHint" />
@@ -11,4 +12,8 @@
     <attr format="color" name="colorRoomInputBlockBgr" />
     <attr format="color" name="colorRoomInputAreaBgr" />
     <attr format="color" name="colorRoomInputAreaText" />
+    <attr format="color" name="colorRoomBgr" />
+    <attr format="color" name="colorRoomBgrDarker" />
+
+
 </resources>
