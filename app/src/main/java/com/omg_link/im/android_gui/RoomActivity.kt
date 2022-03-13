@@ -251,6 +251,13 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         //not implemented
     }
 
+    override fun onRoomNameUpdate(roomName: String) {
+        if(roomName.isEmpty()) return
+        runOnUiThread {
+            title = "$roomName (${Config.getServerIP()}:${Config.getServerPort()})"
+        }
+    }
+
     override fun addFileTransferringPanel(
         fileNameGetter: IStringGetter?,
         fileSize: Long
