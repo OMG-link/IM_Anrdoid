@@ -252,9 +252,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun onRoomNameUpdate(roomName: String) {
-        if(roomName.isEmpty()) return
         runOnUiThread {
-            title = "$roomName (${Config.getServerIP()}:${Config.getServerPort()})"
+            title = roomName.ifEmpty {
+                Config.getUrl()
+            }
         }
     }
 
