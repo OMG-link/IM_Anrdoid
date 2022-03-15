@@ -1,17 +1,17 @@
 package com.omg_link.im.android_gui
 
-import GUI.IConnectFrame
-import IM.Client
-import IM.Config
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
+import im.Client
+import im.config.Config
+import im.gui.IConnectFrame
 import kotlin.concurrent.thread
 
-class ConnectActivity : AppCompatActivity(),IConnectFrame {
+class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
     private val handler: Client
 

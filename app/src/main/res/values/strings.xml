@@ -8,8 +8,8 @@
     <string name="frame_room_button_chat_send">SEND</string>
     <string name="frame_room_input_chat">Input your message here</string>
     <string name="activity_room_file_not_support">[File] %1$s(%2$s) \nDownload files in Android is not supported yet.</string>
-    <string name="activity_room_version_warning">The server runs on version "%1$s", while your client runs on version "%2$s". Do you want to download new version?</string>
-    <string name="activity_room_version_error">The server runs on version "%1$s", while your client runs on version "%2$s".\nThe two versions are not compatible with each other.\nDo you want to download a new version?\"</string>
+    <string name="activity_room_version_warning">The server runs on version "%1$s", while your client runs on version "%2$s".\n Do you want to download new version?</string>
+    <string name="activity_room_version_error">The server runs on version %1$s, while your client runs on version %2$s.\n The two versions are not compatible with each other.\n Do you want to download a new version?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="activity_room_image_download_failed">Send a image, but we failed to download that image.</string>
@@ -30,4 +30,9 @@
     <string name="frame_room_file_upload_start">Starting to upload \"%1$s\"</string>
     <string name="frame_room_file_upload_failed">Failed to upload \"%1$s\" : %2$s</string>
     <string name="frame_room_file_upload_succeed">File \"%1$s\" has been uploaded.</string>
+    <string name="activity_room_version_unrecognizable">Unable to get the version of the server.\n Your client cannot connect to this server.\n Do you want to download a new version?</string>
+    <string name="frame_room_systeminfo_userlist">Users in this chatroom:</string>
+    <string name="frame_room_systeminfo_userjoin">%1$s joined the chatroom</string>
+    <string name="frame_room_systeminfo_userleft">%1$s left the room</string>
+    <string name="frame_room_systeminfo_changename">%1$s changed name to %2$s</string>
 </resources>

@@ -1,8 +1,5 @@
 package com.omg_link.im.android_gui
 
-import GUI.IConfirmDialogCallback
-import GUI.IGUI
-import IM.Client
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -11,6 +8,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
+import im.Client
+import im.gui.IConfirmDialogCallback
+import im.gui.IGUI
 
 class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
     private val client: Client = Client(this)
@@ -95,6 +95,29 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
     override fun alertVersionIncompatible(serverVersion: String?, clientVersion: String?) {
         showConfirmDialog(
             String.format(appCompatActivity.resources.getString(R.string.activity_room_version_error),serverVersion,clientVersion),
+            object : IConfirmDialogCallback{
+                override fun onPositiveInput() {
+                    val currentActivity = MainActivity.getActiveActivity()
+                    if(currentActivity is RoomActivity){
+                        currentActivity.finish()
+                    }
+                    openInBrowser("https://www.omg-link.com:8888/IM/")
+                }
+
+                override fun onNegativeInput() {
+                    val currentActivity = MainActivity.getActiveActivity()
+                    if(currentActivity is RoomActivity){
+                        currentActivity.finish()
+                    }
+                }
+
+            }
+        )
+    }
+
+    override fun alertVersionUnrecognizable(clientVersion: String?) {
+        showConfirmDialog(
+            String.format(appCompatActivity.resources.getString(R.string.activity_room_version_unrecognizable)),
             object : IConfirmDialogCallback{
                 override fun onPositiveInput() {
                     val currentActivity = MainActivity.getActiveActivity()

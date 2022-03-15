@@ -1,9 +1,6 @@
 package com.omg_link.im.android_gui.tools
 
-import GUI.IFileTransferringPanel
 import android.app.Activity
-import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -11,9 +8,9 @@ import android.widget.Toast
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.tools.AndroidUtils
-import com.omg_link.im.tools.UriUtils
+import im.gui.IFileTransferringPanel
+import im.protocol.data_pack.file_transfer.FileTransferType
 import mutils.FileUtils
-import protocol.dataPack.FileTransferType
 import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
@@ -25,7 +22,7 @@ private enum class FilePanelState{
 class FileUploadedMessage(
     username:String,stamp:Long,
     val activity:Activity,var fileName:String,val fileSize:Long,val fileId:UUID
-    ):Message(username,stamp),IFileTransferringPanel {
+    ):Message(username,stamp), IFileTransferringPanel {
 
     var infoAreaHolder: TextView? = null
     lateinit var file:File

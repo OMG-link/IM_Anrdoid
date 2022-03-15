@@ -1,21 +1,15 @@
 package com.omg_link.im.android_gui.tools
 
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.MainActivity
 import com.omg_link.im.R
-import mutils.FileUtils
-import protocol.dataPack.FileTransferType
 
 class MessagePanelAdapter(private val data:List<Message>) : RecyclerView.Adapter<MessagePanelHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagePanelHolder {

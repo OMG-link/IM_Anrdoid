@@ -1,11 +1,11 @@
 package com.omg_link.im
 
-import IM.Client
-import IM.Config
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.omg_link.im.android_gui.AndroidGUI
+import im.Client
+import im.config.Config
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

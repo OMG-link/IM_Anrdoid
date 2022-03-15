@@ -1,9 +1,5 @@
 package com.omg_link.im.android_gui
 
-import GUI.IFileTransferringPanel
-import GUI.IRoomFrame
-import IM.Client
-import IM.Config
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
@@ -19,11 +15,16 @@ import com.omg_link.im.R
 import com.omg_link.im.android_gui.tools.*
 import com.omg_link.im.tools.AndroidUtils
 import com.omg_link.im.tools.UriUtils
+import im.Client
+import im.config.Config
+import im.gui.IFileTransferringPanel
+import im.gui.IRoomFrame
+import im.protocol.data_pack.file_transfer.FileTransferType
+import im.protocol.fileTransfer.ClientFileReceiveTask
+import im.protocol.fileTransfer.IDownloadCallback
+import im.user_manager.User
 import mutils.IStringGetter
-import protocol.dataPack.FileTransferType
-import protocol.dataPack.ImageType
-import protocol.helper.fileTransfer.ClientFileReceiveTask
-import protocol.helper.fileTransfer.IDownloadCallback
+import mutils.ImageType
 import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
@@ -84,9 +85,9 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             while (l <= r) {
                 val mid = (l + r) / 2
                 if (get(mid).stamp > message.stamp) {
-                    r = mid - 1;
+                    r = mid - 1
                 } else {
-                    l = mid + 1;
+                    l = mid + 1
                 }
             }
             add(l, message)
@@ -132,8 +133,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             thread { //禁止在主线程上进行网络操作
                 handler.sendChat(tempString)
             }
-            //DEBUG
-            showMessage(SystemMessage("Test"))
         }
 
         findViewById<Button>(R.id.roomImageSendButton).setOnClickListener {
@@ -212,7 +211,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 showMessage(ChatImageMessage(
                     sender,
                     stamp,
-                    handler.fileManager.getFile(task.receiverFileId).file.absolutePath,
+                    handler.fileManager.openFile(task.receiverFileId).file.absolutePath,
                     this@RoomActivity
                 ))
             }
@@ -242,10 +241,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         ))
     }
 
-    override fun onUserListUpdate(userList: Array<out String>) {
-        //not implemented
-    }
-
     override fun onRoomNameUpdate(roomName: String) {
         runOnUiThread {
             title = roomName.ifEmpty {
@@ -261,6 +256,43 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         val message = FileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
         showMessage(message)
         return message
+    }
+
+    override fun updateUserList(userList: MutableCollection<User>) {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append(resources.getString(R.string.frame_room_systeminfo_userlist))
+        var isFirst = true
+        for (user in userList){
+            if(isFirst){
+                isFirst = false
+            }else{
+                stringBuilder.append(", ")
+            }
+            stringBuilder.append(user.name)
+        }
+        showMessage(SystemMessage(stringBuilder.toString()))
+    }
+
+    override fun onUserJoined(user: User) {
+        showMessage(SystemMessage(String.format(
+            resources.getString(R.string.frame_room_systeminfo_userjoin),
+            user.name
+        )))
+    }
+
+    override fun onUserLeft(user: User) {
+        showMessage(SystemMessage(String.format(
+            resources.getString(R.string.frame_room_systeminfo_userleft),
+            user.name
+        )))
+    }
+
+    override fun onUsernameChanged(user: User, previousName: String) {
+        showMessage(SystemMessage(String.format(
+            resources.getString(R.string.frame_room_systeminfo_changename),
+            previousName,
+            user.name
+        )))
     }
 
     fun getHandler(): Client {
