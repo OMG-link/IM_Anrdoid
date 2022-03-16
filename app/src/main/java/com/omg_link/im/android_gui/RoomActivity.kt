@@ -27,6 +27,7 @@ import mutils.IStringGetter
 import mutils.ImageType
 import java.io.File
 import java.util.*
+import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
@@ -243,7 +244,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
 
             override fun onFailed(task: ClientFileReceiveTask?, reason: String) {
-                //todo: retry
                 showTextMessage(
                     sender,
                     stamp,

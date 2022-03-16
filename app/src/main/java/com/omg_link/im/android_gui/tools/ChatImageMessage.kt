@@ -19,6 +19,7 @@ class ChatImageMessage(username: String, stamp: Long, val imagePath: String, val
         if (bitmap == null) {
             val textView = view.findViewById<TextView>(R.id.errorInfoArea)
             textView.setTextColor(holder.getColor(R.color.red))
+            textView.text = holder.getString(R.string.frame_room_cannot_resolve_image)
             textView.visibility = View.VISIBLE
         } else {
             val imageView = view.findViewById<ImageView>(R.id.chatImageArea)
