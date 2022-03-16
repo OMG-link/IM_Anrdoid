@@ -219,11 +219,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         //do nothing
     }
 
-    override fun onMessageReceive(sender: String, stamp: Long, text: String) {
+    override fun showSystemMessage(message: String) {
+        messageManager.insertMessage(SystemMessage(message))
+    }
+
+    override fun showTextMessage(sender: String, stamp: Long, text: String) {
         messageManager.insertMessage(TextMessage(sender, stamp, text))
     }
 
-    override fun onChatImageReceive(
+    override fun showChatImageMessage(
         sender: String,
         stamp: Long,
         serverFileId: UUID
@@ -240,7 +244,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
             override fun onFailed(task: ClientFileReceiveTask?, reason: String) {
                 //todo: retry
-                onMessageReceive(
+                showTextMessage(
                     sender,
                     stamp,
                     resources.getString(R.string.activity_room_image_download_failed)
@@ -250,7 +254,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
     }
 
-    override fun onFileUploadedReceive(
+    override fun showFileUploadedMessage(
         sender: String,
         stamp: Long,
         fileId: UUID,
@@ -292,29 +296,29 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
             stringBuilder.append(user.name)
         }
-        messageManager.insertMessage(SystemMessage(stringBuilder.toString()))
+        showSystemMessage(stringBuilder.toString())
     }
 
     override fun onUserJoined(user: User) {
-        messageManager.insertMessage(SystemMessage(String.format(
+        showSystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_userjoin),
             user.name
-        )))
+        ))
     }
 
     override fun onUserLeft(user: User) {
-        messageManager.insertMessage(SystemMessage(String.format(
+        showSystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_userleft),
             user.name
-        )))
+        ))
     }
 
     override fun onUsernameChanged(user: User, previousName: String) {
-        messageManager.insertMessage(SystemMessage(String.format(
+        showSystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_changename),
             previousName,
             user.name
-        )))
+        ))
     }
 
     fun getMessageManager(): MessageManager{
