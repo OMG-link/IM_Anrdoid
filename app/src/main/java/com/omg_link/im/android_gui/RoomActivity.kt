@@ -30,15 +30,15 @@ import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
 
-private interface IRequestPermissionCallback{
-    fun onSuccess()
-    fun onFailed()
-}
-
 class RoomActivity : AppCompatActivity(), IRoomFrame {
+    private interface IRequestPermissionCallback{
+        fun onSuccess()
+        fun onFailed()
+    }
 
-    private val handler: Client
+    private val client: Client
     private val adapter: MessagePanelAdapter
+
     private lateinit var messageRecyclerView: RecyclerView
     private lateinit var textInputArea: EditText
 
@@ -67,7 +67,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     init {
         val activeClient = MainActivity.getActiveClient()
         if (activeClient != null) {
-            handler = activeClient
+            client = activeClient
         } else {
             throw RuntimeException("Failed to initialize connect activity: main client not found!")
         }
@@ -158,7 +158,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
             thread { //禁止在主线程上进行网络操作
-                handler.sendChat(tempString)
+                client.sendChat(tempString)
             }
         }
 
@@ -172,7 +172,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         registerActivities()
 
-        handler.roomFrame = this
+        client.roomFrame = this
 
     }
 
@@ -188,7 +188,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 }
 
                 override fun onFailed() {
-                    handler.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                    client.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
                 }
 
             })
@@ -209,7 +209,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 }
 
                 override fun onFailed() {
-                    handler.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                    client.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
                 }
 
             })
@@ -222,7 +222,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         super.onResume()
         MainActivity.setActiveActivity(this)
 
-        if(handler.networkHandler?.isInterrupted == true){
+        if(client.networkHandler?.isInterrupted == true){
             finish()
         }
 
@@ -230,7 +230,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.networkHandler.interrupt()
+        client.networkHandler.interrupt()
         MainActivity.removeActivity()
     }
 
@@ -269,7 +269,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 showMessage(ChatImageMessage(
                     sender,
                     stamp,
-                    handler.fileManager.openFile(task.receiverFileId).file.absolutePath,
+                    client.fileManager.openFile(task.receiverFileId).file.absolutePath,
                     this@RoomActivity
                 ))
             }
@@ -354,7 +354,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     fun getHandler(): Client {
-        return handler
+        return client
     }
 
 }
