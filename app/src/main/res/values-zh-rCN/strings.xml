@@ -36,4 +36,5 @@
     <string name="frame_room_systeminfo_userjoin">%1$s 加入了房间</string>
     <string name="frame_room_systeminfo_userleft">%1$s 离开了房间</string>
     <string name="frame_room_systeminfo_changename">%1$s 将用户名更改为 %2$s</string>
+    <string name="frame_room_external_storage_denied">无法读取外部文件</string>
 </resources>

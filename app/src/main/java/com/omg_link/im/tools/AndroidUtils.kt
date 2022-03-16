@@ -22,16 +22,6 @@ object AndroidUtils {
     }
 
     /**
-     * Request a permission.
-     * @return true if the request has been send
-     */
-    fun requestPermission(appCompatActivity: AppCompatActivity, permission: String): Boolean {
-        if (hasPermission(appCompatActivity, permission)) return true
-        ActivityCompat.requestPermissions(appCompatActivity, arrayOf(permission), 1)
-        return false
-    }
-
-    /**
      * @author https://blog.csdn.net/DucklikeJAVA/article/details/48548109
      */
     fun openFile(file: File, context: Context, mimeType: String?): Boolean {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,10 @@ import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
 
+private interface IRequestPermissionCallback{
+    fun onSuccess()
+    fun onFailed()
+}
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
 
@@ -37,46 +42,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     private lateinit var messageRecyclerView: RecyclerView
     private lateinit var textInputArea: EditText
 
-    private val getImageActivity =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri == null) return@registerForActivityResult
-            val file = File(
-                UriUtils.getFileAbsolutePath(this@RoomActivity, uri)
-                    ?: return@registerForActivityResult
-            )
-            if (!file.canRead()) {
-                getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
-                return@registerForActivityResult
-            }
-            thread { getHandler().sendChatImage(file, ImageType.PNG) }
-        }
-
-    private val getFileActivity =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if(uri==null) return@registerForActivityResult
-            val path = UriUtils.getFileAbsolutePath(this@RoomActivity,uri)
-                ?: return@registerForActivityResult
-            val file = object:File(path){ //name is like 1234name
-                override fun getName(): String {
-                    return super.getName().substring(4)
-                }
-            }
-            if (!file.canRead()) {
-                getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
-                return@registerForActivityResult
-            }
-            Log.d("AndroidGUI",file.absolutePath)
-            thread {
-                getHandler().uploadFile(
-                    file,
-                    FileTransferType.ChatFile,
-                    addFileTransferringPanel(
-                        { file.name },
-                        file.length()
-                    )
-                )
-            }
-        }
+    private lateinit var getImageActivity: ActivityResultLauncher<String>
+    private lateinit var getFileActivity: ActivityResultLauncher<String>
+    private lateinit var getPermissionActivity: ActivityResultLauncher<String>
+    private lateinit var requestPermissionCallback: IRequestPermissionCallback
 
     private val messageList = object : ArrayList<Message>() {
         fun addByStamp(message: Message): Int {
@@ -115,6 +84,64 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
     }
 
+    private fun requestPermission(permission: String,callback: IRequestPermissionCallback){
+        requestPermissionCallback = callback
+        getPermissionActivity.launch(permission)
+    }
+
+    private fun registerActivities(){
+        getImageActivity =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if (uri == null) return@registerForActivityResult
+                val file = File(
+                    UriUtils.getFileAbsolutePath(this@RoomActivity, uri)
+                        ?: return@registerForActivityResult
+                )
+                if (!file.canRead()) {
+                    getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
+                    return@registerForActivityResult
+                }
+                thread { getHandler().sendChatImage(file, ImageType.PNG) }
+            }
+
+        getFileActivity =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if(uri==null) return@registerForActivityResult
+                val path = UriUtils.getFileAbsolutePath(this@RoomActivity,uri)
+                    ?: return@registerForActivityResult
+                val file = object:File(path){ //name is like 1234name
+                    override fun getName(): String {
+                        return super.getName().substring(4)
+                    }
+                }
+                if (!file.canRead()) {
+                    getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
+                    return@registerForActivityResult
+                }
+                Log.d("AndroidGUI",file.absolutePath)
+                thread {
+                    getHandler().uploadFile(
+                        file,
+                        FileTransferType.ChatFile,
+                        addFileTransferringPanel(
+                            { file.name },
+                            file.length()
+                        )
+                    )
+                }
+            }
+
+        getPermissionActivity =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()){
+                if(it==true){
+                    requestPermissionCallback.onSuccess()
+                }else{
+                    requestPermissionCallback.onFailed()
+                }
+            }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
@@ -136,28 +163,59 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
 
         findViewById<Button>(R.id.roomImageSendButton).setOnClickListener {
-            if (!AndroidUtils.requestPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            ) {
-                return@setOnClickListener
-            }
-            getImageActivity.launch("image/*")
+            selectImageToSend()
         }
 
         findViewById<Button>(R.id.roomFileSendbutton).setOnClickListener {
-            if(!AndroidUtils.requestPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            )){
-                return@setOnClickListener
-            }
-            getFileActivity.launch("*/*")
+            selectFileToSend()
         }
+
+        registerActivities()
 
         handler.roomFrame = this
 
+    }
+
+    private fun selectFileToSend() {
+        if (!AndroidUtils.hasPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object: IRequestPermissionCallback{
+                override fun onSuccess() {
+                    selectFileToSend()
+                }
+
+                override fun onFailed() {
+                    handler.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                }
+
+            })
+            return
+        }
+        getFileActivity.launch("*/*")
+    }
+
+    private fun selectImageToSend() {
+        if (!AndroidUtils.hasPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object: IRequestPermissionCallback{
+                override fun onSuccess() {
+                    selectImageToSend()
+                }
+
+                override fun onFailed() {
+                    handler.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                }
+
+            })
+            return
+        }
+        getImageActivity.launch("image/*")
     }
 
     override fun onResume() {

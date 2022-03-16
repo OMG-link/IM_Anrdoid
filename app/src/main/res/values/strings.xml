@@ -35,4 +35,5 @@
     <string name="frame_room_systeminfo_userjoin">%1$s joined the chatroom</string>
     <string name="frame_room_systeminfo_userleft">%1$s left the room</string>
     <string name="frame_room_systeminfo_changename">%1$s changed name to %2$s</string>
+    <string name="frame_room_external_storage_denied">Unable to read external storage.</string>
 </resources>
