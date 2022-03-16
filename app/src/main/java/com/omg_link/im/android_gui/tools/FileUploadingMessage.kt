@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.widget.TextView
 import com.omg_link.im.R
+import com.omg_link.im.android_gui.RoomActivity
 import im.gui.IFileTransferringPanel
 import mutils.FileUtils
 import mutils.IStringGetter
@@ -12,7 +13,7 @@ import java.util.*
 
 class FileUploadingMessage(
     username:String, stamp:Long,
-    val activity: Activity,val fileNameGetter: IStringGetter, val fileSize: Long
+    val activity: RoomActivity, val fileNameGetter: IStringGetter, val fileSize: Long
     ) : Message(username,stamp), IFileTransferringPanel {
 
     private var infoAreaHolder: TextView? = null
@@ -67,7 +68,7 @@ class FileUploadingMessage(
             fileNameGetter.string
         )
         activity.runOnUiThread {
-            messageVisibility = View.VISIBLE
+            activity.getMessageManager().removeMessage(this)
         }
     }
 

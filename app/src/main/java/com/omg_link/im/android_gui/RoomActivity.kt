@@ -9,7 +9,6 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
@@ -31,15 +30,16 @@ import java.util.*
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
+
     private interface IRequestPermissionCallback{
         fun onSuccess()
         fun onFailed()
     }
 
     private val client: Client
-    private val adapter: MessagePanelAdapter
 
     private lateinit var messageRecyclerView: RecyclerView
+    private lateinit var messageManager: MessageManager
     private lateinit var textInputArea: EditText
 
     private lateinit var getImageActivity: ActivityResultLauncher<String>
@@ -47,40 +47,12 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     private lateinit var getPermissionActivity: ActivityResultLauncher<String>
     private lateinit var requestPermissionCallback: IRequestPermissionCallback
 
-    private val messageList = object : ArrayList<Message>() {
-        fun addByStamp(message: Message): Int {
-            var l = 0
-            var r = size - 1
-            while (l <= r) {
-                val mid = (l + r) / 2
-                if (get(mid).stamp > message.stamp) {
-                    r = mid - 1
-                } else {
-                    l = mid + 1
-                }
-            }
-            add(l, message)
-            return l
-        }
-    }
-
     init {
         val activeClient = MainActivity.getActiveClient()
         if (activeClient != null) {
             client = activeClient
         } else {
             throw RuntimeException("Failed to initialize connect activity: main client not found!")
-        }
-
-        adapter = MessagePanelAdapter(messageList)
-
-    }
-
-    private fun showMessage(message: Message) {
-        messageRecyclerView.post {
-            val position = messageList.addByStamp(message)
-            adapter.notifyItemInserted(position)
-            messageRecyclerView.scrollToPosition(position)
         }
     }
 
@@ -149,10 +121,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         title = Config.getServerIP() + ":" + Config.getServerPort()
 
         messageRecyclerView = findViewById(R.id.messageRecyclerView)
+        messageManager = MessageManager(this,messageRecyclerView)
         textInputArea = findViewById(R.id.roomChatInputArea)
-
-        messageRecyclerView.layoutManager = LinearLayoutManager(this)
-        messageRecyclerView.adapter = adapter
 
         findViewById<Button>(R.id.roomChatSendButton).setOnClickListener {
             val tempString = textInputArea.text.toString()
@@ -236,7 +206,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun onConnectionBuilt() {
         runOnUiThread {
-            clearMessageArea()
+            messageManager.clearMessageArea()
             findViewById<Button>(R.id.roomChatSendButton).isEnabled = true
             findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
@@ -249,15 +219,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         //do nothing
     }
 
-    override fun clearMessageArea() {
-        messageRecyclerView.post {
-            messageList.clear()
-            adapter.notifyDataSetChanged()
-        }
-    }
-
     override fun onMessageReceive(sender: String, stamp: Long, text: String) {
-        showMessage(TextMessage(sender, stamp, text))
+        messageManager.insertMessage(TextMessage(sender, stamp, text))
     }
 
     override fun onChatImageReceive(
@@ -267,7 +230,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     ): IDownloadCallback {
         return object : IDownloadCallback {
             override fun onSucceed(task: ClientFileReceiveTask) {
-                showMessage(ChatImageMessage(
+                messageManager.insertMessage(ChatImageMessage(
                     sender,
                     stamp,
                     client.fileManager.openFile(task.receiverFileId).file.absolutePath,
@@ -294,7 +257,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileName: String,
         fileSize: Long
     ) {
-        showMessage(FileUploadedMessage(
+        messageManager.insertMessage(FileUploadedMessage(
             sender,stamp,
             this,fileName,fileSize, fileId
         ))
@@ -313,7 +276,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileSize: Long
     ): IFileTransferringPanel {
         val message = FileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
-        showMessage(message)
+        messageManager.insertMessage(message)
         return message
     }
 
@@ -329,29 +292,33 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
             stringBuilder.append(user.name)
         }
-        showMessage(SystemMessage(stringBuilder.toString()))
+        messageManager.insertMessage(SystemMessage(stringBuilder.toString()))
     }
 
     override fun onUserJoined(user: User) {
-        showMessage(SystemMessage(String.format(
+        messageManager.insertMessage(SystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_userjoin),
             user.name
         )))
     }
 
     override fun onUserLeft(user: User) {
-        showMessage(SystemMessage(String.format(
+        messageManager.insertMessage(SystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_userleft),
             user.name
         )))
     }
 
     override fun onUsernameChanged(user: User, previousName: String) {
-        showMessage(SystemMessage(String.format(
+        messageManager.insertMessage(SystemMessage(String.format(
             resources.getString(R.string.frame_room_systeminfo_changename),
             previousName,
             user.name
         )))
+    }
+
+    fun getMessageManager(): MessageManager{
+        return messageManager
     }
 
     fun getHandler(): Client {
