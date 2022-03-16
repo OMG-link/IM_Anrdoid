@@ -125,6 +125,18 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         messageManager = MessageManager(this,messageRecyclerView)
         textInputArea = findViewById(R.id.roomChatInputArea)
 
+        textInputArea.setOnFocusChangeListener { _, hasFocus ->
+            if(hasFocus){
+                Timer().schedule(object :TimerTask(){
+                    override fun run() {
+                        this@RoomActivity.runOnUiThread {
+                            messageManager.scrollToBottom()
+                        }
+                    }
+                },100) //Maybe there is other way to do this, but I don't know.
+            }
+        }
+
         findViewById<Button>(R.id.roomChatSendButton).setOnClickListener {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
