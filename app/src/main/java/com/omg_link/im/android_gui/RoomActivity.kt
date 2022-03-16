@@ -236,6 +236,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun onConnectionBuilt() {
         runOnUiThread {
+            clearMessageArea()
             findViewById<Button>(R.id.roomChatSendButton).isEnabled = true
             findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
