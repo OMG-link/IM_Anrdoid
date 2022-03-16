@@ -62,10 +62,9 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         }
     }
 
-    fun onMessageInserted(position: Int){
-        if(position!=messageList.size-1) return
-        if(messageRecyclerView.canScrollVertically(-1)) return
-        messageRecyclerView.scrollToPosition(position)
+    private fun onMessageInserted(position: Int){
+        if(messageRecyclerView.canScrollVertically(1)) return
+        messageRecyclerView.scrollToPosition(messageList.size-1)
     }
 
 }
