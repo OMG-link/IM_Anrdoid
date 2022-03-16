@@ -8,19 +8,12 @@ import im.gui.IFileTransferringPanel
 import mutils.FileUtils
 import mutils.IStringGetter
 import java.io.File
+import java.util.*
 
 class FileUploadingMessage(
     username:String, stamp:Long,
     val activity: Activity,val fileNameGetter: IStringGetter, val fileSize: Long
     ) : Message(username,stamp), IFileTransferringPanel {
-
-    private var isHidden = false
-    set(value) {
-        field = value
-        activity.runOnUiThread {
-            onDataUpdated()
-        }
-    }
 
     private var infoAreaHolder: TextView? = null
 
@@ -45,10 +38,6 @@ class FileUploadingMessage(
     }
 
     override fun onDataUpdated(holder: MessagePanelHolder) {
-        if(isHidden){
-            holder.hide()
-            return
-        }
         super.onDataUpdated(holder)
         val view = holder.createLayoutFromXML(R.layout.message_uploading)
         infoAreaHolder = view.findViewById(R.id.uploadInfo)
@@ -77,7 +66,9 @@ class FileUploadingMessage(
             activity.resources.getString(R.string.frame_room_file_upload_succeed),
             fileNameGetter.string
         )
-        isHidden = true
+        activity.runOnUiThread {
+            messageVisibility = View.VISIBLE
+        }
     }
 
     override fun onTransferFailed(reason: String?) {

@@ -28,6 +28,7 @@ class MessagePanelAdapter(private val data:List<Message>) : RecyclerView.Adapter
 }
 
 class MessagePanelHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
+    val root = itemView.findViewById<LinearLayout>(R.id.messageRoot)
     val infoBar = itemView.findViewById<LinearLayout>(R.id.messageInfo)
     val usernameArea = itemView.findViewById<TextView>(R.id.messageTvUsername)
     val timeArea = itemView.findViewById<TextView>(R.id.messageTvTime)
@@ -35,12 +36,8 @@ class MessagePanelHolder private constructor(itemView: View) : RecyclerView.View
 
     private var currentMessage: Message? = null
 
-    fun hide(){
-        itemView.visibility = View.GONE
-    }
-
-    fun unhide(){
-        itemView.visibility = View.VISIBLE
+    fun setVisibility(state:Int){
+        root.visibility = state
     }
 
     fun getColor(@ColorRes resId: Int): Int{

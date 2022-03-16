@@ -16,6 +16,12 @@ abstract class Message(val username:String,val stamp:Long){
      */
     open val infoBarVisibility = View.VISIBLE
 
+    var messageVisibility = View.VISIBLE
+    set(value){
+        field = value
+        onDataUpdated()
+    }
+
     /**
      * Test test{@link View.VISIBLE}
      * @see View.VISIBLE
@@ -29,6 +35,7 @@ abstract class Message(val username:String,val stamp:Long){
     }
 
     protected open fun onDataUpdated(holder: MessagePanelHolder){
+        holder.setVisibility(messageVisibility)
         holder.infoBar.visibility = infoBarVisibility
         holder.usernameArea.text = username
         holder.timeArea.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
