@@ -8,6 +8,7 @@ import com.omg_link.im.MainActivity
 import com.omg_link.im.R
 import im.Client
 import im.config.Config
+import im.config.InvalidUserNameException
 import im.gui.IConnectFrame
 import kotlin.concurrent.thread
 
@@ -37,12 +38,16 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
         nameInputArea.setText(Config.getUsername())
 
         connectButton.setOnClickListener {
-            thread(start = true) {
-                handler.setConfigAndStart(
-                    urlInputArea.text.toString(),
-                    nameInputArea.text.toString(),
-                    false
-                )
+            thread {
+                try{
+                    handler.setConfigAndStart(
+                        urlInputArea.text.toString(),
+                        nameInputArea.text.toString(),
+                        false
+                    )
+                }catch (e:InvalidUserNameException){
+                    handler.showInfo(resources.getString(R.string.frame_login_invalid_username))
+                }
             }
         }
 
