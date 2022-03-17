@@ -38,4 +38,5 @@
     <string name="frame_room_systeminfo_changename">%1$s 将用户名更改为 %2$s</string>
     <string name="frame_room_external_storage_denied">无法读取外部文件</string>
     <string name="frame_login_invalid_username">用户名的长度不能超过20个字符</string>
+    <string name="frame_room_disconnected">与服务器的连接已断开</string>
 </resources>

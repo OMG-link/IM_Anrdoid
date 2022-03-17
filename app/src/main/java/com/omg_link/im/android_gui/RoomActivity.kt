@@ -217,6 +217,11 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         MainActivity.removeActivity()
     }
 
+    override fun exitRoom(reason: String) {
+        client.showInfo(reason)
+        finish()
+    }
+
     override fun onConnectionBuilt() {
         runOnUiThread {
             messageManager.clearMessageArea()
@@ -228,8 +233,14 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
     }
 
-    override fun setVisible(b: Boolean) {
-        //do nothing
+    override fun onConnectionBroke() {
+        showSystemMessage(resources.getString(R.string.frame_room_disconnected))
+        runOnUiThread {
+            findViewById<Button>(R.id.roomChatSendButton).isEnabled = false
+            findViewById<Button>(R.id.roomImageSendButton).isEnabled = false
+            findViewById<Button>(R.id.roomFileSendbutton).isEnabled = false
+            textInputArea.isEnabled = false
+        }
     }
 
     override fun showSystemMessage(message: String) {
