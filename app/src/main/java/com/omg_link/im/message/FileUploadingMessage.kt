@@ -1,15 +1,13 @@
-package com.omg_link.im.android_gui.tools
+package com.omg_link.im.message
 
-import android.app.Activity
 import android.view.View
 import android.widget.TextView
 import com.omg_link.im.R
-import com.omg_link.im.android_gui.RoomActivity
+import com.omg_link.im.RoomActivity
 import im.gui.IFileTransferringPanel
 import mutils.FileUtils
 import mutils.IStringGetter
 import java.io.File
-import java.util.*
 
 class FileUploadingMessage(
     username:String, stamp:Long,

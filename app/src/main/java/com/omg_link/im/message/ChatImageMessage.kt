@@ -1,8 +1,7 @@
-package com.omg_link.im.android_gui.tools
+package com.omg_link.im.message
 
 import android.app.Activity
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

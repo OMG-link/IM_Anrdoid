@@ -1,4 +1,4 @@
-package com.omg_link.im.android_gui
+package com.omg_link.im
 
 import android.content.Intent
 import android.net.Uri
@@ -6,8 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.omg_link.im.MainActivity
-import com.omg_link.im.R
 import im.Client
 import im.gui.IConfirmDialogCallback
 import im.gui.IGUI

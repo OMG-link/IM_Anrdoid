@@ -1,9 +1,8 @@
-package com.omg_link.im.android_gui
+package com.omg_link.im.message
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.android_gui.tools.Message
-import com.omg_link.im.android_gui.tools.MessagePanelAdapter
+import com.omg_link.im.RoomActivity
 import java.util.ArrayList
 
 class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView: RecyclerView) {

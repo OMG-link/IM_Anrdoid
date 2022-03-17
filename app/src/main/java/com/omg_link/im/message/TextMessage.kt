@@ -1,4 +1,4 @@
-package com.omg_link.im.android_gui.tools
+package com.omg_link.im.message
 
 import android.widget.TextView
 import com.omg_link.im.R

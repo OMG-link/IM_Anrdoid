@@ -1,4 +1,4 @@
-package com.omg_link.im.android_gui
+package com.omg_link.im
 
 import android.os.Bundle
 import android.widget.Button

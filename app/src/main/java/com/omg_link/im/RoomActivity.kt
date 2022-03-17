@@ -1,4 +1,4 @@
-package com.omg_link.im.android_gui
+package com.omg_link.im
 
 import android.Manifest
 import android.net.Uri
@@ -10,9 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.MainActivity
-import com.omg_link.im.R
-import com.omg_link.im.android_gui.tools.*
+import com.omg_link.im.message.*
 import com.omg_link.im.tools.AndroidUtils
 import com.omg_link.im.tools.UriUtils
 import im.Client
@@ -27,7 +25,6 @@ import mutils.IStringGetter
 import mutils.ImageType
 import java.io.File
 import java.util.*
-import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
@@ -165,7 +162,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
-            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object: IRequestPermissionCallback{
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object:
+                IRequestPermissionCallback {
                 override fun onSuccess() {
                     selectFileToSend()
                 }
@@ -186,7 +184,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
-            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object: IRequestPermissionCallback{
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object:
+                IRequestPermissionCallback {
                 override fun onSuccess() {
                     selectImageToSend()
                 }
@@ -344,7 +343,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         ))
     }
 
-    fun getMessageManager(): MessageManager{
+    fun getMessageManager(): MessageManager {
         return messageManager
     }
 
