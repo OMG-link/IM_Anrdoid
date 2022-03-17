@@ -14,12 +14,12 @@ import kotlin.concurrent.thread
 
 class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
-    private val handler: Client
+    private val client: Client
 
     init {
         val activeClient = MainActivity.getActiveClient()
         if (activeClient != null) {
-            handler = activeClient
+            client = activeClient
         } else {
             throw RuntimeException("Failed to initialize connect activity: main client not found!")
         }
@@ -40,19 +40,19 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
         connectButton.setOnClickListener {
             thread {
                 try{
-                    handler.setConfigAndStart(
+                    client.setConfigAndStart(
                         urlInputArea.text.toString(),
                         nameInputArea.text.toString(),
                         false
                     )
                 }catch (e:InvalidUserNameException){
-                    handler.showInfo(resources.getString(R.string.frame_login_invalid_username))
+                    client.showInfo(resources.getString(R.string.frame_login_invalid_username))
                 }
             }
         }
 
         downloadOtherVersionButton.setOnClickListener {
-            handler.gui.openInBrowser("https://www.omg-link.com/IM/")
+            client.gui.openInBrowser("https://www.omg-link.com/IM/")
         }
 
         /*val debugButton: Button = findViewById(R.id.debugButton)
@@ -69,7 +69,7 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
             })
         }*/
 
-        handler.connectFrame = this
+        client.connectFrame = this
 
     }
 
