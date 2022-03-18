@@ -42,4 +42,12 @@
     <string name="frame_login_input_token">在此输入房间密码</string>
     <string name="frame_login_room_password">房间密码</string>
     <string name="activity_login_connectrejected_invalidtoken">密码错误</string>
+    <string name="frame_login_downloaded_files">已下载文件</string>
+    <string name="frame_filemanager_title">已下载文件</string>
+    <string name="frame_filemanager_button_open">打开</string>
+    <string name="frame_filemanager_button_delete">删除</string>
+    <string name="frame_filemanager_button_refresh">刷新</string>
+    <string name="frame_filemanager_button_clear">清除所有</string>
+    <string name="frame_login_core_version">IM Core 版本： %1$s</string>
+    <string name="frame_login_apk_version">APK版本： %1$s</string>
 </resources>

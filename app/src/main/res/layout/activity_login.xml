@@ -136,6 +136,38 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/fileManagerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetLeft="6dp"
+        android:insetRight="6dp"
+        android:text="@string/frame_login_downloaded_files"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvApkVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="?attr/colorLoginVersionInfo"
+        app:layout_constraintBottom_toTopOf="@+id/downloadApkButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Apk Version" />
+
+    <TextView
+        android:id="@+id/tvCoreVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="?attr/colorLoginVersionInfo"
+        app:layout_constraintBottom_toTopOf="@+id/tvApkVersion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Core Version" />
+
     <!--<Button
         android:id="@+id/debugButton"
         android:layout_width="wrap_content"

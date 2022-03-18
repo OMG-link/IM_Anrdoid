@@ -111,9 +111,7 @@ class FileUploadedMessage(
             FilePanelState.DOWNLOADED ->{
                 val openButton = view.findViewById<Button>(R.id.openButton)
                 openButton.setOnClickListener {
-                    if(!AndroidUtils.openFile(file,activity)){
-                        Toast.makeText(activity,R.string.activity_room_cannot_open_file,Toast.LENGTH_SHORT).show()
-                    }
+                    AndroidUtils.openFile(file,activity)
                 }
                 openButton.visibility = View.VISIBLE
             }

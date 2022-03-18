@@ -1,11 +1,12 @@
 package com.omg_link.im
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.omg_link.im.MainActivity
-import com.omg_link.im.R
+import com.omg_link.im.tools.AndroidUtils
 import im.Client
 import im.config.Config
 import im.config.InvalidUserNameException
@@ -32,12 +33,18 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
         val urlInputArea: EditText = findViewById(R.id.urlInputArea)
         val nameInputArea: EditText = findViewById(R.id.nameInputArea)
         val tokenInputArea: EditText = findViewById(R.id.tokenInputArea)
+        val fileManagerButton: Button = findViewById(R.id.fileManagerButton)
         val connectButton: Button = findViewById(R.id.connectButton)
         val downloadOtherVersionButton: Button = findViewById(R.id.downloadApkButton)
 
         urlInputArea.setText(Config.getUrl())
         nameInputArea.setText(Config.getUsername())
         tokenInputArea.setText(Config.getToken())
+
+        fileManagerButton.setOnClickListener {
+            val intent = Intent(this,FileManagerActivity::class.java)
+            startActivity(intent)
+        }
 
         connectButton.setOnClickListener {
             thread {
@@ -71,6 +78,16 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
             })
         }*/
+
+        findViewById<TextView>(R.id.tvCoreVersion).text = String.format(
+            resources.getString(R.string.frame_login_core_version),
+            Config.version
+        )
+
+        findViewById<TextView>(R.id.tvApkVersion).text = String.format(
+            resources.getString(R.string.frame_login_apk_version),
+            AndroidUtils.getApkVersion(this)
+        )
 
         client.connectFrame = this
 

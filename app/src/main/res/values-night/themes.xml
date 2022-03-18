@@ -19,6 +19,7 @@
         <item name="colorLoginSubTitle">@color/gray</item>
         <item name="colorLoginHint">@color/light_gray_3</item>
         <item name="colorLoginInputAreaText">@color/white</item>
+        <item name="colorLoginVersionInfo">@color/gray</item>
     </style>
 
     <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -32,6 +33,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomChatText">@color/light_gray_1</item>
         <item name="colorRoomDownloadProgress">@color/gray</item>
@@ -42,6 +44,23 @@
         <item name="colorRoomBgr">@color/black</item>
         <item name="colorRoomSystemInfoBgr">@color/dark_gray_3</item>
 
+    </style>
+
+    <style name="Theme.IM.FileManagerActivity" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="colorFileManagerFileName">@color/light_gray_1</item>
+        <item name="colorFileManagerFileSize">@color/gray</item>
+        <item name="colorFileManagerFileBgr">@color/dark_gray_1</item>
     </style>
 
 </resources>

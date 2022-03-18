@@ -4,6 +4,7 @@
     <attr format="color" name="colorLoginSubTitle" />
     <attr format="color" name="colorLoginHint" />
     <attr format="color" name="colorLoginInputAreaText" />
+    <attr format="color" name="colorLoginVersionInfo" />
 
     <attr format="color" name="colorRoomChatInfo" />
     <attr format="color" name="colorRoomChatText" />
@@ -15,5 +16,8 @@
     <attr format="color" name="colorRoomBgr" />
     <attr format="color" name="colorRoomSystemInfoBgr" />
 
+    <attr format="color" name="colorFileManagerFileName" />
+    <attr format="color" name="colorFileManagerFileSize" />
+    <attr format="color" name="colorFileManagerFileBgr" />
 
 </resources>

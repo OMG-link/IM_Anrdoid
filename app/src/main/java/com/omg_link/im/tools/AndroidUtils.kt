@@ -7,9 +7,11 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.omg_link.im.R
 import java.io.File
 
 
@@ -40,6 +42,7 @@ object AndroidUtils {
             context.startActivity(intent) // 这里最好try一下，有可能会报错。
             // //比如说你的MIME类型是打开邮箱，但是你手机里面没装邮箱客户端，就会报错。
         } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, R.string.activity_room_cannot_open_file, Toast.LENGTH_SHORT).show()
             return false;
         }
         return true;
@@ -52,6 +55,10 @@ object AndroidUtils {
         val mimeTypeFromExtension = MimeTypeMap.getSingleton()
             .getMimeTypeFromExtension(fileExtensionFromUrl)
         return openFile(file,context,mimeTypeFromExtension)
+    }
+
+    fun getApkVersion(context: Context):String {
+        return context.packageManager.getPackageInfo(context.packageName,0).versionName
     }
 
 }
