@@ -3,6 +3,8 @@ package com.omg_link.im
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -40,11 +42,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     private lateinit var messageRecyclerView: RecyclerView
     private lateinit var messageManager: MessageManager
     private lateinit var textInputArea: EditText
+    private lateinit var roomChatSendButton: Button
 
     private lateinit var getImageActivity: ActivityResultLauncher<String>
     private lateinit var getFileActivity: ActivityResultLauncher<String>
     private lateinit var getPermissionActivity: ActivityResultLauncher<String>
     private lateinit var requestPermissionCallback: IRequestPermissionCallback
+
+    private var isConnectionBuilt: Boolean = false
+    private var isTextInputAreaCleared: Boolean = false
 
     init {
         val activeClient = MainActivity.getActiveClient()
@@ -133,13 +139,21 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
         }
 
-        findViewById<Button>(R.id.roomChatSendButton).setOnClickListener {
+        roomChatSendButton = findViewById<Button>(R.id.roomChatSendButton)
+        roomChatSendButton.setOnClickListener {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
             thread { //禁止在主线程上进行网络操作
                 client.sendChat(tempString)
             }
         }
+        textInputArea.addTextChangedListener(object:TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                updateChatSendButtonState()
+            }
+        })
 
         findViewById<Button>(R.id.roomImageSendButton).setOnClickListener {
             selectImageToSend()
@@ -153,6 +167,13 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         client.roomFrame = this
 
+    }
+
+    /**
+     * Should be called on UI Thread
+     */
+    private fun updateChatSendButtonState(){
+        roomChatSendButton.isEnabled = (textInputArea.text.isNotEmpty()&&isConnectionBuilt)
     }
 
     private fun delayScrollToBottom() {
@@ -231,23 +252,28 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun onConnectionBuilt() {
+        isConnectionBuilt = true
         runOnUiThread {
             messageManager.clearMessageArea()
-            findViewById<Button>(R.id.roomChatSendButton).isEnabled = true
+            updateChatSendButtonState()
             findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
-            textInputArea.isEnabled = true
-            textInputArea.setText("")
+            textInputArea.isEnabled = true;
+            if(!isTextInputAreaCleared){
+                textInputArea.setText("")
+                isTextInputAreaCleared = true
+            }
         }
     }
 
     override fun onConnectionBroke() {
+        isConnectionBuilt = false
         showSystemMessage(resources.getString(R.string.frame_room_disconnected))
         runOnUiThread {
-            findViewById<Button>(R.id.roomChatSendButton).isEnabled = false
+            updateChatSendButtonState()
             findViewById<Button>(R.id.roomImageSendButton).isEnabled = false
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = false
-            textInputArea.isEnabled = false
+            textInputArea.isEnabled = false;
         }
     }
 
