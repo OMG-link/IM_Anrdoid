@@ -38,4 +38,7 @@
     <string name="frame_room_external_storage_denied">Unable to read external storage.</string>
     <string name="frame_login_invalid_username">Username should be no longer than 20 characters.</string>
     <string name="frame_room_disconnected">Disconnected from the server.</string>
+    <string name="frame_login_input_token">Password for Room</string>
+    <string name="frame_login_room_password">Room Password</string>
+    <string name="activity_login_connectrejected_invalidtoken">Wrong password.</string>
 </resources>

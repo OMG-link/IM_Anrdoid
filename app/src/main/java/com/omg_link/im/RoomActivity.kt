@@ -18,6 +18,7 @@ import im.config.Config
 import im.gui.IFileTransferringPanel
 import im.gui.IRoomFrame
 import im.protocol.data_pack.file_transfer.FileTransferType
+import im.protocol.data_pack.system.ConnectResultPack
 import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
 import im.user_manager.User
@@ -248,6 +249,14 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = false
             textInputArea.isEnabled = false
         }
+    }
+
+    override fun onConnectionRefused(reason: ConnectResultPack.RejectReason) {
+        exitRoom(resources.getString(
+            when(reason){
+                ConnectResultPack.RejectReason.InvalidToken -> R.string.activity_login_connectrejected_invalidtoken
+            }
+        ))
     }
 
     override fun showSystemMessage(message: String) {

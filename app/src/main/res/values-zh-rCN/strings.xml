@@ -39,4 +39,7 @@
     <string name="frame_room_external_storage_denied">无法读取外部文件</string>
     <string name="frame_login_invalid_username">用户名的长度不能超过20个字符</string>
     <string name="frame_room_disconnected">与服务器的连接已断开</string>
+    <string name="frame_login_input_token">在此输入房间密码</string>
+    <string name="frame_login_room_password">房间密码</string>
+    <string name="activity_login_connectrejected_invalidtoken">密码错误</string>
 </resources>

@@ -8,8 +8,9 @@
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,14 +26,13 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/frame_login_server_url"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="?attr/colorLoginHint"
-                tools:text="ServerUrl" />
+                android:textColor="?attr/colorLoginHint" />
 
             <EditText
                 android:id="@+id/urlInputArea"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:width="300dp"
+                android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/frame_login_input_url"
                 android:inputType="textUri"
@@ -49,18 +49,39 @@
                 android:layout_marginRight="10dp"
                 android:text="@string/frame_login_user_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="?attr/colorLoginHint"
-                tools:text="Username" />
+                android:textColor="?attr/colorLoginHint" />
 
             <EditText
                 android:id="@+id/nameInputArea"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:width="300dp"
+                android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/frame_login_input_name"
                 android:inputType="textPersonName"
                 android:textColor="?attr/colorLoginInputAreaText" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/frame_login_room_password"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="?attr/colorLoginHint" />
+
+            <EditText
+                android:id="@+id/tokenInputArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/frame_login_input_token"
+                android:inputType="textPassword" />
         </TableRow>
 
         <TableRow
@@ -72,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
+                android:layout_weight="1"
                 android:text="@string/frame_login_button_connect" />
         </TableRow>
 

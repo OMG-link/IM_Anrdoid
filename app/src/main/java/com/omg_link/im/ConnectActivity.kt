@@ -31,11 +31,13 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
         val urlInputArea: EditText = findViewById(R.id.urlInputArea)
         val nameInputArea: EditText = findViewById(R.id.nameInputArea)
+        val tokenInputArea: EditText = findViewById(R.id.tokenInputArea)
         val connectButton: Button = findViewById(R.id.connectButton)
         val downloadOtherVersionButton: Button = findViewById(R.id.downloadApkButton)
 
         urlInputArea.setText(Config.getUrl())
         nameInputArea.setText(Config.getUsername())
+        tokenInputArea.setText(Config.getToken())
 
         connectButton.setOnClickListener {
             thread {
@@ -43,6 +45,7 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
                     client.setConfigAndStart(
                         urlInputArea.text.toString(),
                         nameInputArea.text.toString(),
+                        tokenInputArea.text.toString(),
                         false
                     )
                 }catch (e:InvalidUserNameException){
