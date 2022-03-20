@@ -61,8 +61,9 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
 
     fun clearMessageArea() {
         addEvent {
+            val count = messageList.size
             messageList.clear()
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemRangeRemoved(0,count)
         }
     }
 
