@@ -3,10 +3,8 @@ package com.omg_link.im.message
 import android.os.Looper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
 import java.util.*
-import java.util.logging.Level
 
 class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView: RecyclerView) {
 
@@ -24,7 +22,7 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
                     l = mid + 1
                 }
             }
-            return l;
+            return l
         }
 
         fun addByStamp(message: Message): Int {
@@ -46,7 +44,7 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         addEvent {
             val position = messageList.addByStamp(message)
             adapter.notifyItemInserted(position)
-            onMessageInserted(position)
+            onMessageInserted()
         }
     }
 
@@ -67,7 +65,7 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         }
     }
 
-    private fun onMessageInserted(position: Int){
+    private fun onMessageInserted() {
         if(messageRecyclerView.canScrollVertically(1)) return
         scrollToBottom()
     }
