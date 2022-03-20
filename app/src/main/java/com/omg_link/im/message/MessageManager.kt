@@ -1,11 +1,16 @@
 package com.omg_link.im.message
 
+import android.os.Looper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
-import java.util.ArrayList
+import java.util.*
+import java.util.logging.Level
 
 class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView: RecyclerView) {
+
+    private val eventQueue: Queue<Runnable> = LinkedList()
 
     private val messageList = object : ArrayList<Message>() {
         private fun locateNextMessage(stamp:Long):Int{
@@ -38,7 +43,7 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
     }
 
     fun insertMessage(message: Message) {
-        messageRecyclerView.post {
+        addEvent {
             val position = messageList.addByStamp(message)
             adapter.notifyItemInserted(position)
             onMessageInserted(position)
@@ -46,16 +51,16 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
     }
 
     fun removeMessage(message: Message){
-        messageRecyclerView.post {
+        addEvent {
             val p = messageList.indexOf(message)
-            if(p==-1) return@post
+            if(p==-1) return@addEvent
             messageList.removeAt(p)
             adapter.notifyItemRemoved(p)
         }
     }
 
     fun clearMessageArea() {
-        messageRecyclerView.post {
+        addEvent {
             messageList.clear()
             adapter.notifyDataSetChanged()
         }
@@ -68,6 +73,22 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
 
     fun scrollToBottom(){
         messageRecyclerView.scrollToPosition(messageList.size-1)
+    }
+
+    private fun addEvent(event: Runnable){
+        eventQueue.offer(event)
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            runEvent()
+        }else{
+            messageRecyclerView.post { runEvent() }
+        }
+    }
+
+    private fun runEvent(){
+        while(!eventQueue.isEmpty()){
+            val event = eventQueue.poll()!!
+            event.run()
+        }
     }
 
 }

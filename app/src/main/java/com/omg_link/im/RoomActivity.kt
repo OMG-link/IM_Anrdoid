@@ -28,6 +28,7 @@ import mutils.IStringGetter
 import mutils.ImageType
 import java.io.File
 import java.util.*
+import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
@@ -253,8 +254,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun onConnectionBuilt() {
         isConnectionBuilt = true
+        messageManager.clearMessageArea()
         runOnUiThread {
-            messageManager.clearMessageArea()
             updateChatSendButtonState()
             findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
             findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
@@ -291,6 +292,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun showTextMessage(sender: String, stamp: Long, text: String) {
         messageManager.insertMessage(TextMessage(sender, stamp, text))
+
     }
 
     override fun showChatImageMessage(
