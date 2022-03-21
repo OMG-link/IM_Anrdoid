@@ -45,7 +45,7 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
             if (oldBottom > bottom) {
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
-                        addEvent { scrollToBottom() }
+                        scrollToBottom()
                     }
                 }, 100) //Can't scroll immediately. I don't known why. T.T
             }
@@ -82,11 +82,10 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         scrollToBottom()
     }
 
-    /**
-     * Should be called on UI thread.
-     */
     fun scrollToBottom() {
-        messageRecyclerView.scrollToPosition(messageList.size - 1)
+        addEvent{
+            messageRecyclerView.scrollToPosition(messageList.size - 1)
+        }
     }
 
     private fun addEvent(event: Runnable) {
