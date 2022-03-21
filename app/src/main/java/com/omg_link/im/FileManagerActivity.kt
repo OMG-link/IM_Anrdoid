@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.file.DownloadedFile
 import com.omg_link.im.file.FilePanelAdapter
 import im.Client
+import im.file_manager.ClientFileManager
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -44,7 +45,8 @@ class FileManagerActivity : AppCompatActivity() {
     }
 
     fun updateFromDirectory() {
-        val files = File(client.fileManager.folderName).listFiles() ?: return
+        val files = client.fileManager.openFolder(ClientFileManager.downloadFolder).listFiles()
+            ?: return
         downloadedFileList.clear()
         for (file in files) {
             try{
