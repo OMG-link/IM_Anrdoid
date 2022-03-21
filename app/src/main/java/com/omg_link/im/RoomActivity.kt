@@ -130,17 +130,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         messageManager = MessageManager(this,messageRecyclerView)
         textInputArea = findViewById(R.id.roomChatInputArea)
 
-        textInputArea.setOnClickListener {
-            delayScrollToBottom()
-        }
-
-        textInputArea.setOnFocusChangeListener { _, hasFocus ->
-            if(hasFocus){
-                delayScrollToBottom()
-            }
-        }
-
-        roomChatSendButton = findViewById<Button>(R.id.roomChatSendButton)
+        roomChatSendButton = findViewById(R.id.roomChatSendButton)
         roomChatSendButton.setOnClickListener {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
@@ -175,16 +165,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
      */
     private fun updateChatSendButtonState(){
         roomChatSendButton.isEnabled = (textInputArea.text.isNotEmpty()&&isConnectionBuilt)
-    }
-
-    private fun delayScrollToBottom() {
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-                this@RoomActivity.runOnUiThread {
-                    messageManager.scrollToBottom()
-                }
-            }
-        }, 100) //Maybe there is other way to do this, but I don't know.
     }
 
     private fun selectFileToSend() {

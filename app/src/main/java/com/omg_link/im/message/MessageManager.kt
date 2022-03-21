@@ -1,17 +1,20 @@
 package com.omg_link.im.message
 
 import android.os.Looper
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
 import java.util.*
+import java.util.logging.Level
 
 class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView: RecyclerView) {
 
     private val eventQueue: Queue<Runnable> = LinkedList()
 
     private val messageList = object : ArrayList<Message>() {
-        private fun locateNextMessage(stamp:Long):Int{
+        private fun locateNextMessage(stamp: Long): Int {
             var l = 0
             var r = size - 1
             while (l <= r) {
@@ -38,6 +41,15 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
     init {
         messageRecyclerView.layoutManager = LinearLayoutManager(roomActivity)
         messageRecyclerView.adapter = adapter
+        messageRecyclerView.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+            if (oldBottom > bottom) {
+                Timer().schedule(object : TimerTask() {
+                    override fun run() {
+                        addEvent { scrollToBottom() }
+                    }
+                }, 100) //Can't scroll immediately. I don't known why. T.T
+            }
+        }
     }
 
     fun insertMessage(message: Message) {
@@ -48,10 +60,10 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         }
     }
 
-    fun removeMessage(message: Message){
+    fun removeMessage(message: Message) {
         addEvent {
             val p = messageList.indexOf(message)
-            if(p==-1) return@addEvent
+            if (p == -1) return@addEvent
             messageList.removeAt(p)
             adapter.notifyItemRemoved(p)
         }
@@ -61,30 +73,33 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
         addEvent {
             val count = messageList.size
             messageList.clear()
-            adapter.notifyItemRangeRemoved(0,count)
+            adapter.notifyItemRangeRemoved(0, count)
         }
     }
 
     private fun onMessageInserted() {
-        if(messageRecyclerView.canScrollVertically(1)) return
+        if (messageRecyclerView.canScrollVertically(1)) return
         scrollToBottom()
     }
 
-    fun scrollToBottom(){
-        messageRecyclerView.scrollToPosition(messageList.size-1)
+    /**
+     * Should be called on UI thread.
+     */
+    fun scrollToBottom() {
+        messageRecyclerView.scrollToPosition(messageList.size - 1)
     }
 
-    private fun addEvent(event: Runnable){
+    private fun addEvent(event: Runnable) {
         eventQueue.offer(event)
-        if(Looper.myLooper() == Looper.getMainLooper()){
+        if (Looper.myLooper() == Looper.getMainLooper()) {
             runEvent()
-        }else{
+        } else {
             messageRecyclerView.post { runEvent() }
         }
     }
 
-    private fun runEvent(){
-        while(!eventQueue.isEmpty()){
+    private fun runEvent() {
+        while (!eventQueue.isEmpty()) {
             val event = eventQueue.poll()!!
             event.run()
         }
