@@ -15,6 +15,7 @@
     <attr format="color" name="colorRoomInputAreaText" />
     <attr format="color" name="colorRoomBgr" />
     <attr format="color" name="colorRoomSystemInfoBgr" />
+    <attr format="color" name="colorRoomNewMessageBgr" />
 
     <attr format="color" name="colorFileManagerFileName" />
     <attr format="color" name="colorFileManagerFileSize" />

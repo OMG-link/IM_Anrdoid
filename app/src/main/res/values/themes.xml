@@ -17,6 +17,7 @@
         <item name="colorLoginHint">@color/dark_gray_3</item>
         <item name="colorLoginInputAreaText">@color/black</item>
         <item name="colorLoginVersionInfo">@color/gray</item>
+
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomChatText">@color/black</item>
         <item name="colorRoomDownloadProgress">@color/dark_gray_3</item>
@@ -26,9 +27,11 @@
         <item name="colorRoomInputAreaText">@color/black</item>
         <item name="colorRoomBgr">@color/white</item>
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
-        <item name="colorFileManagerFileName">?attr/colorRoomChatText</item>
-        <item name="colorFileManagerFileSize">?attr/colorRoomDownloadFileSize</item>
+
+        <item name="colorFileManagerFileName">@color/black</item>
+        <item name="colorFileManagerFileSize">@color/gray</item>
         <item name="colorFileManagerFileBgr">@color/light_gray_3</item>
+
     </style>
 
     <style name="Theme.IM.ConnectActivity" parent="Theme.MaterialComponents.Light.NoActionBar">

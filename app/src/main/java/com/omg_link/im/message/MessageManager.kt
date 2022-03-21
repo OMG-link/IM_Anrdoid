@@ -2,6 +2,7 @@ package com.omg_link.im.message
 
 import android.os.Looper
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.MainActivity
@@ -9,9 +10,28 @@ import com.omg_link.im.RoomActivity
 import java.util.*
 import java.util.logging.Level
 
-class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView: RecyclerView) {
+class MessageManager(
+    roomActivity: RoomActivity,
+    private val messageRecyclerView: RecyclerView,
+    private val toBottomButton: Button) {
 
     private val eventQueue: Queue<Runnable> = LinkedList()
+    private var unreadMessageCount: Int = 0
+    set(value) {
+        field = value
+        addEvent{
+            if(value==0){
+                toBottomButton.visibility = View.GONE
+            }else{
+                toBottomButton.visibility = View.VISIBLE
+                toBottomButton.text = if(value>99){
+                    "99+"
+                }else{
+                    value.toString()
+                }
+            }
+        }
+    }
 
     private val messageList = object : ArrayList<Message>() {
         private fun locateNextMessage(stamp: Long): Int {
@@ -50,6 +70,19 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
                 }, 100) //Can't scroll immediately. I don't known why. T.T
             }
         }
+        messageRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if(isRecyclerViewAtBottom()){
+                    unreadMessageCount = 0
+                }
+            }
+        })
+
+        toBottomButton.setOnClickListener {
+            scrollToBottom()
+        }
+
     }
 
     fun insertMessage(message: Message) {
@@ -78,9 +111,14 @@ class MessageManager(roomActivity: RoomActivity, private val messageRecyclerView
     }
 
     private fun onMessageInserted() {
-        if (messageRecyclerView.canScrollVertically(1)) return
-        scrollToBottom()
+        if (isRecyclerViewAtBottom()){
+            scrollToBottom()
+        }else{
+            unreadMessageCount++
+        }
     }
+
+    private fun isRecyclerViewAtBottom() = !messageRecyclerView.canScrollVertically(1)
 
     fun scrollToBottom() {
         addEvent{

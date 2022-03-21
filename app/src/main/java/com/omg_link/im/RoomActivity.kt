@@ -11,7 +11,6 @@ import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.message.*
 import com.omg_link.im.tools.AndroidUtils
 import com.omg_link.im.tools.UriUtils
@@ -28,7 +27,6 @@ import mutils.IStringGetter
 import mutils.ImageType
 import java.io.File
 import java.util.*
-import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
@@ -40,7 +38,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     private val client: Client
 
-    private lateinit var messageRecyclerView: RecyclerView
     private lateinit var messageManager: MessageManager
     private lateinit var textInputArea: EditText
     private lateinit var roomChatSendButton: Button
@@ -126,11 +123,14 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         title = Config.getServerIP() + ":" + Config.getServerPort()
 
-        messageRecyclerView = findViewById(R.id.messageRecyclerView)
-        messageManager = MessageManager(this,messageRecyclerView)
+        messageManager = MessageManager(
+            this,
+            findViewById(R.id.messageRecyclerView),
+            findViewById(R.id.buttonRoomToBottom)
+        )
         textInputArea = findViewById(R.id.roomChatInputArea)
 
-        roomChatSendButton = findViewById(R.id.roomChatSendButton)
+        roomChatSendButton = findViewById(R.id.buttonRoomChatSend)
         roomChatSendButton.setOnClickListener {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
@@ -146,11 +146,11 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
         })
 
-        findViewById<Button>(R.id.roomImageSendButton).setOnClickListener {
+        findViewById<Button>(R.id.buttonRoomImageSend).setOnClickListener {
             selectImageToSend()
         }
 
-        findViewById<Button>(R.id.roomFileSendbutton).setOnClickListener {
+        findViewById<Button>(R.id.buttonRoomFileSend).setOnClickListener {
             selectFileToSend()
         }
 
@@ -237,8 +237,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         messageManager.clearMessageArea()
         runOnUiThread {
             updateChatSendButtonState()
-            findViewById<Button>(R.id.roomImageSendButton).isEnabled = true
-            findViewById<Button>(R.id.roomFileSendbutton).isEnabled = true
+            findViewById<Button>(R.id.buttonRoomImageSend).isEnabled = true
+            findViewById<Button>(R.id.buttonRoomFileSend).isEnabled = true
             textInputArea.isEnabled = true;
             if(!isTextInputAreaCleared){
                 textInputArea.setText("")
@@ -252,8 +252,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         showSystemMessage(resources.getString(R.string.frame_room_disconnected))
         runOnUiThread {
             updateChatSendButtonState()
-            findViewById<Button>(R.id.roomImageSendButton).isEnabled = false
-            findViewById<Button>(R.id.roomFileSendbutton).isEnabled = false
+            findViewById<Button>(R.id.buttonRoomImageSend).isEnabled = false
+            findViewById<Button>(R.id.buttonRoomFileSend).isEnabled = false
             textInputArea.isEnabled = false;
         }
     }
