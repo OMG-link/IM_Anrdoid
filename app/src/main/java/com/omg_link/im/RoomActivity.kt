@@ -280,25 +280,9 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         stamp: Long,
         serverFileId: UUID
     ): IDownloadCallback {
-        return object : IDownloadCallback {
-            override fun onSucceed(task: ClientFileReceiveTask) {
-                messageManager.insertMessage(ChatImageMessage(
-                    sender,
-                    stamp,
-                    client.fileManager.openFile(task.receiverFileId).file.absolutePath,
-                    this@RoomActivity
-                ))
-            }
-
-            override fun onFailed(task: ClientFileReceiveTask?, reason: String) {
-                showTextMessage(
-                    sender,
-                    stamp,
-                    resources.getString(R.string.activity_room_image_download_failed)
-                )
-            }
-
-        }
+        val message = ChatImageMessage(sender,stamp)
+        messageManager.insertMessage(message)
+        return message.getDownloadCallback()
     }
 
     override fun showFileUploadedMessage(

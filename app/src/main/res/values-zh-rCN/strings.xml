@@ -50,4 +50,24 @@
     <string name="frame_filemanager_button_clear">清除所有</string>
     <string name="frame_login_core_version">IM Core 版本： %1$s</string>
     <string name="frame_login_apk_version">APK版本： %1$s</string>
+    <string name="time_morning">上午</string>
+    <string name="time_noon">中午</string>
+    <string name="time_afternoon">下午</string>
+    <string name="time_night">晚上</string>
+    <string name="time_midnight">凌晨</string>
+    <string name="time_today">%1$s %6$d:%7$02d</string>
+    <string name="time_yesterday">昨天 %1$s %6$d:%7$02d</string>
+    <string name="time_last_week">%8$s %1$s %6$d:%7$02d</string>
+    <string name="time_this_year">%4$02d-%5$02d %1$s %6$d:%7$02d</string>
+    <string name="time_default">%4$d/%5$d/%3$d %1$s %6$d:%7$02d</string>
+    <string name="time_monday">星期一</string>
+    <string name="time_tuesday">星期二</string>
+    <string name="time_wednesday">星期三</string>
+    <string name="time_thursday">星期四</string>
+    <string name="time_friday">星期五</string>
+    <string name="time_saturday">星期六</string>
+    <string name="time_sunday">星期日</string>
+    <string name="time_dusk">傍晚</string>
+    <string name="frame_room_image_download_failed">[图片] 图片下载失败： %1$s</string>
+    <string name="frame_room_image_downloading">[图片] 下载中</string>
 </resources>

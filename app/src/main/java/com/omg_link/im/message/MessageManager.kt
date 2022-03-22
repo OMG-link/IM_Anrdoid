@@ -1,21 +1,20 @@
 package com.omg_link.im.message
 
-import android.os.Looper
 import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
 import java.util.*
-import java.util.logging.Level
 
 class MessageManager(
-    roomActivity: RoomActivity,
+    val roomActivity: RoomActivity,
     private val messageRecyclerView: RecyclerView,
     private val toBottomButton: Button) {
 
+    private var isProcessingEvents = false
     private val eventQueue: Queue<Runnable> = LinkedList()
+
     private var unreadMessageCount: Int = 0
     set(value) {
         field = value
@@ -55,6 +54,7 @@ class MessageManager(
         }
 
     }
+    private val timeDisplayManager = TimeDisplayManager(this,messageList)
 
     private val adapter: MessagePanelAdapter = MessagePanelAdapter(messageList)
 
@@ -87,10 +87,21 @@ class MessageManager(
 
     fun insertMessage(message: Message) {
         addEvent {
-            val position = messageList.addByStamp(message)
-            adapter.notifyItemInserted(position)
-            onMessageInserted()
+            if(message.type==Message.MessageType.CHAT){
+                timeDisplayManager.onMessageInsert(message)
+            }
+            insertMessageRaw(message)
         }
+    }
+
+    /**
+     * Should be called on UI thread.
+     */
+    fun insertMessageRaw(message: Message){
+        message.messageManager = this
+        val position = messageList.addByStamp(message)
+        adapter.notifyItemInserted(position)
+        onMessageInserted(message)
     }
 
     fun removeMessage(message: Message) {
@@ -110,11 +121,19 @@ class MessageManager(
         }
     }
 
-    private fun onMessageInserted() {
+    private fun onMessageInserted(message: Message) {
         if (isRecyclerViewAtBottom()){
-            scrollToBottom()
+            keepBottom()
         }else{
-            unreadMessageCount++
+            if(message.type==Message.MessageType.CHAT){
+                unreadMessageCount++
+            }
+        }
+    }
+
+    fun keepBottom(){
+        if(isRecyclerViewAtBottom()){
+            scrollToBottom()
         }
     }
 
@@ -128,18 +147,17 @@ class MessageManager(
 
     private fun addEvent(event: Runnable) {
         eventQueue.offer(event)
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            runEvent()
-        } else {
-            messageRecyclerView.post { runEvent() }
-        }
+        messageRecyclerView.post { runEvent() }
     }
 
     private fun runEvent() {
+        if(isProcessingEvents) return
+        isProcessingEvents = true
         while (!eventQueue.isEmpty()) {
             val event = eventQueue.poll()!!
             event.run()
         }
+        isProcessingEvents = false
     }
 
 }

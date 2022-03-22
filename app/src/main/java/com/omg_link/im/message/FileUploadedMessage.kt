@@ -24,6 +24,8 @@ class FileUploadedMessage(
     val activity:Activity,var fileName:String,val fileSize:Long,val fileId:UUID
     ):Message(username,stamp), IFileTransferringPanel {
 
+    override val type: MessageType = MessageType.CHAT
+
     var infoAreaHolder: TextView? = null
     lateinit var file:File
 

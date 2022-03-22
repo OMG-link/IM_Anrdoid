@@ -14,6 +14,8 @@ class FileUploadingMessage(
     val activity: RoomActivity, val fileNameGetter: IStringGetter, val fileSize: Long
     ) : Message(username,stamp), IFileTransferringPanel {
 
+    override val type: MessageType = MessageType.SYSTEM
+
     private var infoAreaHolder: TextView? = null
 
     private var info:String = ""

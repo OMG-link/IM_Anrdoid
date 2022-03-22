@@ -1,5 +1,6 @@
 package com.omg_link.im.message
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,6 @@ class MessagePanelHolder private constructor(itemView: View) : RecyclerView.View
     val root = itemView.findViewById<LinearLayout>(R.id.messageRoot)
     val infoBar = itemView.findViewById<LinearLayout>(R.id.messageInfo)
     val usernameArea = itemView.findViewById<TextView>(R.id.messageTvUsername)
-    val timeArea = itemView.findViewById<TextView>(R.id.messageTvTime)
     val componentArea = itemView.findViewById<LinearLayout>(R.id.messageComponents)
 
     private var currentMessage: Message? = null
@@ -42,6 +42,13 @@ class MessagePanelHolder private constructor(itemView: View) : RecyclerView.View
 
     fun getColor(@ColorRes resId: Int): Int{
         return itemView.context.resources.getColor(resId,null)
+    }
+
+    fun getAttrColor(resId: Int): Int{
+        val value = TypedValue()
+        itemView.context.theme.resolveAttribute(resId,value,true)
+        assert(value.isColorType)
+        return value.data
     }
 
     fun getString(@StringRes resId: Int): String {

@@ -6,6 +6,8 @@ import com.omg_link.im.R
 
 class SystemMessage(val systemInfo:String): Message("System",System.currentTimeMillis()) {
 
+    override val type: MessageType = MessageType.SYSTEM
+
     override val infoBarVisibility = View.GONE
 
     override fun onDataUpdated(holder: MessagePanelHolder) {

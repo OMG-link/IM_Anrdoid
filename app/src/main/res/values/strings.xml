@@ -48,5 +48,25 @@
     <string name="frame_filemanager_button_refresh">Refresh</string>
     <string name="frame_filemanager_button_clear">Clear All</string>
     <string name="frame_login_core_version">IM Core Version: %1$s</string>
-    <string name="frame_login_apk_version">APK version: %1$s</string>]
+    <string name="frame_login_apk_version">APK version: %1$s</string>
+    <string name="time_morning">Morning</string>
+    <string name="time_noon">Noon</string>
+    <string name="time_afternoon">Afternoon</string>
+    <string name="time_night">Night</string>
+    <string name="time_midnight">Midnight</string>
+    <string name="time_today">%6$d:%7$02d %2$s</string>
+    <string name="time_yesterday">Yesterday %6$d:%7$02d %2$s</string>
+    <string name="time_last_week">%8$s %6$d:%7$02d %2$s</string>
+    <string name="time_this_year">%4$d/%5$d/%3$d %6$d:%7$02d %2$s</string>
+    <string name="time_default">%4$d/%5$d/%3$d %6$d:%7$02d %2$s</string>
+    <string name="time_monday">Monday</string>
+    <string name="time_tuesday">Tuesday</string>
+    <string name="time_wednesday">Wednesday</string>
+    <string name="time_thursday">Thursday</string>
+    <string name="time_friday">Friday</string>
+    <string name="time_saturday">Saturday</string>
+    <string name="time_sunday">Sunday</string>
+    <string name="time_dusk">Afternoon</string>
+    <string name="frame_room_image_download_failed">[Image] Download failed: %1$s</string>
+    <string name="frame_room_image_downloading">[Image] Downloading image.</string>
 </resources>
