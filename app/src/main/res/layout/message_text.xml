@@ -7,8 +7,10 @@
 
     <TextView
         android:id="@+id/chatMessageArea"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bgr_message"
+        android:maxWidth="400sp"
         android:textColor="?attr/colorRoomChatText"
         android:textIsSelectable="true"
         android:textSize="16sp"

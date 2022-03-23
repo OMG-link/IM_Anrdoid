@@ -17,6 +17,7 @@
     <attr format="color" name="colorRoomSystemInfoBgr" />
     <attr format="color" name="colorRoomNewMessageBgr" />
     <attr format="color" name="colorRoomChatTime" />
+    <attr format="color" name="colorRoomMessageBgr" />
 
     <attr format="color" name="colorFileManagerFileName" />
     <attr format="color" name="colorFileManagerFileSize" />

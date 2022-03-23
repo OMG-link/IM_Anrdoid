@@ -25,9 +25,10 @@
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
         <item name="colorRoomInputAreaBgr">@color/white</item>
         <item name="colorRoomInputAreaText">@color/black</item>
-        <item name="colorRoomBgr">@color/white</item>
+        <item name="colorRoomBgr">@color/light_gray_3</item>
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
         <item name="colorRoomChatTime">@color/gray</item>
+        <item name="colorRoomMessageBgr">@color/white</item>
 
         <item name="colorFileManagerFileName">@color/black</item>
         <item name="colorFileManagerFileSize">@color/gray</item>
@@ -62,9 +63,10 @@
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
         <item name="colorRoomInputAreaBgr">@color/white</item>
         <item name="colorRoomInputAreaText">@color/black</item>
-        <item name="colorRoomBgr">@color/white</item>
+        <item name="colorRoomBgr">@color/light_gray_3</item>
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
         <item name="colorRoomChatTime">@color/gray</item>
+        <item name="colorRoomMessageBgr">@color/white</item>
     </style>
 
     <style name="Theme.IM.FileManagerActivity" parent="Theme.MaterialComponents.Light.DarkActionBar">

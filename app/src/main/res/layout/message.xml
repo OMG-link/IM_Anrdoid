@@ -12,7 +12,15 @@
         android:id="@+id/messageInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginVertical="5dp"
         android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3sp"
+            android:text="*"
+            android:textColor="?attr/colorRoomChatInfo" />
 
         <TextView
             android:id="@+id/messageTvUsername"
