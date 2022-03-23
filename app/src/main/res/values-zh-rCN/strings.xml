@@ -17,7 +17,7 @@
     <string name="frame_room_button_image_send">图片</string>
     <string name="frame_room_image_no_permission">未取得文件读取权限，请到设置中更改。</string>
     <string name="frame_room_cannot_resolve_image">[图片] 无法解析图片</string>
-    <string name="frame_room_file_download_progress">正在下载： %1$s (%2$s/%3$s)</string>
+    <string name="frame_room_file_download_progress">下载中： %2$s/%3$s</string>
     <string name="frame_room_file_download_start">正在开始下载</string>
     <string name="frame_room_file_download_succeed">文件 %1$s 已下载完成</string>
     <string name="frame_room_file_download_failed">文件下载失败： %1$s</string>

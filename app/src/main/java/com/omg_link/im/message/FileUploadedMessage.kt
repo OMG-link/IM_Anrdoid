@@ -115,6 +115,7 @@ class FileUploadedMessage(
                 openButton.setOnClickListener {
                     AndroidUtils.openFile(file,activity)
                 }
+                info = ""
                 openButton.visibility = View.VISIBLE
             }
         }

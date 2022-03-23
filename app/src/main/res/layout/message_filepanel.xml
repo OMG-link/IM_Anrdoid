@@ -46,6 +46,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/downloadInfoArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="0"
+            android:textColor="?attr/colorRoomDownloadProgress"
+            android:textSize="16sp"
+            tools:text="Download info" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -74,16 +85,6 @@
                 tools:visibility="visible" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/downloadInfoArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="0"
-            android:textColor="?attr/colorRoomDownloadProgress"
-            android:textSize="16sp"
-            tools:text="Download info" />
     </LinearLayout>
 
 </LinearLayout>
