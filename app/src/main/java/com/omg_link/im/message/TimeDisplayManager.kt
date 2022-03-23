@@ -5,7 +5,7 @@ class TimeDisplayManager(
     private val messageList: ArrayList<Message>
     ) {
 
-    private var lastShowTime = Long.MIN_VALUE
+    private var lastShowTime = 0L
     private var lastShowCount = 0
 
     private fun shouldShowTimeMessage(stamp: Long):Boolean{
