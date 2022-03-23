@@ -9,8 +9,8 @@
     <string name="frame_room_button_chat_send">发送</string>
     <string name="frame_room_input_chat">在此输入消息</string>
     <string name="activity_room_file_not_support">[文件] %1$s(%2$s) \nAndroid版暂不支持文件相关功能</string>
-    <string name="activity_room_version_warning">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。\n您是否要下载其他版本的客户端？</string>
-    <string name="activity_room_version_error">服务端文件版本为%1$s，您的客户端文件版本为%2$s。\n这两个版本相互不兼容。 您是否要下载其他版本的客户端？</string>
+    <string name="activity_room_version_warning">服务端文件版本为"%1$s"，您的客户端文件版本为"%2$s"。\n这两个版本是相互兼容的，您可以继续使用当前客户端访问。\n您是否要下载其他版本的客户端？</string>
+    <string name="activity_room_version_error">服务端文件版本为%1$s，您的客户端文件版本为%2$s。\n这两个版本相互不兼容。\n您是否要下载其他版本的客户端？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="activity_room_image_download_failed">发送了一张图片，但未能成功下载。</string>

@@ -8,7 +8,7 @@
     <string name="frame_room_button_chat_send">SEND</string>
     <string name="frame_room_input_chat">Input your message here</string>
     <string name="activity_room_file_not_support">[File] %1$s(%2$s) \nDownload files in Android is not supported yet.</string>
-    <string name="activity_room_version_warning">The server runs on version "%1$s", while your client runs on version "%2$s".\n Do you want to download new version?</string>
+    <string name="activity_room_version_warning">The server runs on version "%1$s", while your client runs on version "%2$s".\n The two versions are compatible with each other, you may continue use this client.\n Do you want to download new version?</string>
     <string name="activity_room_version_error">The server runs on version %1$s, while your client runs on version %2$s.\n The two versions are not compatible with each other.\n Do you want to download a new version?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
