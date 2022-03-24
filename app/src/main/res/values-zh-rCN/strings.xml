@@ -19,7 +19,7 @@
     <string name="frame_room_cannot_resolve_image">[图片] 无法解析图片</string>
     <string name="frame_room_file_download_progress">下载中： %2$s/%3$s</string>
     <string name="frame_room_file_download_start">正在开始下载</string>
-    <string name="frame_room_file_download_succeed">文件 %1$s 已下载完成</string>
+    <string name="frame_room_file_download_succeed">已下载</string>
     <string name="frame_room_file_download_failed">文件下载失败： %1$s</string>
     <string name="frame_room_button_download">下载</string>
     <string name="frame_room_button_open">打开</string>

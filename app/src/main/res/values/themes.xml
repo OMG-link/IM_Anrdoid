@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.IM" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.IM" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -29,6 +29,7 @@
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
         <item name="colorRoomChatTime">@color/gray</item>
         <item name="colorRoomMessageBgr">@color/white</item>
+        <item name="colorRoomMessageBgrPressed">@color/light_gray_3</item>
 
         <item name="colorFileManagerFileName">@color/black</item>
         <item name="colorFileManagerFileSize">@color/gray</item>
@@ -44,7 +45,7 @@
         <item name="colorLoginVersionInfo">@color/gray</item>
     </style>
 
-    <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -58,15 +59,16 @@
         <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomChatText">@color/black</item>
-        <item name="colorRoomDownloadProgress">@color/dark_gray_3</item>
+        <item name="colorRoomDownloadProgress">?attr/colorRoomDownloadFileSize</item>
         <item name="colorRoomDownloadFileSize">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
         <item name="colorRoomInputAreaBgr">@color/white</item>
         <item name="colorRoomInputAreaText">@color/black</item>
-        <item name="colorRoomBgr">@color/light_gray_3</item>
+        <item name="colorRoomBgr">@color/light_gray_4</item>
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
         <item name="colorRoomChatTime">@color/gray</item>
         <item name="colorRoomMessageBgr">@color/white</item>
+        <item name="colorRoomMessageBgrPressed">@color/light_gray_3</item>
     </style>
 
     <style name="Theme.IM.FileManagerActivity" parent="Theme.MaterialComponents.Light.DarkActionBar">

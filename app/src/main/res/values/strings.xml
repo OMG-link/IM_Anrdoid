@@ -18,7 +18,7 @@
     <string name="frame_room_cannot_resolve_image">[Image] Unable to resolve image.</string>
     <string name="frame_room_file_download_progress">Downloading:  %2$s/%3$s</string>
     <string name="frame_room_file_download_start">Starting to download...</string>
-    <string name="frame_room_file_download_succeed">File %1$s has been downloaded.</string>
+    <string name="frame_room_file_download_succeed">Downloaded</string>
     <string name="frame_room_file_download_failed">File download failed: %1$s</string>
     <string name="frame_room_button_download">DOWNLOAD</string>
     <string name="frame_room_button_open">OPEN</string>

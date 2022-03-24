@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/colorRoomMessageBgr" />
-    <corners android:radius="12sp" />
-    <padding
-        android:left="12sp"
-        android:top="12sp"
-        android:right="12sp"
-        android:bottom="12sp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true"
+        android:drawable="@drawable/bgr_message_pressed" />
+
+    <item
+        android:drawable="@drawable/bgr_message_normal" />
+
+</selector>

@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.tools.AndroidUtils
@@ -90,33 +91,30 @@ class FileUploadedMessage(
     override fun onDataUpdated(holder: MessagePanelHolder) {
         super.onDataUpdated(holder)
         val view = holder.createLayoutFromXML(R.layout.message_filepanel)
+        val bubble = view.findViewById<ConstraintLayout>(R.id.messageBubble)
         view.findViewById<TextView>(R.id.fileNameArea).text = fileName
-        view.findViewById<TextView>(R.id.fileSizeArea).text = "(${FileUtils.sizeToString(fileSize)})"
+        view.findViewById<TextView>(R.id.fileSizeArea).text = FileUtils.sizeToString(fileSize)
         infoAreaHolder = view.findViewById(R.id.downloadInfoArea)
         info = info
         when(panelState){
             FilePanelState.READY -> {
-                val downloadButton = view.findViewById<Button>(R.id.downloadButton)
-                downloadButton.setOnClickListener {
-                    val client = MainActivity.getActiveClient()
-                        ?: return@setOnClickListener
+                bubble.setOnClickListener {
+                    val client = MainActivity.getActiveClient()!!
+                    bubble.setOnClickListener(null)
                     thread {
                         client.downloadFile(fileName, fileId, FileTransferType.ChatFile, this)
                     }
-                    panelState = FilePanelState.DOWNLOADING
+                    onTransferStart()
                 }
-                downloadButton.visibility = View.VISIBLE
             }
             FilePanelState.DOWNLOADING -> {
 
             }
             FilePanelState.DOWNLOADED ->{
-                val openButton = view.findViewById<Button>(R.id.openButton)
-                openButton.setOnClickListener {
+                bubble.setOnClickListener {
                     AndroidUtils.openFile(file,activity)
                 }
-                info = ""
-                openButton.visibility = View.VISIBLE
+                info = holder.getString(R.string.frame_room_file_download_succeed)
             }
         }
         holder.addView(view)

@@ -84,11 +84,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 if(uri==null) return@registerForActivityResult
                 val path = UriUtils.getFileAbsolutePath(this@RoomActivity,uri)
                     ?: return@registerForActivityResult
-                val file = object:File(path){ //name is like 1234name
-                    override fun getName(): String {
-                        return super.getName().substring(4)
-                    }
-                }
+                val file = File(path)
                 if (!file.canRead()) {
                     getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
                     return@registerForActivityResult

@@ -36,15 +36,16 @@
         <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomChatText">@color/light_gray_1</item>
-        <item name="colorRoomDownloadProgress">@color/gray</item>
+        <item name="colorRoomDownloadProgress">?attr/colorRoomDownloadFileSize</item>
         <item name="colorRoomDownloadFileSize">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/dark_gray_2</item>
         <item name="colorRoomInputAreaBgr">@color/black</item>
         <item name="colorRoomInputAreaText">@color/white</item>
-        <item name="colorRoomBgr">@color/dark_gray_3</item>
+        <item name="colorRoomBgr">@color/dark_gray_4</item>
         <item name="colorRoomSystemInfoBgr">@color/dark_gray_2</item>
         <item name="colorRoomChatTime">@color/dark_gray_1</item>
         <item name="colorRoomMessageBgr">@color/black</item>
+        <item name="colorRoomMessageBgrPressed">@color/dark_gray_3</item>
 
     </style>
 

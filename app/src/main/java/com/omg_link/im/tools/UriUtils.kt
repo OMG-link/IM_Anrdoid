@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import im.config.Config
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -240,8 +241,8 @@ object UriUtils {
                 try {
                     val `is` = contentResolver.openInputStream(uri)
                     val cache = File(
-                        context.externalCacheDir!!.absolutePath,
-                        Math.round((Math.random() + 1) * 1000).toString() + displayName
+                        Config.getCacheDir(),
+                        displayName
                     )
                     val fos = FileOutputStream(cache)
                     if (`is` != null) {

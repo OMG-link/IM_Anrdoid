@@ -12,6 +12,7 @@ import com.omg_link.im.tools.AndroidUtils
 import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
 import java.io.File
+import java.util.logging.Level
 
 class ChatImageMessage(username: String, stamp: Long) : Message(username, stamp) {
     enum class State{
