@@ -4,8 +4,11 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
+import java.security.InvalidParameterException
 import java.util.*
+import java.util.logging.Level
 
 class MessageManager(
     val roomActivity: RoomActivity,
@@ -71,8 +74,15 @@ class MessageManager(
             }
         }
         messageRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                this@MessageManager.isRecyclerViewAtBottom = when(newState){
+                    RecyclerView.SCROLL_STATE_IDLE -> !recyclerView.canScrollVertically(1)
+                    RecyclerView.SCROLL_STATE_DRAGGING -> false
+                    RecyclerView.SCROLL_STATE_SETTLING -> false
+                    else -> throw InvalidParameterException()
+                }
+            }
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
                 if(isRecyclerViewAtBottom()){
                     unreadMessageCount = 0
                 }
@@ -137,7 +147,8 @@ class MessageManager(
         }
     }
 
-    private fun isRecyclerViewAtBottom() = !messageRecyclerView.canScrollVertically(1)
+    private var isRecyclerViewAtBottom = true
+    private fun isRecyclerViewAtBottom() = isRecyclerViewAtBottom
 
     fun scrollToBottom() {
         addEvent{

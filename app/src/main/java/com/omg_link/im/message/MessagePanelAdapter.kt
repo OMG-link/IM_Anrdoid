@@ -29,12 +29,18 @@ class MessagePanelAdapter(private val data:List<Message>) : RecyclerView.Adapter
 }
 
 class MessagePanelHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
-    val root = itemView.findViewById<LinearLayout>(R.id.messageRoot)
-    val infoBar = itemView.findViewById<LinearLayout>(R.id.messageInfo)
-    val usernameArea = itemView.findViewById<TextView>(R.id.messageTvUsername)
-    val componentArea = itemView.findViewById<LinearLayout>(R.id.messageComponents)
+    private val root: LinearLayout = itemView.findViewById(R.id.messageRoot)
+    val infoBar: LinearLayout = itemView.findViewById(R.id.messageInfo)
+    val usernameArea: TextView = itemView.findViewById(R.id.messageTvUsername)
+    val componentArea: LinearLayout = itemView.findViewById(R.id.messageComponents)
 
-    private var currentMessage: Message? = null
+    private lateinit var currentMessage: Message
+
+    init {
+        itemView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            currentMessage.messageManager!!.keepBottom()
+        }
+    }
 
     fun setVisibility(state:Int){
         root.visibility = state
@@ -64,7 +70,9 @@ class MessagePanelHolder private constructor(itemView: View) : RecyclerView.View
     }
 
     fun bind(message: Message){
-        currentMessage?.removeHolder()
+        if(this::currentMessage.isInitialized){
+            currentMessage.removeHolder()
+        }
         currentMessage = message
         message.currentHolder = this
     }

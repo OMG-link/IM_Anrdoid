@@ -34,7 +34,6 @@ class ChatImageMessage(username: String, stamp: Long) : Message(username, stamp)
                     ?:return
                 messageManager.roomActivity.runOnUiThread {
                     onDataUpdated()
-                    messageManager.keepBottom()
                 }
             }
 
@@ -45,7 +44,6 @@ class ChatImageMessage(username: String, stamp: Long) : Message(username, stamp)
                     ?:return
                 messageManager.roomActivity.runOnUiThread {
                     onDataUpdated()
-                    messageManager.keepBottom()
                 }
             }
 

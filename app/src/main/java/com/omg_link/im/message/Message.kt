@@ -2,8 +2,10 @@ package com.omg_link.im.message
 
 import android.os.Looper
 import android.view.View
+import com.omg_link.im.MainActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.logging.Level
 
 abstract class Message(val username:String,val stamp:Long){
 
