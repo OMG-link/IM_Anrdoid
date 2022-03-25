@@ -20,7 +20,6 @@ import im.gui.IFileTransferringPanel
 import im.gui.IRoomFrame
 import im.protocol.data_pack.file_transfer.FileTransferType
 import im.protocol.data_pack.system.ConnectResultPack
-import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
 import im.user_manager.User
 import mutils.IStringGetter
@@ -267,7 +266,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun showTextMessage(sender: String, stamp: Long, text: String) {
-        messageManager.insertMessage(TextMessage(sender, stamp, text))
+        messageManager.insertMessage(ChatTextMessage(sender, stamp, text))
 
     }
 
@@ -288,7 +287,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileName: String,
         fileSize: Long
     ) {
-        messageManager.insertMessage(FileUploadedMessage(
+        messageManager.insertMessage(ChatFileMessage(
             sender,stamp,
             this,fileName,fileSize, fileId
         ))
@@ -306,7 +305,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileNameGetter: IStringGetter,
         fileSize: Long
     ): IFileTransferringPanel {
-        val message = FileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
+        val message = ChatFileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
         messageManager.insertMessage(message)
         return message
     }

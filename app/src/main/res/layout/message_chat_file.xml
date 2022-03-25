@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/messageBubble"
+        android:id="@+id/layoutMessageChatFileBubble"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bgr_message"
@@ -18,7 +18,7 @@
         app:layout_constraintWidth_percent="0.8">
 
         <TextView
-            android:id="@+id/fileNameArea"
+            android:id="@+id/tvMessageChatFileFileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4sp"
@@ -35,7 +35,7 @@
             tools:text="A Very Very Very Very Very Very Long FIle Name" />
 
         <TextView
-            android:id="@+id/fileSizeArea"
+            android:id="@+id/tvMessageChatFileFileSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4sp"
@@ -43,11 +43,11 @@
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fileNameArea"
+            app:layout_constraintTop_toBottomOf="@+id/tvMessageChatFileFileName"
             tools:text="1000.00MB" />
 
         <TextView
-            android:id="@+id/downloadInfoArea"
+            android:id="@+id/tvMessageChatFileDownloadInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4sp"
@@ -55,8 +55,8 @@
             android:layout_marginTop="4dp"
             android:textColor="?attr/colorRoomDownloadProgress"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/fileSizeArea"
-            app:layout_constraintTop_toBottomOf="@+id/fileNameArea"
+            app:layout_constraintStart_toEndOf="@+id/tvMessageChatFileFileSize"
+            app:layout_constraintTop_toBottomOf="@+id/tvMessageChatFileFileName"
             tools:text="Download info" />
 
 

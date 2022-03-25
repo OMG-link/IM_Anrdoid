@@ -1,30 +1,20 @@
 package com.omg_link.im.message
 
+import android.content.Context
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import com.omg_link.im.MainActivity
 import com.omg_link.im.R
+import com.omg_link.im.tools.ViewUtils
 import java.security.InvalidParameterException
 import java.util.*
-import java.util.logging.Level
 
-class TimeMessage(stamp: Long) : Message("System", stamp) {
-
-    override val type: MessageType = MessageType.SYSTEM
-
-    override val infoBarVisibility = View.GONE
-
-    override fun onDataUpdated(holder: MessagePanelHolder) {
-        super.onDataUpdated(holder)
-
-        val view = holder.createLayoutFromXML(R.layout.message_time)
-        view.findViewById<TextView>(R.id.tvTime).text = stampToString(holder, stamp)
-        holder.addView(view)
-
-    }
+class TimeMessage(stamp: Long) : Message(stamp) {
+    override val isUserMessage = false
+    override val type = Type.TIME
 
     companion object {
-        fun stampToString(holder: MessagePanelHolder, targetStamp: Long): String {
+        fun stampToString(holder: TimeMessageHolder, targetStamp: Long): String {
             val currentStamp = System.currentTimeMillis()
 
             val currentDate = Calendar.getInstance()
@@ -75,7 +65,7 @@ class TimeMessage(stamp: Long) : Message("System", stamp) {
                 //Year
                 targetDate.get(Calendar.YEAR),
                 //Month
-                targetDate.get(Calendar.MONTH)+1,
+                targetDate.get(Calendar.MONTH) + 1,
                 //Day
                 targetDate.get(Calendar.DAY_OF_MONTH),
                 //Hour
@@ -109,6 +99,26 @@ class TimeMessage(stamp: Long) : Message("System", stamp) {
             return dayEnd - dayBegin;
         }
 
+    }
+
+}
+
+class TimeMessageHolder(itemView: View) : MessageHolder(itemView) {
+
+    constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
+
+    private val tvTime: TextView = itemView.findViewById(R.id.tvMessageTime)
+
+    fun bind(timeMessage: TimeMessage) {
+        super.bind(timeMessage as Message)
+        tvTime.text = TimeMessage.stampToString(this, timeMessage.stamp)
+    }
+
+    companion object {
+        fun createView(context: Context, parent: ViewGroup): View {
+            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_time)
+            return MessageHolder.createView(context, parent, listOf(view))
+        }
     }
 
 }

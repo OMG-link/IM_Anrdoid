@@ -1,40 +1,47 @@
 package com.omg_link.im.message
 
-import android.app.Activity
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
-import com.omg_link.im.RoomActivity
 import com.omg_link.im.tools.AndroidUtils
+import com.omg_link.im.tools.ViewUtils
 import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
 import java.io.File
-import java.util.logging.Level
 
-class ChatImageMessage(username: String, stamp: Long) : Message(username, stamp) {
-    enum class State{
-        Downloading,DownloadFailed,Downloaded
+class ChatImageMessage(username: String, stamp: Long) : ChatMessage(username, stamp),
+    ISelfUpdatable<ChatImageMessageHolder> {
+
+    override val type = Type.IMAGE
+
+    // State
+
+    enum class State {
+        Downloading, DownloadFailed, Downloaded
     }
 
     var state: State = State.Downloading
 
-    override val type: MessageType = MessageType.CHAT
-
     lateinit var imagePath: String
     lateinit var failReason: String
 
-    fun getDownloadCallback():IDownloadCallback{
-        return object : IDownloadCallback{
+    // Downloading
+
+    fun getDownloadCallback(): IDownloadCallback {
+        return object : IDownloadCallback {
             override fun onSucceed(task: ClientFileReceiveTask) {
                 state = State.Downloaded
-                imagePath = MainActivity.getActiveClient()!!.fileManager.openFile(task.receiverFileId).file.absolutePath
+                imagePath =
+                    MainActivity.getActiveClient()!!.fileManager.openFile(task.receiverFileId).file.absolutePath
                 val messageManager = this@ChatImageMessage.messageManager
-                    ?:return
+                    ?: return
                 messageManager.roomActivity.runOnUiThread {
-                    onDataUpdated()
+                    updateData()
                 }
             }
 
@@ -42,61 +49,102 @@ class ChatImageMessage(username: String, stamp: Long) : Message(username, stamp)
                 state = State.DownloadFailed
                 failReason = reason
                 val messageManager = this@ChatImageMessage.messageManager
-                    ?:return
+                    ?: return
                 messageManager.roomActivity.runOnUiThread {
-                    onDataUpdated()
+                    updateData()
                 }
             }
 
         }
     }
 
-    override fun onDataUpdated(holder: MessagePanelHolder) {
-        super.onDataUpdated(holder)
-        val view = holder.createLayoutFromXML(R.layout.message_chatimage)
-        val textView = view.findViewById<TextView>(R.id.errorInfoArea)
-        val imageView = view.findViewById<ImageView>(R.id.chatImageArea)
-        when(state){
+    // Holder
+
+    var chatImageMessageHolder: ChatImageMessageHolder? = null
+
+    override fun removeHolder() {
+        chatImageMessageHolder = null
+    }
+
+    override fun setHolder(holder: ChatImageMessageHolder) {
+        chatImageMessageHolder = holder
+        updateData()
+    }
+
+    private fun updateData() {
+        chatImageMessageHolder?.let { updateData(it) }
+    }
+
+    private fun updateData(holder: ChatImageMessageHolder) {
+        val tvErrorInfo = holder.tvErrorInfo
+        val ivImage = holder.ivImage
+        when (state) {
             State.Downloading -> {
-                textView.setTextColor(holder.getAttrColor(R.attr.colorRoomChatText))
-                textView.text = String.format(
+                tvErrorInfo.setTextColor(holder.getAttrColor(R.attr.colorRoomChatText))
+                tvErrorInfo.text = String.format(
                     holder.getString(R.string.frame_room_image_downloading)
                 )
-                textView.visibility = View.VISIBLE
-                imageView.visibility = View.GONE
+                tvErrorInfo.visibility = View.VISIBLE
+                ivImage.visibility = View.GONE
             }
             State.DownloadFailed -> {
-                textView.setTextColor(holder.getColor(R.color.red))
-                textView.text = String.format(
+                tvErrorInfo.setTextColor(holder.getColor(R.color.red))
+                tvErrorInfo.text = String.format(
                     holder.getString(R.string.frame_room_image_download_failed),
                     failReason
                 )
-                textView.visibility = View.VISIBLE
-                imageView.visibility = View.GONE
+                tvErrorInfo.visibility = View.VISIBLE
+                ivImage.visibility = View.GONE
             }
             State.Downloaded -> {
                 val bitmap = BitmapFactory.decodeFile(imagePath)
                 if (bitmap == null) {
-                    textView.setTextColor(holder.getColor(R.color.red))
-                    textView.text = holder.getString(R.string.frame_room_cannot_resolve_image)
-                    textView.visibility = View.VISIBLE
-                    imageView.visibility = View.GONE
+                    tvErrorInfo.setTextColor(holder.getColor(R.color.red))
+                    tvErrorInfo.text = holder.getString(R.string.frame_room_cannot_resolve_image)
+                    tvErrorInfo.visibility = View.VISIBLE
+                    ivImage.visibility = View.GONE
                 } else {
-                    imageView.maxHeight = 400
-                    imageView.setImageBitmap(bitmap)
-                    imageView.adjustViewBounds =
-                        (bitmap.width > imageView.maxWidth || bitmap.height > imageView.maxHeight)
-                    imageView.scaleType = ImageView.ScaleType.FIT_START
-                    imageView.setOnLongClickListener {
-                        AndroidUtils.openFile(File(imagePath),holder.itemView.context,"image/*")
+                    ivImage.maxHeight = 400
+                    ivImage.setImageBitmap(bitmap)
+                    ivImage.adjustViewBounds =
+                        (bitmap.width > ivImage.maxWidth || bitmap.height > ivImage.maxHeight)
+                    ivImage.scaleType = ImageView.ScaleType.FIT_START
+                    ivImage.setOnLongClickListener {
+                        AndroidUtils.openFile(File(imagePath), holder.itemView.context, "image/*")
                         return@setOnLongClickListener true
                     }
-                    textView.visibility = View.GONE
-                    imageView.visibility = View.VISIBLE
+                    tvErrorInfo.visibility = View.GONE
+                    ivImage.visibility = View.VISIBLE
                 }
             }
         }
-        holder.addView(view)
+    }
+
+}
+
+class ChatImageMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
+
+    constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
+
+    val tvErrorInfo: TextView = itemView.findViewById(R.id.tvErrorInfo)
+    val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
+
+    private lateinit var chatImageMessage: ChatImageMessage
+
+    fun bind(chatImageMessage: ChatImageMessage) {
+        super.bind(chatImageMessage as ChatMessage)
+        if (this::chatImageMessage.isInitialized) {
+            this.chatImageMessage.removeHolder()
+        }
+        this.chatImageMessage = chatImageMessage
+        this.chatImageMessage.setHolder(this)
+    }
+
+    companion object {
+        fun createView(context: Context, parent: ViewGroup): View {
+            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_image)
+            return ChatMessageHolder.createView(context, parent, listOf(view))
+        }
     }
 
 }

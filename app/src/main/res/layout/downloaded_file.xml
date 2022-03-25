@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvFileName"
+            android:id="@+id/tvDownloadedFileFileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
@@ -25,7 +25,7 @@
             tools:text="A Very Very Very Very Very Very Long FIleName.txt" />
 
         <TextView
-            android:id="@+id/tvFileSize"
+            android:id="@+id/tvDownloadedFileFileSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"

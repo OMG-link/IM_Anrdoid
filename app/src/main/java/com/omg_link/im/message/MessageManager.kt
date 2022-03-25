@@ -4,11 +4,9 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
 import java.security.InvalidParameterException
 import java.util.*
-import java.util.logging.Level
 
 class MessageManager(
     val roomActivity: RoomActivity,
@@ -59,7 +57,7 @@ class MessageManager(
     }
     private val timeDisplayManager = TimeDisplayManager(this,messageList)
 
-    private val adapter: MessagePanelAdapter = MessagePanelAdapter(messageList)
+    private val adapter: MessageAdapter = MessageAdapter(messageList)
 
     init {
         messageRecyclerView.layoutManager = LinearLayoutManager(roomActivity)
@@ -97,7 +95,7 @@ class MessageManager(
 
     fun insertMessage(message: Message) {
         addEvent {
-            if(message.type==Message.MessageType.CHAT){
+            if(message.isUserMessage){
                 timeDisplayManager.onMessageInsert(message)
             }
             insertMessageRaw(message)
@@ -135,7 +133,7 @@ class MessageManager(
         if (isRecyclerViewAtBottom()){
             keepBottom()
         }else{
-            if(message.type==Message.MessageType.CHAT){
+            if(message.isUserMessage){
                 unreadMessageCount++
             }
         }

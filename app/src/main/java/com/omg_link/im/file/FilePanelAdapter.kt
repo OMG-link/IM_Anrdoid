@@ -25,8 +25,8 @@ class FilePanelAdapter(private val data:List<DownloadedFile>):RecyclerView.Adapt
 }
 
 class FilePanelHolder private constructor(itemView: View):RecyclerView.ViewHolder(itemView){
-    val tvFileName = itemView.findViewById<TextView>(R.id.tvFileName)
-    val tvFileSize = itemView.findViewById<TextView>(R.id.tvFileSize)
+    val tvFileName = itemView.findViewById<TextView>(R.id.tvDownloadedFileFileName)
+    val tvFileSize = itemView.findViewById<TextView>(R.id.tvDownloadedFileFileSize)
     val btnOpen = itemView.findViewById<Button>(R.id.btnOpen)
     val btnDelete = itemView.findViewById<Button>(R.id.btnDelete)
 
@@ -38,7 +38,7 @@ class FilePanelHolder private constructor(itemView: View):RecyclerView.ViewHolde
         fun from(parent: ViewGroup):FilePanelHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val root = layoutInflater.inflate(
-                R.layout.file,
+                R.layout.downloaded_file,
                 parent,false
             )
             return FilePanelHolder(root)
