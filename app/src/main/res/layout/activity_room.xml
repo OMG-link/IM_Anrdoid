@@ -6,6 +6,24 @@
     android:layout_height="fill_parent"
     android:background="?attr/colorRoomBgr">
 
+    <Button
+        android:id="@+id/buttonRoomToBottom"
+        android:layout_width="32sp"
+        android:layout_height="32sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bgr_newmessage"
+        android:ellipsize="none"
+        android:padding="0dp"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/messageRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="TouchTargetSizeCheck"
+        tools:text="99+"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
         android:layout_width="0dp"
@@ -25,7 +43,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtonBar">
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtonBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <EditText
             android:id="@+id/roomChatInputArea"
@@ -55,6 +75,7 @@
             android:layout_marginBottom="3dp"
             android:enabled="false"
             android:text="@string/frame_room_button_chat_send"
+            android:textSize="14sp"
             tools:enabled="true" />
 
     </LinearLayout>
@@ -65,7 +86,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/buttonRoomImageSend"
@@ -88,23 +111,5 @@
             android:text="@string/frame_room_button_file_send" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonRoomToBottom"
-        android:layout_width="32sp"
-        android:layout_height="32sp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/bgr_newmessage"
-        android:ellipsize="none"
-        android:padding="0dp"
-        android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/messageRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="TouchTargetSizeCheck"
-        tools:text="99+"
-        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

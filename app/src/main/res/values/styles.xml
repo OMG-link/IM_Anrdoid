@@ -2,7 +2,11 @@
 <resources>
     <style name="Theme.IM.QQButton">
         <item name="android:background">@drawable/send_button</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">16sp</item>
+        <item name="android:paddingRight">16sp</item>
+        <item name="android:paddingTop">8sp</item>
+        <item name="android:paddingBottom">8sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
