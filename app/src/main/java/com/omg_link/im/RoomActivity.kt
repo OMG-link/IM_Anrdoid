@@ -190,7 +190,6 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         // emojiSendButton
         findViewById<Button>(R.id.buttonRoomEmojiSend).setOnClickListener {
             inputManager.state = InputManager.State.Emoji
-            client.showInfo("Developing...")
         }
 
         // messageArea
