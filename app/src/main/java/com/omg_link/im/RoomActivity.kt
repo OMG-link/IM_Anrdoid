@@ -1,18 +1,25 @@
 package com.omg_link.im
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
+import androidx.recyclerview.widget.RecyclerView
+import com.omg_link.im.emoji.EmojiManager
 import com.omg_link.im.message.*
 import com.omg_link.im.tools.AndroidUtils
+import com.omg_link.im.tools.InputMethodUtils
 import com.omg_link.im.tools.UriUtils
 import im.Client
 import im.config.Config
@@ -26,6 +33,7 @@ import mutils.IStringGetter
 import mutils.ImageType
 import java.io.File
 import java.util.*
+import java.util.logging.Level
 import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
@@ -35,11 +43,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fun onFailed()
     }
 
-    private val client: Client
+    val client: Client
 
+    private lateinit var inputManager: InputManager
     private lateinit var messageManager: MessageManager
-    private lateinit var textInputArea: EditText
+    private lateinit var emojiManager: EmojiManager
+
+    lateinit var textInputArea: EditText
     private lateinit var roomChatSendButton: Button
+    private lateinit var buttonBar: LinearLayout
 
     private lateinit var getImageActivity: ActivityResultLauncher<String>
     private lateinit var getFileActivity: ActivityResultLauncher<String>
@@ -54,7 +66,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         if (activeClient != null) {
             client = activeClient
         } else {
-            throw RuntimeException("Failed to initialize connect activity: main client not found!")
+            throw RuntimeException("Failed to initialize connect roomActivity: main client not found!")
         }
     }
 
@@ -112,6 +124,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
@@ -120,11 +133,36 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         messageManager = MessageManager(
             this,
-            findViewById(R.id.messageRecyclerView),
+            findViewById(R.id.rvMessageArea),
             findViewById(R.id.buttonRoomToBottom)
         )
-        textInputArea = findViewById(R.id.roomChatInputArea)
+        inputManager = InputManager(
+            this
+        )
+        emojiManager = EmojiManager(
+            this,
+            findViewById(R.id.rvEmojiArea)
+        )
 
+        // textInputArea
+        textInputArea = findViewById(R.id.roomChatInputArea)
+        textInputArea.addTextChangedListener(object:TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                updateChatSendButtonState()
+            }
+        })
+        textInputArea.setOnFocusChangeListener { _, hasFocus ->
+            if(hasFocus){
+                inputManager.state = InputManager.State.Text
+            }
+        }
+        textInputArea.setOnClickListener {
+            inputManager.state = InputManager.State.Text
+        }
+
+        // chatSendButton
         roomChatSendButton = findViewById(R.id.buttonRoomChatSend)
         roomChatSendButton.setOnClickListener {
             val tempString = textInputArea.text.toString()
@@ -133,20 +171,32 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 client.sendChat(tempString)
             }
         }
-        textInputArea.addTextChangedListener(object:TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                updateChatSendButtonState()
-            }
-        })
 
+        // buttonBar
+        buttonBar = findViewById(R.id.linearLayoutButtonBar)
+
+        // imageSendButton
         findViewById<Button>(R.id.buttonRoomImageSend).setOnClickListener {
-            selectImageToSend()
+            inputManager.state = InputManager.State.Image
         }
 
+        // fileSendButton
         findViewById<Button>(R.id.buttonRoomFileSend).setOnClickListener {
-            selectFileToSend()
+            inputManager.state = InputManager.State.File
+        }
+
+        // emojiSendButton
+        findViewById<Button>(R.id.buttonRoomEmojiSend).setOnClickListener {
+            inputManager.state = InputManager.State.Emoji
+            client.showInfo("Developing...")
+        }
+
+        // messageArea
+        findViewById<RecyclerView>(R.id.rvMessageArea).setOnTouchListener { _, event ->
+            if(event.action==MotionEvent.ACTION_DOWN){
+                inputManager.state = InputManager.State.None
+            }
+            return@setOnTouchListener false
         }
 
         registerActivities()
@@ -162,7 +212,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         roomChatSendButton.isEnabled = (textInputArea.text.isNotEmpty()&&isConnectionBuilt)
     }
 
-    private fun selectFileToSend() {
+    fun selectFileToSend() {
         if (!AndroidUtils.hasPermission(
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -184,7 +234,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         getFileActivity.launch("*/*")
     }
 
-    private fun selectImageToSend() {
+    fun selectImageToSend() {
         if (!AndroidUtils.hasPermission(
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -232,8 +282,9 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         messageManager.clearMessageArea()
         runOnUiThread {
             updateChatSendButtonState()
-            findViewById<Button>(R.id.buttonRoomImageSend).isEnabled = true
-            findViewById<Button>(R.id.buttonRoomFileSend).isEnabled = true
+            buttonBar.forEach {
+                it.isEnabled = true
+            }
             textInputArea.isEnabled = true;
             if(!isTextInputAreaCleared){
                 textInputArea.setText("")
@@ -247,8 +298,9 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         showSystemMessage(resources.getString(R.string.frame_room_disconnected))
         runOnUiThread {
             updateChatSendButtonState()
-            findViewById<Button>(R.id.buttonRoomImageSend).isEnabled = false
-            findViewById<Button>(R.id.buttonRoomFileSend).isEnabled = false
+            buttonBar.forEach {
+                it.isEnabled = false
+            }
             textInputArea.isEnabled = false;
         }
     }

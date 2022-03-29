@@ -22,7 +22,7 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
         if (activeClient != null) {
             client = activeClient
         } else {
-            throw RuntimeException("Failed to initialize connect activity: main client not found!")
+            throw RuntimeException("Failed to initialize connect roomActivity: main client not found!")
         }
     }
 

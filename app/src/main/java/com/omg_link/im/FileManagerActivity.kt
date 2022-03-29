@@ -23,7 +23,7 @@ class FileManagerActivity : AppCompatActivity() {
         if (client != null) {
             this.client = client
         } else {
-            throw RuntimeException("Failed to initialize connect activity: main client not found!")
+            throw RuntimeException("Failed to initialize connect roomActivity: main client not found!")
         }
     }
 

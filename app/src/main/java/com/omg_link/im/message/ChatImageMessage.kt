@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.tools.AndroidUtils
+import com.omg_link.im.tools.BitmapUtils
 import com.omg_link.im.tools.ViewUtils
 import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
@@ -97,17 +98,20 @@ class ChatImageMessage(username: String, stamp: Long) : ChatMessage(username, st
                 ivImage.visibility = View.GONE
             }
             State.Downloaded -> {
-                val bitmap = BitmapFactory.decodeFile(imagePath)
+                val bitmap = BitmapUtils.getBitmap(imagePath)
                 if (bitmap == null) {
                     tvErrorInfo.setTextColor(holder.getColor(R.color.red))
                     tvErrorInfo.text = holder.getString(R.string.frame_room_cannot_resolve_image)
                     tvErrorInfo.visibility = View.VISIBLE
                     ivImage.visibility = View.GONE
                 } else {
-                    ivImage.maxHeight = 400
+                    ivImage.maxHeight = if(bitmap.height<150){
+                        bitmap.height * 2
+                    }else{
+                        300
+                    }
                     ivImage.setImageBitmap(bitmap)
-                    ivImage.adjustViewBounds =
-                        (bitmap.width > ivImage.maxWidth || bitmap.height > ivImage.maxHeight)
+                    ivImage.adjustViewBounds = true
                     ivImage.scaleType = ImageView.ScaleType.FIT_START
                     ivImage.setOnLongClickListener {
                         AndroidUtils.openFile(File(imagePath), holder.itemView.context, "image/*")

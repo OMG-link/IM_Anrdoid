@@ -18,18 +18,22 @@
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/messageRecyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/rvMessageArea"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="TouchTargetSizeCheck"
         tools:text="99+"
         tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messageRecyclerView"
+        android:id="@+id/rvMessageArea"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutChatInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,9 +90,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rvEmojiArea"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/buttonRoomEmojiSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:insetLeft="3dp"
+            android:insetRight="3dp"
+            android:text="@string/frame_room_button_emoji_send" />
 
         <Button
             android:id="@+id/buttonRoomImageSend"
@@ -111,5 +124,17 @@
             android:text="@string/frame_room_button_file_send" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEmojiArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorRoomInputAreaBgr"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="240sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
