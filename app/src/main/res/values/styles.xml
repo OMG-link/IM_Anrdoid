@@ -15,11 +15,11 @@
         <item name="android:background">?attr/colorPrimary</item>
     </style>
     <style name="Theme.IM.PopupGrid">
-        <item name="android:padding">14sp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:padding">12sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">?attr/colorRoomPopupText</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:minWidth">70sp</item>
+        <item name="android:minWidth">60sp</item>
         <item name="android:clickable">true</item>
     </style>
 </resources>

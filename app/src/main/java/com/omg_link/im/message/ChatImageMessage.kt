@@ -109,8 +109,8 @@ class ChatImageMessage(val roomActivity: RoomActivity,username: String, stamp: L
                     tvErrorInfo.visibility = View.VISIBLE
                     ivImage.visibility = View.GONE
                 } else {
-                    ivImage.layoutParams.height = if (bitmap.height < 150) {
-                        bitmap.height * 2
+                    ivImage.layoutParams.height = if (bitmap.height < 100) {
+                        bitmap.height * 3
                     } else {
                         300
                     }

@@ -5,7 +5,7 @@
     android:id="@+id/layoutEmoji"
     android:layout_width="match_parent"
     android:layout_height="80sp"
-    android:padding="5sp">
+    android:padding="10sp">
 
     <ImageView
         android:id="@+id/ivEmoji"
