@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.ContextMenu
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -47,7 +49,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     private lateinit var inputManager: InputManager
     private lateinit var messageManager: MessageManager
-    private lateinit var emojiManager: EmojiManager
+    lateinit var emojiManager: EmojiManager
 
     lateinit var textInputArea: EditText
     private lateinit var roomChatSendButton: Button
@@ -327,7 +329,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         stamp: Long,
         serverFileId: UUID
     ): IDownloadCallback {
-        val message = ChatImageMessage(sender,stamp)
+        val message = ChatImageMessage(this,sender,stamp)
         messageManager.insertMessage(message)
         return message.getDownloadCallback()
     }

@@ -1,13 +1,17 @@
 package com.omg_link.im.message
 
 import android.content.Context
-import android.graphics.BitmapFactory
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.omg_link.im.MainActivity
 import com.omg_link.im.R
+import com.omg_link.im.RoomActivity
 import com.omg_link.im.tools.AndroidUtils
 import com.omg_link.im.tools.BitmapUtils
 import com.omg_link.im.tools.ViewUtils
@@ -15,7 +19,7 @@ import im.protocol.fileTransfer.ClientFileReceiveTask
 import im.protocol.fileTransfer.IDownloadCallback
 import java.io.File
 
-class ChatImageMessage(username: String, stamp: Long) : ChatMessage(username, stamp),
+class ChatImageMessage(val roomActivity: RoomActivity,username: String, stamp: Long) : ChatMessage(username, stamp),
     ISelfUpdatable<ChatImageMessageHolder> {
 
     override val type = Type.IMAGE
@@ -105,16 +109,19 @@ class ChatImageMessage(username: String, stamp: Long) : ChatMessage(username, st
                     tvErrorInfo.visibility = View.VISIBLE
                     ivImage.visibility = View.GONE
                 } else {
-                    ivImage.maxHeight = if(bitmap.height<150){
+                    ivImage.layoutParams.height = if (bitmap.height < 150) {
                         bitmap.height * 2
-                    }else{
+                    } else {
                         300
                     }
                     ivImage.setImageBitmap(bitmap)
                     ivImage.adjustViewBounds = true
                     ivImage.scaleType = ImageView.ScaleType.FIT_START
+                    ivImage.setOnClickListener {
+                        openImage(ivImage.context)
+                    }
                     ivImage.setOnLongClickListener {
-                        AndroidUtils.openFile(File(imagePath), holder.itemView.context, "image/*")
+                        showPopupWindow(ivImage)
                         return@setOnLongClickListener true
                     }
                     tvErrorInfo.visibility = View.GONE
@@ -122,6 +129,60 @@ class ChatImageMessage(username: String, stamp: Long) : ChatMessage(username, st
                 }
             }
         }
+    }
+
+    private fun openImage(context: Context){
+        AndroidUtils.openFile(File(imagePath), context, "image/*")
+    }
+
+    private fun showPopupWindow(anchor: View) {
+        //Create content
+        val content =
+            ViewUtils.createLayoutFromXML(
+                anchor.context,
+                null,
+                R.layout.popup_chat_image
+            )
+        content.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+
+        //Create popup window
+        val context = anchor.context
+        val popupWindow = PopupWindow(context)
+        popupWindow.height = WindowManager.LayoutParams.WRAP_CONTENT
+        popupWindow.width = WindowManager.LayoutParams.WRAP_CONTENT
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isTouchable = true
+        popupWindow.isFocusable = true
+        popupWindow.setBackgroundDrawable(
+            ResourcesCompat.getDrawable(
+                context.resources,
+                R.drawable.bgr_popup,
+                context.theme
+            )
+        )
+        popupWindow.contentView = content
+
+        //Configure buttons
+        content.findViewById<TextView>(R.id.tvPopupChatImageBtnOpen).setOnClickListener {
+            openImage(context)
+            popupWindow.dismiss()
+        }
+        content.findViewById<TextView>(R.id.tvPopupChatImageBtnSave).setOnClickListener {
+            roomActivity.emojiManager.addEmoji(roomActivity.client.fileManager.openFile(File(imagePath)))
+            roomActivity.client.showInfo(roomActivity.resources.getString(R.string.frame_room_emoji_added))
+            popupWindow.dismiss()
+        }
+
+        //Show it
+        val margin = 20
+        val pos = IntArray(2)
+        anchor.getLocationOnScreen(pos)
+        var showPosY = pos[1] - content.measuredHeight - margin
+        if (showPosY < 0) {
+            showPosY = pos[1] + anchor.measuredHeight + margin
+        }
+        popupWindow.showAtLocation(anchor, Gravity.START or Gravity.TOP, pos[0], showPosY)
+
     }
 
 }

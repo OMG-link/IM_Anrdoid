@@ -70,4 +70,7 @@
     <string name="frame_room_image_download_failed">[Image] Download failed: %1$s</string>
     <string name="frame_room_image_downloading">[Image] Downloading image.</string>
     <string name="frame_room_button_emoji_send">Emoji</string>
+    <string name="popup_chat_image_open">Open</string>
+    <string name="popup_chat_image_favorite">Add to favorite</string>
+    <string name="frame_room_emoji_added">Emoji saved!</string>
 </resources>

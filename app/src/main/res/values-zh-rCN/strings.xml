@@ -71,4 +71,7 @@
     <string name="frame_room_image_download_failed">[图片] 图片下载失败： %1$s</string>
     <string name="frame_room_image_downloading">[图片] 下载中</string>
     <string name="frame_room_button_emoji_send">表情</string>
+    <string name="popup_chat_image_open">查看</string>
+    <string name="popup_chat_image_favorite">加表情</string>
+    <string name="frame_room_emoji_added">已添加</string>
 </resources>

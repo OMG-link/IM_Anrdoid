@@ -4,9 +4,11 @@ import android.view.View
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.omg_link.im.MainActivity
 import com.omg_link.im.RoomActivity
 import java.security.InvalidParameterException
 import java.util.*
+import java.util.logging.Level
 
 class MessageManager(
     val roomActivity: RoomActivity,
@@ -18,6 +20,7 @@ class MessageManager(
 
     private var unreadMessageCount: Int = 0
     set(value) {
+        if(field==value) return
         field = value
         addEvent{
             if(value==0){
@@ -79,11 +82,10 @@ class MessageManager(
                     RecyclerView.SCROLL_STATE_SETTLING -> false
                     else -> throw InvalidParameterException()
                 }
-            }
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(isRecyclerViewAtBottom()){
-                    unreadMessageCount = 0
-                }
+                MainActivity.getActiveClient()!!.logger.log(
+                    Level.INFO,
+                    this@MessageManager.isRecyclerViewAtBottom.toString()
+                )
             }
         })
 
@@ -130,7 +132,7 @@ class MessageManager(
     }
 
     private fun onMessageInserted(message: Message) {
-        if (isRecyclerViewAtBottom()){
+        if (isRecyclerViewAtBottom){
             keepBottom()
         }else{
             if(message.isUserMessage){
@@ -140,17 +142,23 @@ class MessageManager(
     }
 
     fun keepBottom(){
-        if(isRecyclerViewAtBottom()){
+        if(isRecyclerViewAtBottom){
             scrollToBottom()
         }
     }
 
     private var isRecyclerViewAtBottom = true
-    private fun isRecyclerViewAtBottom() = isRecyclerViewAtBottom
+    set(value) {
+        field = value
+        if(value){
+            unreadMessageCount = 0
+        }
+    }
 
     fun scrollToBottom() {
         addEvent{
             messageRecyclerView.scrollToPosition(messageList.size - 1)
+            isRecyclerViewAtBottom = true
         }
     }
 

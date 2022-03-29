@@ -37,6 +37,15 @@ class MainActivity : AppCompatActivity() {
             activityStack.pop()
         }
 
+        fun getRoomActivity():RoomActivity?{
+            val topActivity = activityStack.peek()
+            return if(topActivity is RoomActivity){
+                topActivity
+            }else{
+                null
+            }
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

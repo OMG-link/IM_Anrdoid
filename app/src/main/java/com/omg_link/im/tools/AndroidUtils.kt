@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.omg_link.im.R
 import java.io.File
@@ -59,6 +57,26 @@ object AndroidUtils {
 
     fun getApkVersion(context: Context):String {
         return context.packageManager.getPackageInfo(context.packageName,0).versionName
+    }
+
+    fun px2dip(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
+    }
+
+    fun dip2px(context: Context, dipValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dipValue * scale + 0.5f).toInt()
+    }
+
+    fun px2sp(context: Context, pxValue: Float): Int {
+        val fontScale = context.resources.displayMetrics.scaledDensity
+        return (pxValue / fontScale + 0.5f).toInt()
+    }
+
+    fun sp2px(context: Context, spValue: Float): Int {
+        val fontScale = context.resources.displayMetrics.scaledDensity
+        return (spValue * fontScale + 0.5f).toInt()
     }
 
 }

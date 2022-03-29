@@ -239,18 +239,18 @@ object UriUtils {
                 val displayName =
                     cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                 try {
-                    val `is` = contentResolver.openInputStream(uri)
+                    val inputStream = contentResolver.openInputStream(uri)
                     val cache = File(
                         Config.getCacheDir(),
                         displayName
                     )
-                    val fos = FileOutputStream(cache)
-                    if (`is` != null) {
-                        FileUtils.copy(`is`, fos)
+                    val outputStream = FileOutputStream(cache)
+                    if (inputStream != null) {
+                        FileUtils.copy(inputStream, outputStream)
+                        inputStream.close()
                     }
                     file = cache
-                    fos.close()
-                    `is`!!.close()
+                    outputStream.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

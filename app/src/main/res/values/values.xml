@@ -19,6 +19,9 @@
     <attr format="color" name="colorRoomChatTime" />
     <attr format="color" name="colorRoomMessageBgr" />
     <attr format="color" name="colorRoomMessageBgrPressed" />
+    <attr format="color" name="colorRoomPopupBgr" />
+    <attr format="color" name="colorRoomPopupBgrPressed" />
+    <attr format="color" name="colorRoomPopupText" />
 
     <attr format="color" name="colorFileManagerFileName" />
     <attr format="color" name="colorFileManagerFileSize" />
