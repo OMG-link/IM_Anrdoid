@@ -7,9 +7,8 @@
     <attr format="color" name="colorLoginVersionInfo" />
 
     <attr format="color" name="colorRoomChatInfo" />
-    <attr format="color" name="colorRoomChatText" />
-    <attr format="color" name="colorRoomDownloadProgress" />
-    <attr format="color" name="colorRoomDownloadFileSize" />
+    <attr format="color" name="colorRoomMainText" />
+    <attr format="color" name="colorRoomSubText" />
     <attr format="color" name="colorRoomInputBlockBgr" />
     <attr format="color" name="colorRoomInputAreaBgr" />
     <attr format="color" name="colorRoomInputAreaText" />

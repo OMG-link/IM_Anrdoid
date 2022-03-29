@@ -85,7 +85,7 @@ class ChatImageMessage(val roomActivity: RoomActivity,username: String, stamp: L
         val ivImage = holder.ivImage
         when (state) {
             State.Downloading -> {
-                tvErrorInfo.setTextColor(holder.getAttrColor(R.attr.colorRoomChatText))
+                tvErrorInfo.setTextColor(holder.getAttrColor(R.attr.colorRoomMainText))
                 tvErrorInfo.text = String.format(
                     holder.getString(R.string.frame_room_image_downloading)
                 )

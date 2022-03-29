@@ -19,13 +19,12 @@
         <item name="colorLoginVersionInfo">@color/gray</item>
 
         <item name="colorRoomChatInfo">@color/dark_green</item>
-        <item name="colorRoomChatText">@color/black</item>
-        <item name="colorRoomDownloadProgress">@color/dark_gray_3</item>
-        <item name="colorRoomDownloadFileSize">@color/gray</item>
+        <item name="colorRoomMainText">@color/black</item>
+        <item name="colorRoomSubText">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
         <item name="colorRoomInputAreaBgr">@color/white</item>
         <item name="colorRoomInputAreaText">@color/black</item>
-        <item name="colorRoomBgr">@color/light_gray_3</item>
+        <item name="colorRoomBgr">@color/light_gray_4</item>
         <item name="colorRoomSystemInfoBgr">@color/light_gray_2</item>
         <item name="colorRoomChatTime">@color/gray</item>
         <item name="colorRoomMessageBgr">@color/white</item>
@@ -61,9 +60,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
-        <item name="colorRoomChatText">@color/black</item>
-        <item name="colorRoomDownloadProgress">?attr/colorRoomDownloadFileSize</item>
-        <item name="colorRoomDownloadFileSize">@color/gray</item>
+        <item name="colorRoomMainText">@color/black</item>
+        <item name="colorRoomSubText">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
         <item name="colorRoomInputAreaBgr">@color/white</item>
         <item name="colorRoomInputAreaText">@color/black</item>

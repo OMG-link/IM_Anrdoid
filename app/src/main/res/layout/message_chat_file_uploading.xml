@@ -5,17 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvMessageChatFileUploadingInfo"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bgr_message_normal"
-        android:text="TextView"
-        android:textColor="?attr/colorRoomDownloadProgress"
-        android:textSize="16sp"
+        android:background="@drawable/bgr_message"
         app:layout_constrainedWidth="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="wrap"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.8">
+
+        <TextView
+            android:id="@+id/tvMessageChatFileUploadingMainInfo"
+            style="@style/Theme.IM.RoomMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4sp"
+            android:text="TextView"
+            android:textColor="?attr/colorRoomMainText"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvMessageChatFileUploadingSubInfo"
+            style="@style/Theme.IM.RoomSubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4sp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMessageChatFileUploadingMainInfo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

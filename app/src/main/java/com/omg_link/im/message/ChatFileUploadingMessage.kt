@@ -25,48 +25,73 @@ class ChatFileUploadingMessage(
 
     // Info
 
-    private var info: String = ""
+    private var mainInfo: String = ""
         set(value) {
             field = value
             activity.runOnUiThread {
-                chatFileUploadingMessageHolder?.tvUploadInfo?.text = value
+                val tv = chatFileUploadingMessageHolder?.mainInfo
+                    ?: return@runOnUiThread
+                if(value.isEmpty()){
+                    tv.visibility = View.GONE
+                }else{
+                    tv.visibility = View.VISIBLE
+                    tv.text = value
+                }
             }
         }
+    private var subInfo: String = ""
+        set(value) {
+            field = value
+            activity.runOnUiThread {
+                val tv = chatFileUploadingMessageHolder?.subInfo
+                    ?: return@runOnUiThread
+                if(value.isEmpty()){
+                    tv.visibility = View.GONE
+                }else{
+                    tv.visibility = View.VISIBLE
+                    tv.text = value
+                }
+            }
+        }
+
 
     // File transfer
 
     override fun setProgress(uploadedSize: Long) {
-        info = String.format(
+        mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_progress),
-            fileNameGetter.string,
+            fileNameGetter.string
+        )
+        subInfo = String.format(
+            "%s/%s",
             FileUtils.sizeToString(uploadedSize),
             FileUtils.sizeToString(fileSize)
         )
     }
 
     override fun onTransferStart() {
-        info = String.format(
+        mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_start),
             fileNameGetter.string
         )
+        subInfo = ""
     }
 
     override fun onTransferSucceed(file: File) {
-        info = String.format(
+        mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_succeed),
             fileNameGetter.string
         )
-        activity.runOnUiThread {
-            activity.getMessageManager().removeMessage(this)
-        }
+        subInfo = ""
+        activity.getMessageManager().removeMessage(this)
     }
 
     override fun onTransferFailed(reason: String) {
-        info = String.format(
+        mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_failed),
-            fileNameGetter.string,
-            reason
+            fileNameGetter.string
         )
+        subInfo = reason
     }
 
     //Holder
@@ -83,11 +108,8 @@ class ChatFileUploadingMessage(
     }
 
     private fun updateData() {
-        chatFileUploadingMessageHolder?.let { updateData(it) }
-    }
-
-    private fun updateData(holder: MessageHolder) {
-        info = info
+        mainInfo = mainInfo
+        subInfo = subInfo
     }
 
 }
@@ -96,7 +118,8 @@ class ChatFileUploadingMessageHolder(itemView: View) : ChatMessageHolder(itemVie
 
     constructor(context: Context,parent: ViewGroup) : this(createView(context,parent))
 
-    val tvUploadInfo: TextView = itemView.findViewById(R.id.tvMessageChatFileUploadingInfo)
+    val mainInfo: TextView = itemView.findViewById(R.id.tvMessageChatFileUploadingMainInfo)
+    val subInfo: TextView = itemView.findViewById(R.id.tvMessageChatFileUploadingSubInfo)
 
     private lateinit var chatFileUploadingMessage: ChatFileUploadingMessage
 

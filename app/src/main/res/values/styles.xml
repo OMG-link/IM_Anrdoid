@@ -22,4 +22,12 @@
         <item name="android:minWidth">60sp</item>
         <item name="android:clickable">true</item>
     </style>
+    <style name="Theme.IM.RoomMainText">
+        <item name="android:textColor">?attr/colorRoomMainText</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Theme.IM.RoomSubText">
+        <item name="android:textColor">?attr/colorRoomSubText</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>
