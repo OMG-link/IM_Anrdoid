@@ -30,4 +30,13 @@
         <item name="android:textColor">?attr/colorRoomSubText</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="Theme.IM.MessageBubble">
+        <item name="android:background">@drawable/bgr_message</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="layout_constrainedWidth">true</item>
+        <item name="layout_constraintWidth_max">wrap</item>
+        <item name="layout_constraintWidth_percent">0.8</item>
+    </style>
 </resources>

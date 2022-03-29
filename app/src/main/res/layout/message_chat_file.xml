@@ -7,15 +7,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutMessageChatFileBubble"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bgr_message"
-        android:clickable="true"
-        android:orientation="vertical"
-        app:layout_constrainedWidth="true"
+        style="@style/Theme.IM.MessageBubble"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvMessageChatFileFileName"
@@ -23,14 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4sp"
-            android:layout_weight="1"
             android:ellipsize="middle"
             android:singleLine="true"
-            app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="wrap"
-            app:layout_constraintWidth_percent="1"
             tools:text="A Very Very Very Very Very Very Long FIle Name" />
 
         <TextView
