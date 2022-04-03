@@ -15,10 +15,15 @@ class InputManager(val roomActivity: RoomActivity) {
 
     var state: State = State.None
     set(value) {
-        if(field==value) return
         when(field){
-            State.Text -> InputMethodUtils.hideInputMethod(roomActivity,roomActivity.textInputArea)
-            State.Emoji -> emojiArea.visibility = View.GONE
+            State.Text -> {
+                if(field==value) return
+                InputMethodUtils.hideInputMethod(roomActivity,roomActivity.textInputArea)
+            }
+            State.Emoji -> {
+                if(field==value) return
+                emojiArea.visibility = View.GONE
+            }
             else -> {}
         }
         field = value
