@@ -13,19 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IM">
         <activity
-            android:name=".ConnectActivity"
+            android:name=".android.ConnectActivity"
             android:theme="@style/Theme.IM.ConnectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RoomActivity"
+            android:name=".android.RoomActivity"
             android:theme="@style/Theme.IM.RoomActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FileManagerActivity"
+            android:name=".android.FileManagerActivity"
             android:theme="@style/Theme.IM.FileManagerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".android.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true" >
             <intent-filter>
