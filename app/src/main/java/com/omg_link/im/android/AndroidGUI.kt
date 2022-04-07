@@ -7,16 +7,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.omg_link.im.R
-import im.Client
-import im.gui.IConfirmDialogCallback
-import im.gui.IGUI
+import com.omg_link.im.core.Client
+import com.omg_link.im.core.gui.IConfirmDialogCallback
+import com.omg_link.im.core.gui.IGui
+import com.omg_link.sqlite_bridge.android.SqlComponentFactory
 
-class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
+class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGui {
     private val client: Client = Client(this)
 
     init {
         MainActivity.setActiveClient(client)
-        client.start()
+        client.gui.createConnectFrame()
     }
 
     override fun createConnectFrame() {
@@ -114,6 +115,10 @@ class AndroidGUI(private val appCompatActivity: AppCompatActivity) : IGUI {
 
             }
         )
+    }
+
+    override fun getSqlComponentFactory(): SqlComponentFactory {
+        return SqlComponentFactory()
     }
 
     override fun alertVersionUnrecognizable(clientVersion: String?) {

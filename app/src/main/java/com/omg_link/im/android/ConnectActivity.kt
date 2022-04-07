@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.AndroidUtils
-import im.Client
-import im.config.Config
-import im.config.InvalidUserNameException
-import im.gui.IConnectFrame
+import com.omg_link.im.core.Client
+import com.omg_link.im.core.config.Config
+import com.omg_link.im.core.config.ConfigSetFailedException
+import com.omg_link.im.core.gui.IConnectFrame
 import kotlin.concurrent.thread
 
 class ConnectActivity : AppCompatActivity(), IConnectFrame {
@@ -50,14 +50,17 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
         connectButton.setOnClickListener {
             thread {
                 try{
-                    client.setConfigAndStart(
+                    client.connectToRoom(
                         urlInputArea.text.toString(),
                         nameInputArea.text.toString(),
-                        tokenInputArea.text.toString(),
-                        false
+                        tokenInputArea.text.toString()
                     )
-                }catch (e:InvalidUserNameException){
-                    client.showInfo(resources.getString(R.string.frame_login_invalid_username))
+                }catch (e:ConfigSetFailedException){
+                    client.showMessage(resources.getString(when(e.reason!!){
+                        ConfigSetFailedException.Reason.InvalidPort -> {R.string.frame_login_invalid_port}
+                        ConfigSetFailedException.Reason.InvalidUrl -> {R.string.frame_login_invalid_url}
+                        ConfigSetFailedException.Reason.UsernameTooLong -> {R.string.frame_login_invalid_username}
+                    }))
                 }
             }
         }
@@ -90,7 +93,7 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
             AndroidUtils.getApkVersion(this)
         )
 
-        client.connectFrame = this
+        client.setConnectFrame(this)
 
     }
 

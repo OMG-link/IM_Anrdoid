@@ -1,5 +1,6 @@
 package com.omg_link.im.android.tools
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.Context
@@ -13,7 +14,7 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
-import im.config.Config
+import com.omg_link.im.core.config.Config
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -194,6 +195,7 @@ object UriUtils {
      * @param uri
      * @return
      */
+    @SuppressLint("Range")
     private fun getFileFromContentUri(context: Context, uri: Uri?): String? {
         if (uri == null) {
             return null
@@ -225,6 +227,7 @@ object UriUtils {
      * @param uri
      * @return
      */
+    @SuppressLint("Range")
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private fun uriToFileApiQ(context: Context, uri: Uri): String? {
         var file: File? = null

@@ -11,14 +11,14 @@ import com.omg_link.im.android.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
-import im.file_manager.FileObject
-import mutils.ImageType
+import com.omg_link.im.core.ClientRoom
+import com.omg_link.im.core.file_manager.FileObject
 import kotlin.concurrent.thread
 
-class EmojiHolder (itemView: View) :
+class EmojiHolder (itemView: View, private val room: ClientRoom) :
     RecyclerView.ViewHolder(itemView) {
 
-    constructor(context: Context,parent: ViewGroup): this(createView(context,parent))
+    constructor(context: Context,parent: ViewGroup,room:ClientRoom): this(createView(context,parent),room)
 
     private val ivEmoji: ImageView = itemView.findViewById(R.id.ivEmoji)
     private val layoutEmoji: ConstraintLayout = itemView.findViewById(R.id.layoutEmoji)
@@ -32,8 +32,8 @@ class EmojiHolder (itemView: View) :
             ivEmoji.setImageBitmap(bitmap)
             layoutEmoji.setOnClickListener {
                 thread {
-                    MainActivity.getActiveClient()!!.sendChatImage(
-                        fileObject.file, ImageType.PNG
+                    room.sendChatImage(
+                        fileObject.file
                     )
                 }
             }

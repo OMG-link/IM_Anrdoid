@@ -9,18 +9,17 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import com.omg_link.im.android.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
-import im.protocol.fileTransfer.ClientFileReceiveTask
-import im.protocol.fileTransfer.IDownloadCallback
+import com.omg_link.im.core.file_manager.FileObject
+import com.omg_link.im.core.gui.IFileTransferringPanel
 import java.io.File
 
 class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: Long) : ChatMessage(username, stamp),
-    ISelfUpdatable<ChatImageMessageHolder> {
+    IFileTransferringPanel, ISelfUpdatable<ChatImageMessageHolder> {
 
     override val type = Type.IMAGE
 
@@ -34,34 +33,6 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
 
     lateinit var imagePath: String
     lateinit var failReason: String
-
-    // Downloading
-
-    fun getDownloadCallback(): IDownloadCallback {
-        return object : IDownloadCallback {
-            override fun onSucceed(task: ClientFileReceiveTask) {
-                state = State.Downloaded
-                imagePath =
-                    MainActivity.getActiveClient()!!.fileManager.openFile(task.receiverFileId).file.absolutePath
-                val messageManager = this@ChatImageMessage.messageManager
-                    ?: return
-                messageManager.roomActivity.runOnUiThread {
-                    updateData()
-                }
-            }
-
-            override fun onFailed(task: ClientFileReceiveTask, reason: String) {
-                state = State.DownloadFailed
-                failReason = reason
-                val messageManager = this@ChatImageMessage.messageManager
-                    ?: return
-                messageManager.roomActivity.runOnUiThread {
-                    updateData()
-                }
-            }
-
-        }
-    }
 
     // Holder
 
@@ -168,8 +139,8 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
             popupWindow.dismiss()
         }
         content.findViewById<TextView>(R.id.tvPopupChatImageBtnSave).setOnClickListener {
-            roomActivity.emojiManager.addEmoji(roomActivity.client.fileManager.openFile(File(imagePath)))
-            roomActivity.client.showInfo(roomActivity.resources.getString(R.string.frame_room_emoji_added))
+            roomActivity.emojiManager.addEmoji(roomActivity.room.fileManager.openFile(File(imagePath)))
+            roomActivity.room.showMessage(roomActivity.resources.getString(R.string.frame_room_emoji_added))
             popupWindow.dismiss()
         }
 
@@ -183,6 +154,34 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
         }
         popupWindow.showAtLocation(anchor, Gravity.START or Gravity.TOP, pos[0], showPosY)
 
+    }
+
+    override fun setProgress(downloadedSize: Long) {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onTransferStart() {
+        //TODO("Not yet implemented")
+    }
+
+    override fun onTransferSucceed(fileObject: FileObject) {
+        state = State.Downloaded
+        imagePath = fileObject.file.absolutePath
+        val messageManager = this@ChatImageMessage.messageManager
+            ?: return
+        messageManager.roomActivity.runOnUiThread {
+            updateData()
+        }
+    }
+
+    override fun onTransferFailed(reason: String) {
+        state = State.DownloadFailed
+        failReason = reason
+        val messageManager = this@ChatImageMessage.messageManager
+            ?: return
+        messageManager.roomActivity.runOnUiThread {
+            updateData()
+        }
     }
 
 }

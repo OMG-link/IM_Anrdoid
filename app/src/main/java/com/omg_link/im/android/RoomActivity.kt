@@ -21,16 +21,12 @@ import com.omg_link.im.android.emoji.EmojiManager
 import com.omg_link.im.android.message.*
 import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.UriUtils
-import im.Client
-import im.config.Config
-import im.gui.IFileTransferringPanel
-import im.gui.IRoomFrame
-import im.protocol.data_pack.file_transfer.FileTransferType
-import im.protocol.data_pack.system.ConnectResultPack
-import im.protocol.fileTransfer.IDownloadCallback
-import im.user_manager.User
-import mutils.IStringGetter
-import mutils.ImageType
+import com.omg_link.im.core.ClientRoom
+import com.omg_link.im.core.config.Config
+import com.omg_link.im.core.gui.IFileTransferringPanel
+import com.omg_link.im.core.gui.IRoomFrame
+import com.omg_link.im.core.user_manager.User
+import com.omg_link.utils.IStringGetter
 import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
@@ -42,7 +38,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fun onFailed()
     }
 
-    val client: Client
+    val room: ClientRoom
 
     private lateinit var inputManager: InputManager
     private lateinit var messageManager: MessageManager
@@ -63,7 +59,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     init {
         val activeClient = MainActivity.getActiveClient()
         if (activeClient != null) {
-            client = activeClient
+            room = activeClient.room
         } else {
             throw RuntimeException("Failed to initialize connect roomActivity: main client not found!")
         }
@@ -83,10 +79,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                         ?: return@registerForActivityResult
                 )
                 if (!file.canRead()) {
-                    getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
+                    getHandler().showMessage("Unable to read file ${file.absolutePath}. Send canceled!")
                     return@registerForActivityResult
                 }
-                thread { getHandler().sendChatImage(file, ImageType.PNG) }
+                thread { getHandler().sendChatImage(file) }
             }
 
         getFileActivity =
@@ -96,14 +92,13 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                     ?: return@registerForActivityResult
                 val file = File(path)
                 if (!file.canRead()) {
-                    getHandler().showInfo("Unable to read file ${file.absolutePath}. Send canceled!")
+                    getHandler().showMessage("Unable to read file ${file.absolutePath}. Send canceled!")
                     return@registerForActivityResult
                 }
                 Log.d("AndroidGUI",file.absolutePath)
                 thread {
                     getHandler().uploadFile(
                         file,
-                        FileTransferType.ChatFile,
                         addFileTransferringPanel(
                             { file.name },
                             file.length()
@@ -167,7 +162,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
             thread { //禁止在主线程上进行网络操作
-                client.sendChat(tempString)
+                room.sendChat(tempString)
             }
         }
 
@@ -199,7 +194,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         registerActivities()
 
-        client.roomFrame = this
+        room.roomFrame = this
 
     }
 
@@ -223,7 +218,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 }
 
                 override fun onFailed() {
-                    client.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                    room.showMessage(resources.getString(R.string.frame_room_external_storage_denied))
                 }
 
             })
@@ -245,7 +240,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 }
 
                 override fun onFailed() {
-                    client.showInfo(resources.getString(R.string.frame_room_external_storage_denied))
+                    room.showMessage(resources.getString(R.string.frame_room_external_storage_denied))
                 }
 
             })
@@ -258,7 +253,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         super.onResume()
         MainActivity.setActiveActivity(this)
 
-        if(client.networkHandler?.isInterrupted == true){
+        if(room.networkHandler?.isStopped == true){
             finish()
         }
 
@@ -266,12 +261,19 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun onDestroy() {
         super.onDestroy()
-        client.networkHandler.interrupt()
+        room.networkHandler.stop()
         MainActivity.removeActivity()
     }
 
-    override fun exitRoom(reason: String) {
-        client.showInfo(reason)
+    override fun exitRoom(reason: IRoomFrame.ExitReason) {
+        room.showMessage(resources.getString(when(reason){
+            IRoomFrame.ExitReason.ClientException -> R.string.frame_room_exit_reason_client_exception
+            IRoomFrame.ExitReason.ConnectingToNewRoom -> R.string.frame_room_exit_reason_connecting_to_new_room
+            IRoomFrame.ExitReason.InvalidToken -> R.string.frame_room_exit_reason_invalid_token
+            IRoomFrame.ExitReason.InvalidUrl -> R.string.frame_room_exit_reason_invalid_url
+            IRoomFrame.ExitReason.PackageDecodeError -> R.string.frame_room_exit_reason_package_decode_error
+            IRoomFrame.ExitReason.Unknown -> R.string.frame_room_exit_reason_unknown
+        }))
         finish()
     }
 
@@ -283,7 +285,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             buttonBar.forEach {
                 it.isEnabled = true
             }
-            textInputArea.isEnabled = true;
+            textInputArea.isEnabled = true
             if(!isTextInputAreaCleared){
                 textInputArea.setText("")
                 isTextInputAreaCleared = true
@@ -299,50 +301,43 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             buttonBar.forEach {
                 it.isEnabled = false
             }
-            textInputArea.isEnabled = false;
+            textInputArea.isEnabled = false
         }
-    }
-
-    override fun onConnectionRefused(reason: ConnectResultPack.RejectReason) {
-        exitRoom(resources.getString(
-            when(reason){
-                ConnectResultPack.RejectReason.InvalidToken -> R.string.activity_login_connectrejected_invalidtoken
-            }
-        ))
     }
 
     override fun showSystemMessage(message: String) {
         messageManager.insertMessage(SystemMessage(message))
     }
 
-    override fun showTextMessage(sender: String, stamp: Long, text: String) {
+    override fun showTextMessage(serialId: Long, sender: String, stamp: Long, text: String) {
         messageManager.insertMessage(ChatTextMessage(sender, stamp, text))
-
     }
 
     override fun showChatImageMessage(
+        serialId: Long,
         sender: String,
         stamp: Long,
         serverFileId: UUID
-    ): IDownloadCallback {
+    ): IFileTransferringPanel {
         val message = ChatImageMessage(this,sender,stamp)
         messageManager.insertMessage(message)
-        return message.getDownloadCallback()
+        return message
     }
 
     override fun showFileUploadedMessage(
+        serialId: Long,
         sender: String,
         stamp: Long,
         fileId: UUID,
         fileName: String,
         fileSize: Long
-    ) {
-        messageManager.insertMessage(
-            ChatFileMessage(
+    ): IFileTransferringPanel {
+        val message = ChatFileMessage(
             sender,stamp,
             this,fileName,fileSize, fileId
         )
-        )
+        messageManager.insertMessage(message)
+        return message
     }
 
     override fun onRoomNameUpdate(roomName: String) {
@@ -403,8 +398,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         return messageManager
     }
 
-    fun getHandler(): Client {
-        return client
+    fun getHandler(): ClientRoom {
+        return room
     }
 
 }

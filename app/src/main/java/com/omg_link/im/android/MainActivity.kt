@@ -4,8 +4,8 @@ import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.omg_link.im.R
-import im.Client
-import im.config.Config
+import com.omg_link.im.core.Client
+import com.omg_link.im.core.config.Config
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

@@ -7,9 +7,10 @@ import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.ViewUtils
-import im.gui.IFileTransferringPanel
-import mutils.FileUtils
-import mutils.IStringGetter
+import com.omg_link.im.core.file_manager.FileObject
+import com.omg_link.im.core.gui.IFileTransferringPanel
+import com.omg_link.utils.FileUtils
+import com.omg_link.utils.IStringGetter
 import java.io.File
 
 class ChatFileUploadingMessage(
@@ -77,7 +78,7 @@ class ChatFileUploadingMessage(
         subInfo = ""
     }
 
-    override fun onTransferSucceed(file: File) {
+    override fun onTransferSucceed(fileObject: FileObject) {
         mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_succeed),
             fileNameGetter.string

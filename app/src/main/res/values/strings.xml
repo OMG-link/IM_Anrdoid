@@ -40,7 +40,7 @@
     <string name="frame_room_disconnected">Disconnected from the server.</string>
     <string name="frame_login_input_token">Password for Room</string>
     <string name="frame_login_room_password">Room Password</string>
-    <string name="activity_login_connectrejected_invalidtoken">Wrong password.</string>
+    <string name="frame_room_exit_reason_invalid_token">Wrong password.</string>
     <string name="frame_login_downloaded_files">Downloaded Files</string>
     <string name="frame_filemanager_title">Downloaded Files</string>
     <string name="frame_filemanager_button_open">OPEN</string>
@@ -73,4 +73,11 @@
     <string name="popup_chat_image_open">Open</string>
     <string name="popup_chat_image_favorite">Add to favorite</string>
     <string name="frame_room_emoji_added">Emoji saved!</string>
+    <string name="frame_login_invalid_port">Invalid Port</string>
+    <string name="frame_login_invalid_url">Invalid URL</string>
+    <string name="frame_room_exit_reason_client_exception">An error occured on client.</string>
+    <string name="frame_room_exit_reason_connecting_to_new_room">Connecting to new room.</string>
+    <string name="frame_room_exit_reason_invalid_url">Server not found.</string>
+    <string name="frame_room_exit_reason_package_decode_error">Network protocol error.</string>
+    <string name="frame_room_exit_reason_unknown">Unknown error.</string>
 </resources>

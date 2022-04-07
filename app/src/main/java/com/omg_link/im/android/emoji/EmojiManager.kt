@@ -5,7 +5,7 @@ import android.os.FileUtils
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.android.RoomActivity
-import im.file_manager.FileObject
+import com.omg_link.im.core.file_manager.FileObject
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
@@ -18,7 +18,7 @@ class EmojiManager(
 
     private val emojiList = ArrayList<FileObject>()
 
-    private val adapter: EmojiAdapter = EmojiAdapter(emojiList)
+    private val adapter: EmojiAdapter = EmojiAdapter(emojiList,roomActivity.room)
 
     init {
         emojiRecyclerView.layoutManager = GridLayoutManager(roomActivity,4)
@@ -28,7 +28,7 @@ class EmojiManager(
 
     fun addEmoji(fileObject: FileObject){
         val inputStream = FileInputStream(fileObject.file)
-        val outputStream = FileOutputStream(roomActivity.client.fileManager.createUnnamedFileInFolder(emojiFolder).file)
+        val outputStream = FileOutputStream(roomActivity.room.fileManager.createUnnamedFileInFolder(emojiFolder).file)
         FileUtils.copy(inputStream,outputStream)
         inputStream.close()
         outputStream.close()
@@ -37,7 +37,7 @@ class EmojiManager(
 
     @SuppressLint("NotifyDataSetChanged")
     fun reloadFromFolder(){
-        val fileManager = roomActivity.client.fileManager
+        val fileManager = roomActivity.room.fileManager
         val folder = fileManager.openFolder(emojiFolder)
         emojiList.clear()
         for(file in folder.listFiles()!!){

@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.R
 import com.omg_link.im.android.file.DownloadedFile
 import com.omg_link.im.android.file.FilePanelAdapter
-import im.Client
-import im.file_manager.ClientFileManager
+import com.omg_link.im.core.Client
+import com.omg_link.im.core.config.Config
+import com.omg_link.im.core.file_manager.ClientFileManager
+import java.io.File
 import java.io.FileNotFoundException
 
 class FileManagerActivity : AppCompatActivity() {
@@ -19,9 +21,9 @@ class FileManagerActivity : AppCompatActivity() {
     private val client: Client
 
     init {
-        val client = MainActivity.getActiveClient()
-        if (client != null) {
-            this.client = client
+        val activeClient = MainActivity.getActiveClient()
+        if (activeClient != null) {
+            this.client = activeClient
         } else {
             throw RuntimeException("Failed to initialize connect roomActivity: main client not found!")
         }
@@ -45,7 +47,7 @@ class FileManagerActivity : AppCompatActivity() {
     }
 
     fun updateFromDirectory() {
-        val files = client.fileManager.openFolder(ClientFileManager.downloadFolder).listFiles()
+        val files = File(Config.getRuntimeDir()+ClientFileManager.downloadFolder).listFiles()
             ?: return
         downloadedFileList.clear()
         for (file in files) {
@@ -53,7 +55,7 @@ class FileManagerActivity : AppCompatActivity() {
                 downloadedFileList.add(
                     DownloadedFile(
                         this,
-                        client.fileManager.openFile(file)
+                        file
                     )
                 )
             }catch (ignored:FileNotFoundException){}
@@ -62,13 +64,13 @@ class FileManagerActivity : AppCompatActivity() {
     }
 
     fun deleteFile(downloadedFile: DownloadedFile) {
-        client.fileManager.deleteFile(downloadedFile.fileObject)
+        downloadedFile.file.delete()
         updateFromDirectory()
     }
 
     fun deleteAll() {
         for(downloadedFile in downloadedFileList){
-            client.fileManager.deleteFile(downloadedFile.fileObject)
+            downloadedFile.file.delete()
         }
         updateFromDirectory()
     }

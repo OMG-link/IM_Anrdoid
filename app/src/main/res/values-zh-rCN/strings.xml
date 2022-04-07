@@ -41,7 +41,7 @@
     <string name="frame_room_disconnected">与服务器的连接已断开</string>
     <string name="frame_login_input_token">在此输入房间密码</string>
     <string name="frame_login_room_password">房间密码</string>
-    <string name="activity_login_connectrejected_invalidtoken">密码错误</string>
+    <string name="frame_room_exit_reason_invalid_token">密码错误</string>
     <string name="frame_login_downloaded_files">已下载文件</string>
     <string name="frame_filemanager_title">已下载文件</string>
     <string name="frame_filemanager_button_open">打开</string>
@@ -74,4 +74,11 @@
     <string name="popup_chat_image_open">查看</string>
     <string name="popup_chat_image_favorite">加表情</string>
     <string name="frame_room_emoji_added">已添加</string>
+    <string name="frame_login_invalid_port">端口号无效</string>
+    <string name="frame_login_invalid_url">服务器地址无效</string>
+    <string name="frame_room_exit_reason_client_exception">客户端遇到了一个无法处理的错误</string>
+    <string name="frame_room_exit_reason_connecting_to_new_room">正在连接到新房间</string>
+    <string name="frame_room_exit_reason_invalid_url">找不到服务器</string>
+    <string name="frame_room_exit_reason_package_decode_error">网络协议错误</string>
+    <string name="frame_room_exit_reason_unknown">未知错误</string>
 </resources>

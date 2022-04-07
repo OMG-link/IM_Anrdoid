@@ -10,9 +10,10 @@ import com.omg_link.im.R
 import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.ViewUtils
-import im.gui.IFileTransferringPanel
-import im.protocol.data_pack.file_transfer.FileTransferType
-import mutils.FileUtils
+import com.omg_link.im.core.file_manager.FileObject
+import com.omg_link.im.core.gui.IFileTransferringPanel
+import com.omg_link.im.core.protocol.data_pack.file_transfer.FileTransferType
+import com.omg_link.utils.FileUtils
 import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
@@ -70,8 +71,8 @@ class ChatFileMessage(
         panelState = State.DOWNLOADING
     }
 
-    override fun onTransferSucceed(file: File) {
-        this.file = file
+    override fun onTransferSucceed(fileObject: FileObject) {
+        this.file = fileObject.file
         fileName = file.name
         downloadInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_download_succeed),
@@ -115,10 +116,9 @@ class ChatFileMessage(
         when (panelState) {
             State.READY -> {
                 bubble.setOnClickListener {
-                    val client = MainActivity.getActiveClient()!!
                     bubble.setOnClickListener(null)
                     thread {
-                        client.downloadFile(fileName, fileId, FileTransferType.ChatFile, this)
+                        activity.room.downloadFile(fileName, fileId, FileTransferType.ChatFile, this)
                     }
                     onTransferStart()
                 }

@@ -82,10 +82,6 @@ class MessageManager(
                     RecyclerView.SCROLL_STATE_SETTLING -> false
                     else -> throw InvalidParameterException()
                 }
-                MainActivity.getActiveClient()!!.logger.log(
-                    Level.INFO,
-                    this@MessageManager.isRecyclerViewAtBottom.toString()
-                )
             }
         })
 
