@@ -9,7 +9,9 @@
         android:id="@+id/layoutMessageChatFileBubble"
         style="@style/Theme.IM.MessageBubble"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_max="0dp">
 
         <TextView
             android:id="@+id/tvMessageChatFileFileName"
@@ -21,7 +23,7 @@
             android:singleLine="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="A Very Very Very Very Very Very Long FIle Name" />
+            tools:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
 
         <TextView
             android:id="@+id/tvMessageChatFileFileSize"
