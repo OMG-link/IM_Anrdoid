@@ -1,5 +1,6 @@
 package com.omg_link.im.android
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -46,8 +47,9 @@ class FileManagerActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateFromDirectory() {
-        val files = File(Config.getRuntimeDir()+ClientFileManager.downloadFolder).listFiles()
+        val files = client.fileManager.openFolder(ClientFileManager.downloadFolder).listFiles()
             ?: return
         downloadedFileList.clear()
         for (file in files) {
