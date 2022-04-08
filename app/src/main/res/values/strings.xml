@@ -46,7 +46,7 @@
     <string name="frame_filemanager_button_open">OPEN</string>
     <string name="frame_filemanager_button_delete">DELETE</string>
     <string name="frame_filemanager_button_refresh">Refresh</string>
-    <string name="frame_filemanager_button_clear">Clear All</string>
+    <string name="frame_filemanager_button_clear">Delete All Files</string>
     <string name="frame_login_core_version">IM Core Version: %1$s</string>
     <string name="frame_login_apk_version">APK version: %1$s</string>
     <string name="time_morning">Morning</string>
