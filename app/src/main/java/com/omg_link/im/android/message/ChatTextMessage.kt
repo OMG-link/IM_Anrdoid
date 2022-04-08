@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
 
-class ChatTextMessage(username: String, time: Long, val text: String) :
+class ChatTextMessage(username: String, time: Long,val serialId: Long, val text: String) :
     ChatMessage(username, time) {
     override val type = Type.TEXT
 }

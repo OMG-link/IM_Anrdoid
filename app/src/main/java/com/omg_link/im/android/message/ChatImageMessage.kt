@@ -18,7 +18,7 @@ import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import java.io.File
 
-class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: Long) : ChatMessage(username, stamp),
+class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: Long, val serialId: Long) : ChatMessage(username, stamp),
     IFileTransferringPanel, ISelfUpdatable<ChatImageMessageHolder> {
 
     override val type = Type.IMAGE

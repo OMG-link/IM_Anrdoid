@@ -21,6 +21,7 @@ import kotlin.concurrent.thread
 class ChatFileMessage(
     username: String,
     stamp: Long,
+    val serialId: Long,
     private val activity: RoomActivity,
     private var fileName: String,
     private val fileSize: Long,

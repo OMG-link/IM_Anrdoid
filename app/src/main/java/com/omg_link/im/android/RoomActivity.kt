@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.omg_link.im.R
 import com.omg_link.im.android.emoji.EmojiManager
 import com.omg_link.im.android.message.*
@@ -33,7 +34,7 @@ import kotlin.concurrent.thread
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
 
-    private interface IRequestPermissionCallback{
+    private interface IRequestPermissionCallback {
         fun onSuccess()
         fun onFailed()
     }
@@ -45,6 +46,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     lateinit var emojiManager: EmojiManager
 
     lateinit var textInputArea: EditText
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var roomChatSendButton: Button
     private lateinit var buttonBar: LinearLayout
 
@@ -65,12 +67,12 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
     }
 
-    private fun requestPermission(permission: String,callback: IRequestPermissionCallback){
+    private fun requestPermission(permission: String, callback: IRequestPermissionCallback) {
         requestPermissionCallback = callback
         getPermissionActivity.launch(permission)
     }
 
-    private fun registerActivities(){
+    private fun registerActivities() {
         getImageActivity =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 if (uri == null) return@registerForActivityResult
@@ -87,15 +89,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         getFileActivity =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                if(uri==null) return@registerForActivityResult
-                val path = UriUtils.getFileAbsolutePath(this@RoomActivity,uri)
+                if (uri == null) return@registerForActivityResult
+                val path = UriUtils.getFileAbsolutePath(this@RoomActivity, uri)
                     ?: return@registerForActivityResult
                 val file = File(path)
                 if (!file.canRead()) {
                     getHandler().showMessage("Unable to read file ${file.absolutePath}. Send canceled!")
                     return@registerForActivityResult
                 }
-                Log.d("AndroidGUI",file.absolutePath)
+                Log.d("AndroidGUI", file.absolutePath)
                 thread {
                     getHandler().uploadFile(
                         file,
@@ -108,10 +110,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
 
         getPermissionActivity =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()){
-                if(it==true){
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (it == true) {
                     requestPermissionCallback.onSuccess()
-                }else{
+                } else {
                     requestPermissionCallback.onFailed()
                 }
             }
@@ -140,7 +142,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         // textInputArea
         textInputArea = findViewById(R.id.roomChatInputArea)
-        textInputArea.addTextChangedListener(object:TextWatcher{
+        textInputArea.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
@@ -148,7 +150,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             }
         })
         textInputArea.setOnFocusChangeListener { _, hasFocus ->
-            if(hasFocus){
+            if (hasFocus) {
                 inputManager.state = InputManager.State.Text
             }
         }
@@ -186,10 +188,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
         // messageArea
         findViewById<RecyclerView>(R.id.rvMessageArea).setOnTouchListener { _, event ->
-            if(event.action==MotionEvent.ACTION_DOWN){
+            if (event.action == MotionEvent.ACTION_DOWN) {
                 inputManager.state = InputManager.State.None
             }
             return@setOnTouchListener false
+        }
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMessageArea)
+        swipeRefreshLayout.setOnRefreshListener {
+            messageManager.showMoreMessage()
         }
 
         registerActivities()
@@ -201,8 +208,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     /**
      * Should be called on UI Thread
      */
-    private fun updateChatSendButtonState(){
-        roomChatSendButton.isEnabled = (textInputArea.text.isNotEmpty()&&isConnectionBuilt)
+    private fun updateChatSendButtonState() {
+        roomChatSendButton.isEnabled = (textInputArea.text.isNotEmpty() && isConnectionBuilt)
     }
 
     fun selectFileToSend() {
@@ -211,7 +218,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
-            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object:
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object :
                 IRequestPermissionCallback {
                 override fun onSuccess() {
                     selectFileToSend()
@@ -233,7 +240,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         ) {
-            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object:
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object :
                 IRequestPermissionCallback {
                 override fun onSuccess() {
                     selectImageToSend()
@@ -253,7 +260,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         super.onResume()
         MainActivity.setActiveActivity(this)
 
-        if(room.networkHandler?.isStopped == true){
+        if (room.networkHandler?.isStopped == true) {
             finish()
         }
 
@@ -266,14 +273,18 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun exitRoom(reason: IRoomFrame.ExitReason) {
-        room.showMessage(resources.getString(when(reason){
-            IRoomFrame.ExitReason.ClientException -> R.string.frame_room_exit_reason_client_exception
-            IRoomFrame.ExitReason.ConnectingToNewRoom -> R.string.frame_room_exit_reason_connecting_to_new_room
-            IRoomFrame.ExitReason.InvalidToken -> R.string.frame_room_exit_reason_invalid_token
-            IRoomFrame.ExitReason.InvalidUrl -> R.string.frame_room_exit_reason_invalid_url
-            IRoomFrame.ExitReason.PackageDecodeError -> R.string.frame_room_exit_reason_package_decode_error
-            IRoomFrame.ExitReason.Unknown -> R.string.frame_room_exit_reason_unknown
-        }))
+        room.showMessage(
+            resources.getString(
+                when (reason) {
+                    IRoomFrame.ExitReason.ClientException -> R.string.frame_room_exit_reason_client_exception
+                    IRoomFrame.ExitReason.ConnectingToNewRoom -> R.string.frame_room_exit_reason_connecting_to_new_room
+                    IRoomFrame.ExitReason.InvalidToken -> R.string.frame_room_exit_reason_invalid_token
+                    IRoomFrame.ExitReason.InvalidUrl -> R.string.frame_room_exit_reason_invalid_url
+                    IRoomFrame.ExitReason.PackageDecodeError -> R.string.frame_room_exit_reason_package_decode_error
+                    IRoomFrame.ExitReason.Unknown -> R.string.frame_room_exit_reason_unknown
+                }
+            )
+        )
         finish()
     }
 
@@ -286,7 +297,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 it.isEnabled = true
             }
             textInputArea.isEnabled = true
-            if(!isTextInputAreaCleared){
+            if (!isTextInputAreaCleared) {
                 textInputArea.setText("")
                 isTextInputAreaCleared = true
             }
@@ -310,7 +321,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun showTextMessage(serialId: Long, sender: String, stamp: Long, text: String) {
-        messageManager.insertMessage(ChatTextMessage(sender, stamp, text))
+        messageManager.insertMessage(ChatTextMessage(sender, stamp, serialId, text))
     }
 
     override fun showChatImageMessage(
@@ -319,7 +330,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         stamp: Long,
         serverFileId: UUID
     ): IFileTransferringPanel {
-        val message = ChatImageMessage(this,sender,stamp)
+        val message = ChatImageMessage(this, sender, stamp, serialId)
         messageManager.insertMessage(message)
         return message
     }
@@ -333,8 +344,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileSize: Long
     ): IFileTransferringPanel {
         val message = ChatFileMessage(
-            sender,stamp,
-            this,fileName,fileSize, fileId
+            sender, stamp, serialId,
+            this, fileName, fileSize, fileId
         )
         messageManager.insertMessage(message)
         return message
@@ -352,7 +363,13 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileNameGetter: IStringGetter,
         fileSize: Long
     ): IFileTransferringPanel {
-        val message = ChatFileUploadingMessage(Config.getUsername(),System.currentTimeMillis(),this,fileNameGetter,fileSize)
+        val message = ChatFileUploadingMessage(
+            Config.getUsername(),
+            System.currentTimeMillis(),
+            this,
+            fileNameGetter,
+            fileSize
+        )
         messageManager.insertMessage(message)
         return message
     }
@@ -361,10 +378,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         val stringBuilder = StringBuilder()
         stringBuilder.append(resources.getString(R.string.frame_room_systeminfo_userlist))
         var isFirst = true
-        for (user in userList){
-            if(isFirst){
+        for (user in userList) {
+            if (isFirst) {
                 isFirst = false
-            }else{
+            } else {
                 stringBuilder.append(", ")
             }
             stringBuilder.append(user.name)
@@ -373,25 +390,31 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun onUserJoined(user: User) {
-        showSystemMessage(String.format(
-            resources.getString(R.string.frame_room_systeminfo_userjoin),
-            user.name
-        ))
+        showSystemMessage(
+            String.format(
+                resources.getString(R.string.frame_room_systeminfo_userjoin),
+                user.name
+            )
+        )
     }
 
     override fun onUserLeft(user: User) {
-        showSystemMessage(String.format(
-            resources.getString(R.string.frame_room_systeminfo_userleft),
-            user.name
-        ))
+        showSystemMessage(
+            String.format(
+                resources.getString(R.string.frame_room_systeminfo_userleft),
+                user.name
+            )
+        )
     }
 
     override fun onUsernameChanged(user: User, previousName: String) {
-        showSystemMessage(String.format(
-            resources.getString(R.string.frame_room_systeminfo_changename),
-            previousName,
-            user.name
-        ))
+        showSystemMessage(
+            String.format(
+                resources.getString(R.string.frame_room_systeminfo_changename),
+                previousName,
+                user.name
+            )
+        )
     }
 
     fun getMessageManager(): MessageManager {
