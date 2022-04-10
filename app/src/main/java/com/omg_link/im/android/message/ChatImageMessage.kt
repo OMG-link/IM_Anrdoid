@@ -1,6 +1,7 @@
 package com.omg_link.im.android.message
 
 import android.content.Context
+import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,8 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.omg_link.im.R
+import com.omg_link.im.android.ImageViewActivity
 import com.omg_link.im.android.RoomActivity
-import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
@@ -103,7 +104,9 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
     }
 
     private fun openImage(context: Context){
-        AndroidUtils.openFile(File(imagePath), context, "image/*")
+        val intent = Intent(context, ImageViewActivity::class.java)
+        intent.putExtra("ImagePath",imagePath)
+        context.startActivity(intent)
     }
 
     private fun showPopupWindow(anchor: View) {
