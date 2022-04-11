@@ -26,6 +26,10 @@ class EmojiManager(
         reloadFromFolder()
     }
 
+    fun getEmojiNum():Int{
+        return emojiList.size
+    }
+
     fun addEmoji(fileObject: FileObject){
         val inputStream = FileInputStream(fileObject.file)
         val outputStream = FileOutputStream(roomActivity.room.fileManager.createUnnamedFileInFolder(emojiFolder).file)

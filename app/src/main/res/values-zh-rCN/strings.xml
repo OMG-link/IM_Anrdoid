@@ -81,4 +81,5 @@
     <string name="frame_room_exit_reason_invalid_url">找不到服务器</string>
     <string name="frame_room_exit_reason_package_decode_error">网络协议错误</string>
     <string name="frame_room_exit_reason_unknown">未知错误</string>
+    <string name="frame_room_no_emoji_found">你还没有收藏任何表情哦~</string>
 </resources>

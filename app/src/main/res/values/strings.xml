@@ -80,4 +80,5 @@
     <string name="frame_room_exit_reason_invalid_url">Server not found.</string>
     <string name="frame_room_exit_reason_package_decode_error">Network protocol error.</string>
     <string name="frame_room_exit_reason_unknown">Unknown error.</string>
+    <string name="frame_room_no_emoji_found">You have no emoji right now.</string>
 </resources>

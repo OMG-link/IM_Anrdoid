@@ -28,7 +28,14 @@ class InputManager(val roomActivity: RoomActivity) {
         }
         field = value
         when(field){
-            State.Emoji -> emojiArea.visibility = View.VISIBLE
+            State.Emoji -> {
+                emojiArea.visibility = View.VISIBLE
+                if(roomActivity.emojiManager.getEmojiNum()==0){
+                    roomActivity.room.showMessage(
+                        roomActivity.resources.getString(R.string.frame_room_no_emoji_found)
+                    )
+                }
+            }
             State.File -> roomActivity.selectFileToSend()
             State.Image -> roomActivity.selectImageToSend()
             else -> {}
