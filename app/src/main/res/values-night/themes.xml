@@ -15,6 +15,9 @@
     </style>
 
     <style name="Theme.IM.ConnectActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
         <item name="colorLoginTitle">@color/white</item>
         <item name="colorLoginSubTitle">@color/gray</item>
