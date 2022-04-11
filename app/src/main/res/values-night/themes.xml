@@ -15,6 +15,7 @@
     </style>
 
     <style name="Theme.IM.ConnectActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorLoginTitle">@color/white</item>
         <item name="colorLoginSubTitle">@color/gray</item>
         <item name="colorLoginHint">@color/light_gray_3</item>
@@ -32,7 +33,7 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/qq_pressed</item>
         <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomMainText">@color/light_gray_1</item>

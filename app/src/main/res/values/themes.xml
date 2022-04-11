@@ -40,6 +40,7 @@
     </style>
 
     <style name="Theme.IM.ConnectActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorLoginTitle">@color/black</item>
         <item name="colorLoginSubTitle">@color/gray</item>
         <item name="colorLoginHint">@color/dark_gray_3</item>
@@ -49,15 +50,15 @@
 
     <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/qq_pressed</item>
-        <item name="colorPrimaryVariant">@color/qq_pressed</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/qq_pressed</item>
         <!-- Customize your theme here. -->
         <item name="colorRoomChatInfo">@color/dark_green</item>
         <item name="colorRoomMainText">@color/black</item>
