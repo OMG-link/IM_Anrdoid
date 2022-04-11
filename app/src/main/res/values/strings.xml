@@ -17,7 +17,7 @@
     <string name="frame_room_image_no_permission">You blocked us from reading your files. You should allow us so that we can send images.</string>
     <string name="frame_room_cannot_resolve_image">[Image] Unable to resolve image.</string>
     <string name="frame_room_file_download_progress">Downloading:  %2$s/%3$s</string>
-    <string name="frame_room_file_download_start">Starting to download...</string>
+    <string name="frame_room_file_download_start">Starting to download…</string>
     <string name="frame_room_file_download_succeed">Downloaded</string>
     <string name="frame_room_file_download_failed">File download failed: %1$s</string>
     <string name="frame_room_button_download">DOWNLOAD</string>
@@ -25,7 +25,7 @@
     <string name="frame_room_button_file_send">FILE</string>
     <string name="activity_room_cannot_open_file">Can not find a proper way to open the file.</string>
     <string name="frame_login_download_other_version">DOWNLOAD OTHER VERSION</string>
-    <string name="frame_room_connecting_to_server">Please wait while connecting to the server...</string>
+    <string name="frame_room_connecting_to_server">Please wait while connecting to the server…</string>
     <string name="frame_room_file_upload_progress">Uploading: %1$s</string>
     <string name="frame_room_file_upload_start">Starting to upload: %1$s</string>
     <string name="frame_room_file_upload_failed">Failed to upload : %1$s</string>
@@ -75,10 +75,11 @@
     <string name="frame_room_emoji_added">Emoji saved!</string>
     <string name="frame_login_invalid_port">Invalid Port</string>
     <string name="frame_login_invalid_url">Invalid URL</string>
-    <string name="frame_room_exit_reason_client_exception">An error occured on client.</string>
+    <string name="frame_room_exit_reason_client_exception">An error occurred on client.</string>
     <string name="frame_room_exit_reason_connecting_to_new_room">Connecting to new room.</string>
     <string name="frame_room_exit_reason_invalid_url">Server not found.</string>
     <string name="frame_room_exit_reason_package_decode_error">Network protocol error.</string>
     <string name="frame_room_exit_reason_unknown">Unknown error.</string>
     <string name="frame_room_no_emoji_found">You have no emoji right now.</string>
+    <string name="frame_room_back_button" translatable="false"> <![CDATA[<]]> </string>
 </resources>

@@ -6,6 +6,60 @@
     android:layout_height="fill_parent"
     android:background="?attr/colorRoomBgr">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8sp"
+            android:orientation="horizontal"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.7">
+
+            <TextView
+                android:id="@+id/tvRoomName"
+                style="@style/Theme.IM.RoomTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                tools:text="Shot nameaALLLLLLLLLLLLLLLLLLLLLLLLLLLL Name" />
+
+            <TextView
+                android:id="@+id/tvRoomUserNum"
+                style="@style/Theme.IM.RoomTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="(233)" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnBack"
+            style="@style/Theme.IM.RoomTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11sp"
+            android:clickable="true"
+            android:padding="7sp"
+            android:text="@string/frame_room_back_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
         android:id="@+id/buttonRoomToBottom"
         android:layout_width="32sp"
@@ -33,7 +87,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutChatInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMessageArea"

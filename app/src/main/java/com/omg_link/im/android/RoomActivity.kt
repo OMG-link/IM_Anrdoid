@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var roomChatSendButton: Button
     private lateinit var buttonBar: LinearLayout
+    private lateinit var tvRoomTitle: TextView
+    private lateinit var tvRoomPlayerNum: TextView
 
     private lateinit var getImageActivity: ActivityResultLauncher<String>
     private lateinit var getFileActivity: ActivityResultLauncher<String>
@@ -57,6 +60,15 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     private var isConnectionBuilt: Boolean = false
     private var isTextInputAreaCleared: Boolean = false
+
+    private var userNum: Int = 0
+    @SuppressLint("SetTextI18n")
+    set(value) {
+        field = value
+        runOnUiThread {
+            tvRoomPlayerNum.text = "($value)"
+        }
+    }
 
     init {
         val activeClient = MainActivity.getActiveClient()
@@ -125,7 +137,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
 
-        title = Config.getServerIP() + ":" + Config.getServerPort()
+        tvRoomTitle = findViewById(R.id.tvRoomName)
+        tvRoomPlayerNum = findViewById(R.id.tvRoomUserNum)
 
         messageManager = MessageManager(
             this,
@@ -139,6 +152,12 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             this,
             findViewById(R.id.rvEmojiArea)
         )
+
+        // toolbar
+        title = Config.getServerIP() + ":" + Config.getServerPort()
+        findViewById<TextView>(R.id.btnBack).setOnClickListener {
+            onBackPressed()
+        }
 
         // textInputArea
         textInputArea = findViewById(R.id.roomChatInputArea)
@@ -254,6 +273,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             return
         }
         getImageActivity.launch("image/*")
+    }
+
+    override fun setTitle(title: CharSequence) {
+        tvRoomTitle.text = title
     }
 
     override fun onResume() {
@@ -387,6 +410,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             stringBuilder.append(user.name)
         }
         showSystemMessage(stringBuilder.toString())
+        userNum = userList.size
     }
 
     override fun onUserJoined(user: User) {
@@ -396,6 +420,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 user.name
             )
         )
+        userNum++
     }
 
     override fun onUserLeft(user: User) {
@@ -405,6 +430,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
                 user.name
             )
         )
+        userNum--
     }
 
     override fun onUsernameChanged(user: User, previousName: String) {

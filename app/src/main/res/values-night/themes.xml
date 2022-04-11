@@ -22,7 +22,7 @@
         <item name="colorLoginVersionInfo">@color/gray</item>
     </style>
 
-    <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.IM.RoomActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
