@@ -25,7 +25,6 @@ class MessageManager(
 
     private var unreadMessageCount: Int = 0
         set(value) {
-            if (field == value) return
             field = value
             addEvent {
                 if (value == 0) {
@@ -65,6 +64,14 @@ class MessageManager(
                     RecyclerView.SCROLL_STATE_DRAGGING -> false
                     RecyclerView.SCROLL_STATE_SETTLING -> false
                     else -> throw InvalidParameterException()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if(dy>0&&unreadMessageCount==0){
+                    toBottomButton.visibility = View.VISIBLE
+                    toBottomButton.text = "v"
                 }
             }
         })
