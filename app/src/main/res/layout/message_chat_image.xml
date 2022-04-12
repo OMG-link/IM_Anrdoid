@@ -19,7 +19,7 @@
         tools:text="Error Info"
         tools:visibility="visible" />
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -27,6 +27,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvErrorInfo"
+        app:riv_corner_radius="12sp"
         tools:srcCompat="@tools:sample/avatars"
         tools:visibility="visible" />
 
