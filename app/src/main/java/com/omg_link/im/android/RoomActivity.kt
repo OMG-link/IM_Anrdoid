@@ -219,6 +219,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
 
         registerActivities()
+        setButtonsEnabled(false)
 
         room.roomFrame = this
 
@@ -315,15 +316,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         isConnectionBuilt = true
         messageManager.clearMessageArea()
         runOnUiThread {
-            updateChatSendButtonState()
-            buttonBar.forEach {
-                it.isEnabled = true
-            }
-            textInputArea.isEnabled = true
-            if (!isTextInputAreaCleared) {
-                textInputArea.setText("")
-                isTextInputAreaCleared = true
-            }
+            setButtonsEnabled(true)
         }
     }
 
@@ -331,11 +324,20 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         isConnectionBuilt = false
         showSystemMessage(resources.getString(R.string.frame_room_disconnected))
         runOnUiThread {
-            updateChatSendButtonState()
-            buttonBar.forEach {
-                it.isEnabled = false
-            }
-            textInputArea.isEnabled = false
+            setButtonsEnabled(false)
+        }
+    }
+
+    private fun setButtonsEnabled(enabled: Boolean){
+        swipeRefreshLayout.isEnabled = enabled
+        textInputArea.isEnabled = enabled
+        if (enabled&&!isTextInputAreaCleared) {
+            textInputArea.setText("")
+            isTextInputAreaCleared = true
+        }
+        updateChatSendButtonState()
+        buttonBar.forEach {
+            it.isEnabled = enabled
         }
     }
 
