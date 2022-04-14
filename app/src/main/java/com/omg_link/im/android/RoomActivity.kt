@@ -2,19 +2,21 @@ package com.omg_link.im.android
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.MotionEvent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -31,7 +33,10 @@ import com.omg_link.im.core.user_manager.User
 import com.omg_link.utils.IStringGetter
 import java.io.File
 import java.util.*
+import java.util.logging.Level
 import kotlin.concurrent.thread
+import kotlin.math.max
+
 
 class RoomActivity : AppCompatActivity(), IRoomFrame {
 
@@ -62,13 +67,13 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     private var isTextInputAreaCleared: Boolean = false
 
     private var userNum: Int = 0
-    @SuppressLint("SetTextI18n")
-    set(value) {
-        field = value
-        runOnUiThread {
-            tvRoomPlayerNum.text = "($value)"
+        @SuppressLint("SetTextI18n")
+        set(value) {
+            field = value
+            runOnUiThread {
+                tvRoomPlayerNum.text = "($value)"
+            }
         }
-    }
 
     init {
         val activeClient = MainActivity.getActiveClient()
@@ -132,6 +137,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,17 +197,17 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         buttonBar = findViewById(R.id.linearLayoutButtonBar)
 
         // imageSendButton
-        findViewById<Button>(R.id.buttonRoomImageSend).setOnClickListener {
+        findViewById<ImageView>(R.id.buttonRoomImageSend).setOnClickListener {
             inputManager.state = InputManager.State.Image
         }
 
         // fileSendButton
-        findViewById<Button>(R.id.buttonRoomFileSend).setOnClickListener {
+        findViewById<ImageView>(R.id.buttonRoomFileSend).setOnClickListener {
             inputManager.state = InputManager.State.File
         }
 
         // emojiSendButton
-        findViewById<Button>(R.id.buttonRoomEmojiSend).setOnClickListener {
+        findViewById<ImageView>(R.id.buttonRoomEmojiSend).setOnClickListener {
             inputManager.state = InputManager.State.Emoji
         }
 
@@ -216,6 +222,44 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMessageArea)
         swipeRefreshLayout.setOnRefreshListener {
             messageManager.showMoreMessage()
+        }
+
+        // DecorFitsSystemWindows
+        window.decorView.setOnApplyWindowInsetsListener { v, insets ->
+            window.statusBarColor = Color.TRANSPARENT
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            // set status bar space and navigation bar space
+            val windowInsetsCompat = ViewCompat.getRootWindowInsets(v)
+            findViewById<Space>(R.id.spaceStatusBar).layoutParams.height =
+                windowInsetsCompat?.getInsets(WindowInsetsCompat.Type.systemBars())?.top
+                    ?: 0
+            findViewById<Space>(R.id.spaceNavigationBar).layoutParams.height =
+                windowInsetsCompat?.getInsets(WindowInsetsCompat.Type.systemBars())?.bottom
+                    ?: 0
+            // Input method callback
+            window.decorView.setWindowInsetsAnimationCallback(object :
+                WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
+
+                val space = findViewById<Space>(R.id.spaceInputMethod)
+
+                override fun onProgress(
+                    insets: WindowInsets,
+                    runningAnimations: MutableList<WindowInsetsAnimation>
+                ): WindowInsets {
+                    val imeHeight = max(
+                        insets.getInsets(WindowInsets.Type.ime()).bottom -
+                                insets.getInsets(WindowInsets.Type.systemBars()).bottom,
+                        0
+                    )
+                    space.layoutParams.height = imeHeight
+                    space.layoutParams = space.layoutParams
+                    return insets
+                }
+
+            })
+            // remove listener
+            window.decorView.setOnApplyWindowInsetsListener(null)
+            return@setOnApplyWindowInsetsListener v.onApplyWindowInsets(insets)
         }
 
         registerActivities()
@@ -328,10 +372,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
     }
 
-    private fun setButtonsEnabled(enabled: Boolean){
+    private fun setButtonsEnabled(enabled: Boolean) {
         swipeRefreshLayout.isEnabled = enabled
         textInputArea.isEnabled = enabled
-        if (enabled&&!isTextInputAreaCleared) {
+        if (enabled && !isTextInputAreaCleared) {
             textInputArea.setText("")
             isTextInputAreaCleared = true
         }
