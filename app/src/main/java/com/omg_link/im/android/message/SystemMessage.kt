@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils
+import com.omg_link.im.databinding.MessageSystemInfoBinding
 
 class SystemMessage(val systemInfo: String) : Message(System.currentTimeMillis()) {
     override val isUserMessage = false
@@ -16,7 +17,9 @@ class SystemMessageHolder(itemView: View) : MessageHolder(itemView) {
 
     constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
 
-    private val tvInfo: TextView = itemView.findViewById(R.id.tvMessageSystemInfo)
+    private val binding = MessageSystemInfoBinding.bind(itemView.findViewById(R.id.rootMessageSystemInfo))
+
+    private val tvInfo: TextView = binding.tvMessageSystemInfo
 
     fun bind(systemMessage: SystemMessage) {
         super.bind(systemMessage as Message)

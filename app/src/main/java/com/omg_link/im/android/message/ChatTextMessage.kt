@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
+import com.omg_link.im.databinding.MessageChatTextBinding
 
 class ChatTextMessage(username: String, time: Long,val serialId: Long, val text: String) :
     ChatMessage(username, time) {
@@ -16,7 +17,9 @@ class ChatTextMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
     constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
 
-    private val tvChatText: TextView = itemView.findViewById(R.id.tvChatText)
+    private val binding = MessageChatTextBinding.bind(itemView.findViewById(R.id.rootMessageChatText))
+
+    private val tvChatText: TextView = binding.tvChatText
 
     fun bind(chatTextMessage: ChatTextMessage) {
         super.bind(chatTextMessage as ChatMessage)

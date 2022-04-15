@@ -17,9 +17,15 @@ import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
+import com.omg_link.im.databinding.MessageChatImageBinding
 import java.io.File
 
-class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: Long, val serialId: Long) : ChatMessage(username, stamp),
+class ChatImageMessage(
+    val roomActivity: RoomActivity,
+    username: String,
+    stamp: Long,
+    val serialId: Long
+) : ChatMessage(username, stamp),
     IFileTransferringPanel, ISelfUpdatable<ChatImageMessageHolder> {
 
     override val type = Type.IMAGE
@@ -76,7 +82,13 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
             State.Downloaded -> {
                 val bitmap = BitmapUtils.getBitmap(imagePath)
                 if (bitmap == null) {
-                    ivImage.setImageDrawable(ResourcesCompat.getDrawable(roomActivity.resources,R.drawable.image_resolve_failed,null))
+                    ivImage.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            roomActivity.resources,
+                            R.drawable.image_resolve_failed,
+                            null
+                        )
+                    )
                     ivImage.scaleType = ImageView.ScaleType.FIT_START
                     tvErrorInfo.visibility = View.GONE
                     ivImage.visibility = View.VISIBLE
@@ -103,9 +115,9 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
         }
     }
 
-    private fun openImage(context: Context){
+    private fun openImage(context: Context) {
         val intent = Intent(context, ImageViewActivity::class.java)
-        intent.putExtra("ImagePath",imagePath)
+        intent.putExtra("ImagePath", imagePath)
         context.startActivity(intent)
     }
 
@@ -193,8 +205,10 @@ class ChatImageMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
     constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
 
-    val tvErrorInfo: TextView = itemView.findViewById(R.id.tvErrorInfo)
-    val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
+    private val binding = MessageChatImageBinding.bind(itemView.findViewById(R.id.rootMessageChatImage))
+
+    val tvErrorInfo: TextView = binding.tvErrorInfo
+    val ivImage: ImageView = binding.ivImage
 
     private lateinit var chatImageMessage: ChatImageMessage
 

@@ -12,11 +12,14 @@ import com.omg_link.im.core.Client
 import com.omg_link.im.core.config.Config
 import com.omg_link.im.core.config.ConfigSetFailedException
 import com.omg_link.im.core.gui.IConnectFrame
+import com.omg_link.im.databinding.ActivityLoginBinding
 import kotlin.concurrent.thread
 
 class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
     private val client: Client
+
+    private lateinit var binding: ActivityLoginBinding
 
     init {
         val activeClient = MainActivity.getActiveClient()
@@ -29,14 +32,15 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val urlInputArea: EditText = findViewById(R.id.urlInputArea)
-        val nameInputArea: EditText = findViewById(R.id.nameInputArea)
-        val tokenInputArea: EditText = findViewById(R.id.tokenInputArea)
-        val fileManagerButton: Button = findViewById(R.id.fileManagerButton)
-        val connectButton: Button = findViewById(R.id.connectButton)
-        val downloadOtherVersionButton: Button = findViewById(R.id.downloadApkButton)
+        val urlInputArea: EditText = binding.urlInputArea
+        val nameInputArea: EditText = binding.nameInputArea
+        val tokenInputArea: EditText = binding.tokenInputArea
+        val fileManagerButton: Button = binding.fileManagerButton
+        val connectButton: Button = binding.connectButton
+        val downloadOtherVersionButton: Button = binding.downloadApkButton
 
         urlInputArea.setText(Config.getUrl())
         nameInputArea.setText(Config.getUsername())
@@ -69,7 +73,7 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
             client.gui.openInBrowser("https://www.omg-link.com/IM/")
         }
 
-        /*val debugButton: Button = findViewById(R.id.debugButton)
+        /*val debugButton: Button = binding.debugButton
         debugButton.setOnClickListener {
             handler.showCheckBox("Test message.",object:IConfirmDialogCallback{
                 override fun onPositiveInput() {
@@ -83,12 +87,12 @@ class ConnectActivity : AppCompatActivity(), IConnectFrame {
             })
         }*/
 
-        findViewById<TextView>(R.id.tvCoreVersion).text = String.format(
+        binding.tvCoreVersion.text = String.format(
             resources.getString(R.string.frame_login_core_version),
             Config.version
         )
 
-        findViewById<TextView>(R.id.tvApkVersion).text = String.format(
+        binding.tvApkVersion.text = String.format(
             resources.getString(R.string.frame_login_apk_version),
             AndroidUtils.getApkVersion(this)
         )

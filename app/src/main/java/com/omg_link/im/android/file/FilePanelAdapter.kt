@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.omg_link.im.R
+import com.omg_link.im.databinding.DownloadedFileBinding
 
 class FilePanelAdapter(private val data:List<DownloadedFile>):RecyclerView.Adapter<FilePanelHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilePanelHolder {
@@ -25,10 +26,12 @@ class FilePanelAdapter(private val data:List<DownloadedFile>):RecyclerView.Adapt
 }
 
 class FilePanelHolder private constructor(itemView: View):RecyclerView.ViewHolder(itemView){
-    val tvFileName = itemView.findViewById<TextView>(R.id.tvDownloadedFileFileName)
-    val tvFileSize = itemView.findViewById<TextView>(R.id.tvDownloadedFileFileSize)
-    val btnOpen = itemView.findViewById<Button>(R.id.btnOpen)
-    val btnDelete = itemView.findViewById<Button>(R.id.btnDelete)
+    private val binding = DownloadedFileBinding.bind(itemView)
+
+    val tvFileName = binding.tvDownloadedFileFileName
+    val tvFileSize = binding.tvDownloadedFileFileSize
+    val btnOpen = binding.btnOpen
+    val btnDelete = binding.btnDelete
 
     fun bind(file: DownloadedFile){
         file.onDataUpdated(this)

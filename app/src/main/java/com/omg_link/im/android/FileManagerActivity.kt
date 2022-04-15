@@ -12,14 +12,17 @@ import com.omg_link.im.android.file.FilePanelAdapter
 import com.omg_link.im.core.Client
 import com.omg_link.im.core.config.Config
 import com.omg_link.im.core.file_manager.ClientFileManager
+import com.omg_link.im.databinding.ActivityFileManagerBinding
 import java.io.File
 import java.io.FileNotFoundException
 
 class FileManagerActivity : AppCompatActivity() {
 
+    private val client: Client
+    private lateinit var binding: ActivityFileManagerBinding
+
     private val downloadedFileList = ArrayList<DownloadedFile>()
     private val adapter = FilePanelAdapter(downloadedFileList)
-    private val client: Client
 
     init {
         val activeClient = MainActivity.getActiveClient()
@@ -32,16 +35,17 @@ class FileManagerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_file_manager)
+        binding = ActivityFileManagerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         title = resources.getString(R.string.frame_filemanager_title)
 
-        val downloadedFileRecyclerView = findViewById<RecyclerView>(R.id.rvFiles)
+        val downloadedFileRecyclerView = binding.rvFiles
         downloadedFileRecyclerView.layoutManager = LinearLayoutManager(this)
         downloadedFileRecyclerView.adapter = adapter
 
-        findViewById<Button>(R.id.btnRefresh).setOnClickListener { updateFromDirectory() }
-        findViewById<Button>(R.id.btnClear).setOnClickListener { deleteAll() }
+        binding.btnRefresh.setOnClickListener { updateFromDirectory() }
+        binding.btnClear.setOnClickListener { deleteAll() }
 
         updateFromDirectory()
 

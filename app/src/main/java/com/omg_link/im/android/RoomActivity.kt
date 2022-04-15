@@ -30,6 +30,7 @@ import com.omg_link.im.core.config.Config
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import com.omg_link.im.core.gui.IRoomFrame
 import com.omg_link.im.core.user_manager.User
+import com.omg_link.im.databinding.ActivityRoomBinding
 import com.omg_link.utils.IStringGetter
 import java.io.File
 import java.util.*
@@ -50,6 +51,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     private lateinit var inputManager: InputManager
     private lateinit var messageManager: MessageManager
     lateinit var emojiManager: EmojiManager
+
+    private lateinit var binding: ActivityRoomBinding
 
     lateinit var textInputArea: EditText
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -141,32 +144,33 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_room)
+        binding = ActivityRoomBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        tvRoomTitle = findViewById(R.id.tvRoomName)
-        tvRoomPlayerNum = findViewById(R.id.tvRoomUserNum)
+        tvRoomTitle = binding.tvRoomName
+        tvRoomPlayerNum = binding.tvRoomUserNum
 
         messageManager = MessageManager(
             this,
-            findViewById(R.id.rvMessageArea),
-            findViewById(R.id.buttonRoomToBottom)
+            binding.rvMessageArea,
+            binding.buttonRoomToBottom
         )
         inputManager = InputManager(
             this
         )
         emojiManager = EmojiManager(
             this,
-            findViewById(R.id.rvEmojiArea)
+            binding.rvEmojiArea
         )
 
         // toolbar
         title = Config.getServerIP() + ":" + Config.getServerPort()
-        findViewById<TextView>(R.id.btnBack).setOnClickListener {
+        binding.btnBack.setOnClickListener {
             onBackPressed()
         }
 
         // textInputArea
-        textInputArea = findViewById(R.id.roomChatInputArea)
+        textInputArea = binding.roomChatInputArea
         textInputArea.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -184,7 +188,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
 
         // chatSendButton
-        roomChatSendButton = findViewById(R.id.buttonRoomChatSend)
+        roomChatSendButton = binding.buttonRoomChatSend
         roomChatSendButton.setOnClickListener {
             val tempString = textInputArea.text.toString()
             textInputArea.setText("")
@@ -194,32 +198,32 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         }
 
         // buttonBar
-        buttonBar = findViewById(R.id.linearLayoutButtonBar)
+        buttonBar = binding.linearLayoutButtonBar
 
         // imageSendButton
-        findViewById<ImageView>(R.id.buttonRoomImageSend).setOnClickListener {
+        binding.buttonRoomImageSend.setOnClickListener {
             inputManager.state = InputManager.State.Image
         }
 
         // fileSendButton
-        findViewById<ImageView>(R.id.buttonRoomFileSend).setOnClickListener {
+        binding.buttonRoomFileSend.setOnClickListener {
             inputManager.state = InputManager.State.File
         }
 
         // emojiSendButton
-        findViewById<ImageView>(R.id.buttonRoomEmojiSend).setOnClickListener {
+        binding.buttonRoomEmojiSend.setOnClickListener {
             inputManager.state = InputManager.State.Emoji
         }
 
         // messageArea
-        findViewById<RecyclerView>(R.id.rvMessageArea).setOnTouchListener { _, event ->
+        binding.rvMessageArea.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 inputManager.state = InputManager.State.None
             }
             return@setOnTouchListener false
         }
 
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMessageArea)
+        swipeRefreshLayout = binding.swipeRefreshLayoutMessageArea
         swipeRefreshLayout.setOnRefreshListener {
             messageManager.showMoreMessage()
         }
@@ -230,17 +234,17 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             WindowCompat.setDecorFitsSystemWindows(window, false)
             // set status bar space and navigation bar space
             val windowInsetsCompat = ViewCompat.getRootWindowInsets(v)
-            findViewById<Space>(R.id.spaceStatusBar).layoutParams.height =
+            binding.spaceStatusBar.layoutParams.height =
                 windowInsetsCompat?.getInsets(WindowInsetsCompat.Type.systemBars())?.top
                     ?: 0
-            findViewById<Space>(R.id.spaceNavigationBar).layoutParams.height =
+            binding.spaceNavigationBar.layoutParams.height =
                 windowInsetsCompat?.getInsets(WindowInsetsCompat.Type.systemBars())?.bottom
                     ?: 0
             // Input method callback
             window.decorView.setWindowInsetsAnimationCallback(object :
                 WindowInsetsAnimation.Callback(DISPATCH_MODE_STOP) {
 
-                val space = findViewById<Space>(R.id.spaceInputMethod)
+                val space = binding.spaceInputMethod
 
                 override fun onProgress(
                     insets: WindowInsets,

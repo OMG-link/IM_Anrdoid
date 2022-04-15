@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils
+import com.omg_link.im.databinding.MessageTimeBinding
 import java.security.InvalidParameterException
 import java.util.*
 
@@ -107,7 +108,9 @@ class TimeMessageHolder(itemView: View) : MessageHolder(itemView) {
 
     constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
 
-    private val tvTime: TextView = itemView.findViewById(R.id.tvMessageTime)
+    private val binding = MessageTimeBinding.bind(itemView.findViewById(R.id.rootMessageTime))
+
+    private val tvTime: TextView = binding.tvMessageTime
 
     fun bind(timeMessage: TimeMessage) {
         super.bind(timeMessage as Message)

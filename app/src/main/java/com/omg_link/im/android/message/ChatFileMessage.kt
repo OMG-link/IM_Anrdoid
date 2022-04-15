@@ -13,6 +13,7 @@ import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import com.omg_link.im.core.protocol.data_pack.file_transfer.FileTransferType
+import com.omg_link.im.databinding.MessageChatFileBinding
 import com.omg_link.utils.FileUtils
 import java.io.File
 import java.util.*
@@ -142,10 +143,12 @@ class ChatFileMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
     constructor(context: Context,parent: ViewGroup) : this(createView(context,parent))
 
-    val layoutBubble: ConstraintLayout = itemView.findViewById(R.id.layoutMessageChatFileBubble)
-    val tvFileName: TextView = itemView.findViewById(R.id.tvMessageChatFileFileName)
-    val tvFileSize: TextView = itemView.findViewById(R.id.tvMessageChatFileFileSize)
-    val tvDownloadInfo: TextView = itemView.findViewById(R.id.tvMessageChatFileDownloadInfo)
+    private val binding = MessageChatFileBinding.bind(itemView.findViewById(R.id.rootMessageChatFile))
+
+    val layoutBubble: ConstraintLayout = binding.layoutMessageChatFileBubble
+    val tvFileName: TextView = binding.tvMessageChatFileFileName
+    val tvFileSize: TextView = binding.tvMessageChatFileFileSize
+    val tvDownloadInfo: TextView = binding.tvMessageChatFileDownloadInfo
 
     private lateinit var chatFileMessage: ChatFileMessage
 

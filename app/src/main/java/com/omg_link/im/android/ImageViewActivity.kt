@@ -1,25 +1,22 @@
 package com.omg_link.im.android
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.github.chrisbanes.photoview.PhotoView
-import com.omg_link.im.R
 import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.core.Client
-import com.omg_link.im.core.ClientRoom
+import com.omg_link.im.databinding.ActivityImageViewBinding
 import java.util.*
-import java.util.logging.Level
 import kotlin.math.max
 import kotlin.math.min
 
 class ImageViewActivity : AppCompatActivity() {
 
     private val client: Client
+    private lateinit var binding: ActivityImageViewBinding
 
     private lateinit var layout: FrameLayout
     private lateinit var photoView: PhotoView
@@ -36,10 +33,11 @@ class ImageViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_view)
+        binding = ActivityImageViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        layout = findViewById(R.id.layoutImageViewBackground)
-        photoView = findViewById(R.id.fullScreenImageView)
+        layout = binding.layoutImageViewBackground
+        photoView = binding.fullScreenImageView
 
         val imagePath = intent.getStringExtra("ImagePath")!!
         bitmap = BitmapUtils.getBitmap(imagePath)!!
