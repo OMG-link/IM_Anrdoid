@@ -82,6 +82,7 @@ class ChatImageMessage(
             State.Downloaded -> {
                 val bitmap = BitmapUtils.getBitmap(imagePath)
                 if (bitmap == null) {
+                    ivImage.layoutParams.height = 300
                     ivImage.setImageDrawable(
                         ResourcesCompat.getDrawable(
                             roomActivity.resources,
@@ -89,7 +90,10 @@ class ChatImageMessage(
                             null
                         )
                     )
+                    ivImage.adjustViewBounds = true
                     ivImage.scaleType = ImageView.ScaleType.FIT_START
+                    ivImage.setOnClickListener(null)
+                    ivImage.setOnLongClickListener(null)
                     tvErrorInfo.visibility = View.GONE
                     ivImage.visibility = View.VISIBLE
                 } else {
