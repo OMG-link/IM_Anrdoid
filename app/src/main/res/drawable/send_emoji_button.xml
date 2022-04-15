@@ -4,5 +4,8 @@
         android:state_pressed="true"
         android:drawable="@drawable/skin_aio_panel_emotion_press" />
     <item
+        android:state_selected="true"
+        android:drawable="@drawable/skin_aio_panel_emotion_press" />
+    <item
         android:drawable="@drawable/skin_aio_panel_emotion_nor" />
 </selector>

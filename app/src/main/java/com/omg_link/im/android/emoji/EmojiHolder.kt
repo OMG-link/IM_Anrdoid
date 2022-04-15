@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.omg_link.im.android.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
@@ -26,7 +25,7 @@ class EmojiHolder (itemView: View, private val room: ClientRoom) :
     fun bind(fileObject: FileObject){
         val bitmap = BitmapUtils.getBitmap(fileObject.file.absolutePath)
         if(bitmap==null){
-            ivEmoji.setImageDrawable(ResourcesCompat.getDrawable(itemView.context.resources,R.drawable.icon_error,null))
+            ivEmoji.setImageDrawable(ResourcesCompat.getDrawable(itemView.context.resources,R.drawable.image_resolve_failed,null))
             ivEmoji.setOnClickListener(null)
         }else{
             ivEmoji.setImageBitmap(bitmap)

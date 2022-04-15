@@ -76,10 +76,10 @@ class ChatImageMessage(val roomActivity: RoomActivity, username: String, stamp: 
             State.Downloaded -> {
                 val bitmap = BitmapUtils.getBitmap(imagePath)
                 if (bitmap == null) {
-                    tvErrorInfo.setTextColor(holder.getColor(R.color.red))
-                    tvErrorInfo.text = holder.getString(R.string.frame_room_cannot_resolve_image)
-                    tvErrorInfo.visibility = View.VISIBLE
-                    ivImage.visibility = View.GONE
+                    ivImage.setImageDrawable(ResourcesCompat.getDrawable(roomActivity.resources,R.drawable.image_resolve_failed,null))
+                    ivImage.scaleType = ImageView.ScaleType.FIT_START
+                    tvErrorInfo.visibility = View.GONE
+                    ivImage.visibility = View.VISIBLE
                 } else {
                     ivImage.layoutParams.height = if (bitmap.height < 100) {
                         bitmap.height * 3
