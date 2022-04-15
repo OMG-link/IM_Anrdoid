@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import com.makeramen.roundedimageview.RoundedImageView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
 import com.omg_link.im.databinding.MessageChatBinding
