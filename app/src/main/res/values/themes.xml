@@ -19,7 +19,7 @@
         <item name="colorLoginInputAreaText">@color/black</item>
         <item name="colorLoginVersionInfo">@color/gray</item>
 
-        <item name="colorRoomChatInfo">@color/dark_green</item>
+        <item name="colorRoomChatInfo">@color/gray</item>
         <item name="colorRoomMainText">@color/black</item>
         <item name="colorRoomSubText">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>
@@ -64,7 +64,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/qq_pressed</item>
         <!-- Customize your theme here. -->
-        <item name="colorRoomChatInfo">@color/dark_green</item>
+        <item name="colorRoomChatInfo">@color/gray</item>
         <item name="colorRoomMainText">@color/black</item>
         <item name="colorRoomSubText">@color/gray</item>
         <item name="colorRoomInputBlockBgr">@color/light_gray_1</item>

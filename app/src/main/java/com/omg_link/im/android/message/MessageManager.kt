@@ -186,7 +186,10 @@ class MessageManager(
         isProcessingEvents = true
         while (!eventQueue.isEmpty()) {
             val event = eventQueue.poll()
-                ?: continue
+            if(event==null){
+                eventQueue.clear()
+                break
+            }
             event.run()
         }
         isProcessingEvents = false

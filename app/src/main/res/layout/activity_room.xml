@@ -135,7 +135,6 @@
             android:layout_weight="1"
             android:background="@drawable/bgr_inputarea"
             android:enabled="false"
-            android:hint="@string/frame_room_input_chat"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:maxHeight="100sp"
@@ -165,7 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:paddingVertical="4dp"
+        android:paddingVertical="6dp"
         app:layout_constraintBottom_toTopOf="@+id/rvEmojiArea"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

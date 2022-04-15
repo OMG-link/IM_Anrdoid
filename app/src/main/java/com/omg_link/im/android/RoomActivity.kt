@@ -345,18 +345,20 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
     }
 
     override fun exitRoom(reason: IRoomFrame.ExitReason) {
-        room.showMessage(
-            resources.getString(
-                when (reason) {
-                    IRoomFrame.ExitReason.ClientException -> R.string.frame_room_exit_reason_client_exception
-                    IRoomFrame.ExitReason.ConnectingToNewRoom -> R.string.frame_room_exit_reason_connecting_to_new_room
-                    IRoomFrame.ExitReason.InvalidToken -> R.string.frame_room_exit_reason_invalid_token
-                    IRoomFrame.ExitReason.InvalidUrl -> R.string.frame_room_exit_reason_invalid_url
-                    IRoomFrame.ExitReason.PackageDecodeError -> R.string.frame_room_exit_reason_package_decode_error
-                    IRoomFrame.ExitReason.Unknown -> R.string.frame_room_exit_reason_unknown
-                }
+        if(reason!=IRoomFrame.ExitReason.ConnectingToNewRoom){
+            room.showMessage(
+                resources.getString(
+                    when (reason) {
+                        IRoomFrame.ExitReason.ClientException -> R.string.frame_room_exit_reason_client_exception
+                        IRoomFrame.ExitReason.ConnectingToNewRoom -> R.string.frame_room_exit_reason_connecting_to_new_room
+                        IRoomFrame.ExitReason.InvalidToken -> R.string.frame_room_exit_reason_invalid_token
+                        IRoomFrame.ExitReason.InvalidUrl -> R.string.frame_room_exit_reason_invalid_url
+                        IRoomFrame.ExitReason.PackageDecodeError -> R.string.frame_room_exit_reason_package_decode_error
+                        IRoomFrame.ExitReason.Unknown -> R.string.frame_room_exit_reason_unknown
+                    }
+                )
             )
-        )
+        }
         finish()
     }
 

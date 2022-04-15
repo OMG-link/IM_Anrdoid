@@ -23,6 +23,7 @@
         android:id="@+id/ivImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
         android:scaleType="fitStart"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
