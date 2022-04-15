@@ -26,6 +26,8 @@ abstract class Message(val stamp: Long) {
     abstract val isUserMessage: Boolean
     abstract val type: Int
 
+    open val isSelfSent: Boolean = false
+
     var messageManager: MessageManager? = null
 
 }

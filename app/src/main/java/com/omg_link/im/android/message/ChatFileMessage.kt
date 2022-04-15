@@ -5,15 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.omg_link.im.android.MainActivity
 import com.omg_link.im.R
 import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
-import com.omg_link.im.core.protocol.data_pack.file_transfer.FileTransferType
-import com.omg_link.im.databinding.MessageChatFileBinding
+import com.omg_link.im.core.protocol.file_transfer.FileTransferType
 import com.omg_link.utils.FileUtils
 import java.io.File
 import java.util.*
@@ -22,6 +20,7 @@ import kotlin.concurrent.thread
 class ChatFileMessage(
     username: String,
     stamp: Long,
+    override val isSelfSent: Boolean,
     val serialId: Long,
     private val activity: RoomActivity,
     private var fileName: String,
@@ -141,14 +140,12 @@ class ChatFileMessage(
 
 class ChatFileMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
-    constructor(context: Context,parent: ViewGroup) : this(createView(context,parent))
+    constructor(context: Context,parent: ViewGroup, isSelfSent: Boolean) : this(createView(context,parent,isSelfSent))
 
-    private val binding = MessageChatFileBinding.bind(itemView.findViewById(R.id.rootMessageChatFile))
-
-    val layoutBubble: ConstraintLayout = binding.layoutMessageChatFileBubble
-    val tvFileName: TextView = binding.tvMessageChatFileFileName
-    val tvFileSize: TextView = binding.tvMessageChatFileFileSize
-    val tvDownloadInfo: TextView = binding.tvMessageChatFileDownloadInfo
+    val layoutBubble: ConstraintLayout = itemView.findViewById(R.id.layoutMessageChatFileBubble)
+    val tvFileName: TextView = itemView.findViewById(R.id.tvMessageChatFileFileName)
+    val tvFileSize: TextView = itemView.findViewById(R.id.tvMessageChatFileFileSize)
+    val tvDownloadInfo: TextView = itemView.findViewById(R.id.tvMessageChatFileDownloadInfo)
 
     private lateinit var chatFileMessage: ChatFileMessage
 
@@ -162,9 +159,13 @@ class ChatFileMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
     }
 
     companion object {
-        fun createView(context: Context, parent: ViewGroup): View {
-            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_file)
-            return createView(context, parent, listOf(view))
+        fun createView(context: Context, parent: ViewGroup, isSelfSent: Boolean): View {
+            val view = ViewUtils.createLayoutFromXML(context, parent, if(isSelfSent){
+                R.layout.message_chat_right_file
+            }else{
+                R.layout.message_chat_left_file
+            })
+            return ChatMessageHolder.createView(context, parent, isSelfSent, listOf(view))
         }
     }
 

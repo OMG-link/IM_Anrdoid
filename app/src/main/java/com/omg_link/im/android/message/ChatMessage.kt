@@ -5,11 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
-import com.makeramen.roundedimageview.RoundedImageView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
-import com.omg_link.im.databinding.MessageChatBinding
 
 abstract class ChatMessage(val username: String, stamp: Long) : Message(stamp) {
     final override val isUserMessage = true
@@ -17,9 +14,7 @@ abstract class ChatMessage(val username: String, stamp: Long) : Message(stamp) {
 
 abstract class ChatMessageHolder protected constructor(itemView: View) : MessageHolder(itemView) {
 
-    private val binding = MessageChatBinding.bind(itemView.findViewById(R.id.rootMessageChat))
-
-    private val tvUsername: TextView = binding.tvUsername
+    private val tvUsername: TextView = itemView.findViewById(R.id.tvUsername)
 
     protected fun bind(chatMessage: ChatMessage) {
         super.bind(chatMessage as Message)
@@ -27,8 +22,12 @@ abstract class ChatMessageHolder protected constructor(itemView: View) : Message
     }
 
     companion object {
-        fun createView(context: Context, parent: ViewGroup, children: List<View>? = null): View {
-            val view = createLayoutFromXML(context, parent, R.layout.message_chat)
+        fun createView(context: Context, parent: ViewGroup, isSelfSent: Boolean, children: List<View>? = null): View {
+            val view = createLayoutFromXML(context, parent, if(isSelfSent){
+                R.layout.message_chat_right
+            }else{
+                R.layout.message_chat_left
+            })
             if (children != null) {
                 val layoutChildren: LinearLayout = view.findViewById(R.id.layoutMessageChatChildren)
                 for (child in children) {

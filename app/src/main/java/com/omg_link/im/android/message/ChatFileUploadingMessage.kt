@@ -9,10 +9,9 @@ import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
-import com.omg_link.im.databinding.MessageChatFileUploadingBinding
+import com.omg_link.im.databinding.MessageChatRightFileUploadingBinding
 import com.omg_link.utils.FileUtils
 import com.omg_link.utils.IStringGetter
-import java.io.File
 
 class ChatFileUploadingMessage(
     username: String,
@@ -120,7 +119,7 @@ class ChatFileUploadingMessageHolder(itemView: View) : ChatMessageHolder(itemVie
 
     constructor(context: Context,parent: ViewGroup) : this(createView(context,parent))
 
-    private val binding = MessageChatFileUploadingBinding.bind(itemView.findViewById(R.id.rootMessageChatFileUploading))
+    private val binding = MessageChatRightFileUploadingBinding.bind(itemView.findViewById(R.id.rootMessageChatFileUploading))
 
     val mainInfo: TextView = binding.tvMessageChatFileUploadingMainInfo
     val subInfo: TextView = binding.tvMessageChatFileUploadingSubInfo
@@ -138,7 +137,7 @@ class ChatFileUploadingMessageHolder(itemView: View) : ChatMessageHolder(itemVie
 
     companion object {
         fun createView(context: Context, parent: ViewGroup): View {
-            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_file_uploading)
+            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_right_file_uploading)
             return createView(context, parent, listOf(view))
         }
     }

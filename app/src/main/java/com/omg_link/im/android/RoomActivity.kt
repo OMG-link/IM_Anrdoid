@@ -29,6 +29,9 @@ import com.omg_link.im.core.ClientRoom
 import com.omg_link.im.core.config.Config
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import com.omg_link.im.core.gui.IRoomFrame
+import com.omg_link.im.core.protocol.data_pack.chat.ChatFileBroadcastPack
+import com.omg_link.im.core.protocol.data_pack.chat.ChatImageBroadcastPack
+import com.omg_link.im.core.protocol.data_pack.chat.ChatTextBroadcastPack
 import com.omg_link.im.core.user_manager.User
 import com.omg_link.im.databinding.ActivityRoomBinding
 import com.omg_link.utils.IStringGetter
@@ -395,32 +398,30 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         messageManager.insertMessage(SystemMessage(message))
     }
 
-    override fun showTextMessage(serialId: Long, sender: String, stamp: Long, text: String) {
-        messageManager.insertMessage(ChatTextMessage(sender, stamp, serialId, text))
+    override fun showTextMessage(pack: ChatTextBroadcastPack, isSelfSent: Boolean) {
+        messageManager.insertMessage(ChatTextMessage(
+            pack.username, pack.stamp, isSelfSent, pack.serialId, pack.text)
+        )
     }
 
     override fun showChatImageMessage(
-        serialId: Long,
-        sender: String,
-        stamp: Long,
-        serverFileId: UUID
+        pack: ChatImageBroadcastPack,
+        isSelfSent: Boolean
     ): IFileTransferringPanel {
-        val message = ChatImageMessage(this, sender, stamp, serialId)
+        val message = ChatImageMessage(
+            this, pack.username, pack.stamp, isSelfSent, pack.serialId
+        )
         messageManager.insertMessage(message)
         return message
     }
 
     override fun showFileUploadedMessage(
-        serialId: Long,
-        sender: String,
-        stamp: Long,
-        fileId: UUID,
-        fileName: String,
-        fileSize: Long
+        pack: ChatFileBroadcastPack,
+        isSelfSent: Boolean
     ): IFileTransferringPanel {
         val message = ChatFileMessage(
-            sender, stamp, serialId,
-            this, fileName, fileSize, fileId
+            pack.username, pack.stamp, isSelfSent, pack.serialId,
+            this, pack.fileName, pack.fileSize, pack.fileId
         )
         messageManager.insertMessage(message)
         return message

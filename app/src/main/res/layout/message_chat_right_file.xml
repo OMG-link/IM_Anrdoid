@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutMessageChatFileBubble"
         style="@style/Theme.IM.MessageBubble"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/bgr_message_right_white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_max="0dp">

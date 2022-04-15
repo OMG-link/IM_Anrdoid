@@ -14,7 +14,7 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:src="@drawable/avatar"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_oval="true" />
 
@@ -22,10 +22,10 @@
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:textColor="?attr/colorRoomChatInfo"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintEnd_toStartOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Username" />
 
@@ -33,11 +33,12 @@
         android:id="@+id/layoutMessageChatChildren"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="6dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="top|end"
         android:orientation="vertical"
         app:layout_constrainedWidth="true"
-        app:layout_constraintStart_toEndOf="@+id/avatar"
+        app:layout_constraintEnd_toStartOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@id/tvUsername"
         app:layout_constraintWidth_max="wrap"
         app:layout_constraintWidth_percent="0.73" />

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootMessageChatFile"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMessageChatFileBubble"
+        style="@style/Theme.IM.MessageBubble"
+        android:background="@drawable/bgr_message_left_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_max="0dp">
+
+        <TextView
+            android:id="@+id/tvMessageChatFileFileName"
+            style="@style/Theme.IM.RoomMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4sp"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+
+        <TextView
+            android:id="@+id/tvMessageChatFileFileSize"
+            style="@style/Theme.IM.RoomSubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvMessageChatFileFileName"
+            tools:text="1000.00MB" />
+
+        <TextView
+            android:id="@+id/tvMessageChatFileDownloadInfo"
+            style="@style/Theme.IM.RoomSubText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4sp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@+id/tvMessageChatFileFileSize"
+            app:layout_constraintTop_toBottomOf="@+id/tvMessageChatFileFileName"
+            tools:text="Download info" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

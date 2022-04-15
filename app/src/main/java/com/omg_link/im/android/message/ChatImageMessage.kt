@@ -17,13 +17,13 @@ import com.omg_link.im.android.tools.BitmapUtils
 import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
-import com.omg_link.im.databinding.MessageChatImageBinding
 import java.io.File
 
 class ChatImageMessage(
     val roomActivity: RoomActivity,
     username: String,
     stamp: Long,
+    override val isSelfSent: Boolean,
     val serialId: Long
 ) : ChatMessage(username, stamp),
     IFileTransferringPanel, ISelfUpdatable<ChatImageMessageHolder> {
@@ -207,12 +207,10 @@ class ChatImageMessage(
 
 class ChatImageMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
-    constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
+    constructor(context: Context, parent: ViewGroup, isSelfSent:Boolean) : this(createView(context, parent, isSelfSent))
 
-    private val binding = MessageChatImageBinding.bind(itemView.findViewById(R.id.rootMessageChatImage))
-
-    val tvErrorInfo: TextView = binding.tvErrorInfo
-    val ivImage: ImageView = binding.ivImage
+    val tvErrorInfo: TextView = itemView.findViewById(R.id.tvErrorInfo)
+    val ivImage: ImageView = itemView.findViewById(R.id.ivImage)
 
     private lateinit var chatImageMessage: ChatImageMessage
 
@@ -226,9 +224,13 @@ class ChatImageMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
     }
 
     companion object {
-        fun createView(context: Context, parent: ViewGroup): View {
-            val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_image)
-            return createView(context, parent, listOf(view))
+        fun createView(context: Context, parent: ViewGroup, isSelfSent: Boolean): View {
+            val view = ViewUtils.createLayoutFromXML(context, parent, if(isSelfSent){
+                R.layout.message_chat_right_image
+            }else{
+                R.layout.message_chat_left_image
+            })
+            return ChatMessageHolder.createView(context, parent, isSelfSent, listOf(view))
         }
     }
 

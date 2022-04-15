@@ -6,20 +6,26 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.omg_link.im.R
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
-import com.omg_link.im.databinding.MessageChatTextBinding
 
-class ChatTextMessage(username: String, time: Long,val serialId: Long, val text: String) :
+class ChatTextMessage(
+    username: String, time: Long, override val isSelfSent: Boolean, val serialId: Long,
+    val text: String
+) :
     ChatMessage(username, time) {
     override val type = Type.TEXT
 }
 
 class ChatTextMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
 
-    constructor(context: Context, parent: ViewGroup) : this(createView(context, parent))
+    constructor(context: Context, parent: ViewGroup, isSelfSent: Boolean) : this(
+        createView(
+            context,
+            parent,
+            isSelfSent
+        )
+    )
 
-    private val binding = MessageChatTextBinding.bind(itemView.findViewById(R.id.rootMessageChatText))
-
-    private val tvChatText: TextView = binding.tvChatText
+    private val tvChatText: TextView = itemView.findViewById(R.id.tvChatText)
 
     fun bind(chatTextMessage: ChatTextMessage) {
         super.bind(chatTextMessage as ChatMessage)
@@ -27,9 +33,15 @@ class ChatTextMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
     }
 
     companion object {
-        fun createView(context: Context, parent: ViewGroup): View {
-            val view: View = createLayoutFromXML(context, parent, R.layout.message_chat_text)
-            return createView(context, parent, listOf(view))
+        fun createView(context: Context, parent: ViewGroup, isSelfSent: Boolean): View {
+            val view: View = createLayoutFromXML(
+                context, parent, if (isSelfSent) {
+                    R.layout.message_chat_right_text
+                } else {
+                    R.layout.message_chat_left_text
+                }
+            )
+            return ChatMessageHolder.createView(context, parent, isSelfSent, listOf(view))
         }
     }
 
