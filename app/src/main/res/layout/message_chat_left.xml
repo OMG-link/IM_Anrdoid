@@ -11,12 +11,10 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:src="@drawable/avatar"
+        style="@style/Theme.IM.Avatar"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:riv_oval="true" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvUsername"
