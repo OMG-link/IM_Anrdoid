@@ -27,6 +27,7 @@ import com.omg_link.im.android.tools.AndroidUtils
 import com.omg_link.im.android.tools.UriUtils
 import com.omg_link.im.core.ClientRoom
 import com.omg_link.im.core.config.Config
+import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import com.omg_link.im.core.gui.IRoomFrame
 import com.omg_link.im.core.protocol.data_pack.chat.ChatFileBroadcastPack
@@ -371,6 +372,12 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         runOnUiThread {
             setButtonsEnabled(true)
         }
+        // Upload avatar
+        room.uploadAvatar(File(Config.getRuntimeDir()+"/avatar"),object: IFileTransferringPanel{
+            override fun onTransferSucceed(senderFileId: UUID, receiverFileId: UUID) {
+                room.userManager.currentUser.avatarFileId = receiverFileId
+            }
+        })
     }
 
     override fun onConnectionBroke() {
@@ -400,7 +407,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
 
     override fun showTextMessage(pack: ChatTextBroadcastPack, isSelfSent: Boolean) {
         messageManager.insertMessage(ChatTextMessage(
-            pack.username, pack.stamp, isSelfSent, pack.serialId, pack.text)
+            this, pack.username, pack.stamp, pack.userAvatarFileId, isSelfSent, pack.serialId, pack.text)
         )
     }
 
@@ -409,7 +416,7 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         isSelfSent: Boolean
     ): IFileTransferringPanel {
         val message = ChatImageMessage(
-            this, pack.username, pack.stamp, isSelfSent, pack.serialId
+            this, pack.username, pack.stamp, pack.userAvatarFileId, isSelfSent, pack.serialId
         )
         messageManager.insertMessage(message)
         return message
@@ -420,8 +427,8 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         isSelfSent: Boolean
     ): IFileTransferringPanel {
         val message = ChatFileMessage(
-            pack.username, pack.stamp, isSelfSent, pack.serialId,
-            this, pack.fileName, pack.fileSize, pack.fileId
+            this,pack.username, pack.stamp, pack.userAvatarFileId, isSelfSent, pack.serialId,
+            pack.fileName, pack.fileSize, pack.fileId
         )
         messageManager.insertMessage(message)
         return message
@@ -440,8 +447,10 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
         fileSize: Long
     ): IFileTransferringPanel {
         val message = ChatFileUploadingMessage(
+            this,
             Config.getUsername(),
             System.currentTimeMillis(),
+            room.userManager.currentUser.avatarFileId,
             this,
             fileNameGetter,
             fileSize

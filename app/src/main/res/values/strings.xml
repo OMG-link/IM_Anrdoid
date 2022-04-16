@@ -24,7 +24,7 @@
     <string name="frame_room_button_open">OPEN</string>
     <string name="frame_room_button_file_send">FILE</string>
     <string name="activity_room_cannot_open_file">Can not find a proper way to open the file.</string>
-    <string name="frame_login_download_other_version">DOWNLOAD OTHER VERSION</string>
+    <string name="frame_login_download_other_version">Download other version</string>
     <string name="frame_room_connecting_to_server">Please wait while connecting to the server…</string>
     <string name="frame_room_file_upload_progress">Uploading: %1$s</string>
     <string name="frame_room_file_upload_start">Starting to upload: %1$s</string>
@@ -82,4 +82,7 @@
     <string name="frame_room_exit_reason_unknown">Unknown error.</string>
     <string name="frame_room_no_emoji_found">You have no emoji right now.</string>
     <string name="frame_room_back_button" translatable="false"> <![CDATA[<]]> </string>
+    <string name="frame_login_set_avatar">Avatar</string>
+    <string name="frame_login_options">Options</string>
+    <string name="frame_login_avatar_set_succeed">Avatar has been set!</string>
 </resources>

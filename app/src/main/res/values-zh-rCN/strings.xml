@@ -82,4 +82,7 @@
     <string name="frame_room_exit_reason_package_decode_error">网络协议错误</string>
     <string name="frame_room_exit_reason_unknown">未知错误</string>
     <string name="frame_room_no_emoji_found">你还没有收藏任何表情哦~</string>
+    <string name="frame_login_set_avatar">头像</string>
+    <string name="frame_login_options">选项</string>
+    <string name="frame_login_avatar_set_succeed">头像设置成功</string>
 </resources>

@@ -18,15 +18,16 @@ import java.util.*
 import kotlin.concurrent.thread
 
 class ChatFileMessage(
+    roomActivity: RoomActivity,
     username: String,
     stamp: Long,
+    avatarFileId: UUID,
     override val isSelfSent: Boolean,
     val serialId: Long,
-    private val activity: RoomActivity,
     private var fileName: String,
     private val fileSize: Long,
     private val fileId: UUID
-) : ChatMessage(username, stamp), IFileTransferringPanel, ISelfUpdatable<ChatFileMessageHolder> {
+) : ChatMessage(roomActivity, username, avatarFileId, stamp), IFileTransferringPanel/*, ISelfUpdatable<ChatFileMessageHolder>*/ {
 
     override val type = Type.FILE
 
@@ -39,7 +40,7 @@ class ChatFileMessage(
     private var panelState = State.READY
         set(value) {
             field = value
-            activity.runOnUiThread {
+            roomActivity.runOnUiThread {
                 updateData()
             }
         }
@@ -49,7 +50,7 @@ class ChatFileMessage(
     private var downloadInfo: String = ""
         set(value) {
             field = value
-            activity.runOnUiThread {
+            roomActivity.runOnUiThread {
                 chatFileMessageHolder?.tvDownloadInfo?.text = value
             }
         }
@@ -60,7 +61,7 @@ class ChatFileMessage(
 
     override fun setProgress(downloadedSize: Long) {
         downloadInfo = String.format(
-            activity.resources.getString(R.string.frame_room_file_download_progress),
+            roomActivity.resources.getString(R.string.frame_room_file_download_progress),
             fileName,
             FileUtils.sizeToString(downloadedSize),
             FileUtils.sizeToString(fileSize)
@@ -68,15 +69,15 @@ class ChatFileMessage(
     }
 
     override fun onTransferStart() {
-        downloadInfo = activity.resources.getString(R.string.frame_room_file_download_start)
+        downloadInfo = roomActivity.resources.getString(R.string.frame_room_file_download_start)
         panelState = State.DOWNLOADING
     }
 
-    override fun onTransferSucceed(fileObject: FileObject) {
-        this.file = fileObject.file
+    override fun onTransferSucceed(senderFileId: UUID, receiverFileId: UUID) {
+        this.file = roomActivity.room.fileManager.openFile(receiverFileId).file
         fileName = file.name
         downloadInfo = String.format(
-            activity.resources.getString(R.string.frame_room_file_download_succeed),
+            roomActivity.resources.getString(R.string.frame_room_file_download_succeed),
             fileName
         )
         panelState = State.DOWNLOADED
@@ -84,7 +85,7 @@ class ChatFileMessage(
 
     override fun onTransferFailed(reason: String) {
         downloadInfo = String.format(
-            activity.resources.getString(R.string.frame_room_file_download_failed),
+            roomActivity.resources.getString(R.string.frame_room_file_download_failed),
             reason
         )
         panelState = State.READY
@@ -94,11 +95,11 @@ class ChatFileMessage(
 
     private var chatFileMessageHolder: ChatFileMessageHolder? = null
 
-    override fun removeHolder() {
+    fun removeHolder(holder: ChatFileMessageHolder) {
         chatFileMessageHolder = null
     }
 
-    override fun setHolder(holder: ChatFileMessageHolder) {
+    fun setHolder(holder: ChatFileMessageHolder) {
         chatFileMessageHolder = holder
         updateData()
     }
@@ -119,7 +120,7 @@ class ChatFileMessage(
                 bubble.setOnClickListener {
                     bubble.setOnClickListener(null)
                     thread {
-                        activity.room.downloadFile(fileName, fileId, FileTransferType.ChatFile, this)
+                        roomActivity.room.downloadFile(fileName, fileId, FileTransferType.ChatFile, this)
                     }
                     onTransferStart()
                 }
@@ -129,7 +130,7 @@ class ChatFileMessage(
             }
             State.DOWNLOADED -> {
                 bubble.setOnClickListener {
-                    AndroidUtils.openFile(file, activity)
+                    AndroidUtils.openFile(file, roomActivity)
                 }
                 downloadInfo = holder.getString(R.string.frame_room_file_download_succeed)
             }
@@ -152,7 +153,7 @@ class ChatFileMessageHolder(itemView: View) : ChatMessageHolder(itemView) {
     fun bind(chatFileMessage: ChatFileMessage) {
         super.bind(chatFileMessage as ChatMessage)
         if (this::chatFileMessage.isInitialized) {
-            this.chatFileMessage.removeHolder()
+            this.chatFileMessage.removeHolder(this)
         }
         this.chatFileMessage = chatFileMessage
         this.chatFileMessage.setHolder(this)

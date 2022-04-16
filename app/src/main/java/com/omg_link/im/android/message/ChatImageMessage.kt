@@ -18,15 +18,17 @@ import com.omg_link.im.android.tools.ViewUtils
 import com.omg_link.im.core.file_manager.FileObject
 import com.omg_link.im.core.gui.IFileTransferringPanel
 import java.io.File
+import java.util.*
 
 class ChatImageMessage(
-    val roomActivity: RoomActivity,
+    roomActivity: RoomActivity,
     username: String,
     stamp: Long,
+    avatarFileId: UUID,
     override val isSelfSent: Boolean,
     val serialId: Long
-) : ChatMessage(username, stamp),
-    IFileTransferringPanel, ISelfUpdatable<ChatImageMessageHolder> {
+) : ChatMessage(roomActivity,username,avatarFileId, stamp),
+    IFileTransferringPanel/*, ISelfUpdatable<ChatImageMessageHolder>*/ {
 
     override val type = Type.IMAGE
 
@@ -45,11 +47,11 @@ class ChatImageMessage(
 
     var chatImageMessageHolder: ChatImageMessageHolder? = null
 
-    override fun removeHolder() {
+    fun removeHolder() {
         chatImageMessageHolder = null
     }
 
-    override fun setHolder(holder: ChatImageMessageHolder) {
+    fun setHolder(holder: ChatImageMessageHolder) {
         chatImageMessageHolder = holder
         updateData()
     }
@@ -175,15 +177,8 @@ class ChatImageMessage(
 
     }
 
-    override fun setProgress(downloadedSize: Long) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onTransferStart() {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onTransferSucceed(fileObject: FileObject) {
+    override fun onTransferSucceed(senderFileId: UUID, receiverFileId: UUID) {
+        val fileObject = roomActivity.room.fileManager.openFile(receiverFileId)
         state = State.Downloaded
         imagePath = fileObject.file.absolutePath
         val messageManager = this@ChatImageMessage.messageManager

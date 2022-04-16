@@ -5,13 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.omg_link.im.R
+import com.omg_link.im.android.RoomActivity
 import com.omg_link.im.android.tools.ViewUtils.createLayoutFromXML
+import java.util.*
 
 class ChatTextMessage(
-    username: String, time: Long, override val isSelfSent: Boolean, val serialId: Long,
+    roomActivity: RoomActivity,
+    username: String,
+    time: Long,
+    avatarFileId: UUID,
+    override val isSelfSent: Boolean,
+    val serialId: Long,
     val text: String
 ) :
-    ChatMessage(username, time) {
+    ChatMessage(roomActivity, username, avatarFileId, time) {
     override val type = Type.TEXT
 }
 

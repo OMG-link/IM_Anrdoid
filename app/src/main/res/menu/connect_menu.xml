@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_set_avatar"
+        android:icon="@drawable/avatar"
+        android:title="@string/frame_login_set_avatar" />
+    <item
+        android:id="@+id/menu_manage_downloaded_file"
+        android:title="@string/frame_login_downloaded_files" />
+    <item
+        android:id="@+id/menu_download_other_version"
+        android:title="@string/frame_login_download_other_version" />
+</menu>

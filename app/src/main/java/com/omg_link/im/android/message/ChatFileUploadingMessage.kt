@@ -12,15 +12,17 @@ import com.omg_link.im.core.gui.IFileTransferringPanel
 import com.omg_link.im.databinding.MessageChatRightFileUploadingBinding
 import com.omg_link.utils.FileUtils
 import com.omg_link.utils.IStringGetter
+import java.util.*
 
 class ChatFileUploadingMessage(
+    roomActivity: RoomActivity,
     username: String,
     stamp: Long,
+    avatarFileId: UUID,
     private val activity: RoomActivity,
     private val fileNameGetter: IStringGetter,
     private val fileSize: Long
-) : ChatMessage(username, stamp), IFileTransferringPanel,
-    ISelfUpdatable<ChatFileUploadingMessageHolder> {
+) : ChatMessage(roomActivity,username,avatarFileId, stamp), IFileTransferringPanel/*, ISelfUpdatable<ChatFileUploadingMessageHolder>*/ {
 
     override val type = Type.UPLOADING
 
@@ -78,7 +80,7 @@ class ChatFileUploadingMessage(
         subInfo = ""
     }
 
-    override fun onTransferSucceed(fileObject: FileObject) {
+    override fun onTransferSucceed(senderFileId: UUID?, receiverFileId: UUID?) {
         mainInfo = String.format(
             activity.resources.getString(R.string.frame_room_file_upload_succeed),
             fileNameGetter.string
@@ -99,11 +101,11 @@ class ChatFileUploadingMessage(
 
     private var chatFileUploadingMessageHolder: ChatFileUploadingMessageHolder? = null
 
-    override fun removeHolder() {
+    fun removeHolder() {
         chatFileUploadingMessageHolder = null
     }
 
-    override fun setHolder(holder: ChatFileUploadingMessageHolder) {
+    fun setHolder(holder: ChatFileUploadingMessageHolder) {
         chatFileUploadingMessageHolder = holder
         updateData()
     }
@@ -138,7 +140,7 @@ class ChatFileUploadingMessageHolder(itemView: View) : ChatMessageHolder(itemVie
     companion object {
         fun createView(context: Context, parent: ViewGroup): View {
             val view = ViewUtils.createLayoutFromXML(context, parent, R.layout.message_chat_right_file_uploading)
-            return createView(context, parent, listOf(view))
+            return ChatMessageHolder.createView(context, parent, true, listOf(view))
         }
     }
 
