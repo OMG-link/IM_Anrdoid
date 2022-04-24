@@ -373,11 +373,14 @@ class RoomActivity : AppCompatActivity(), IRoomFrame {
             setButtonsEnabled(true)
         }
         // Upload avatar
-        room.uploadAvatar(File(Config.getRuntimeDir()+"/avatar"),object: IFileTransferringPanel{
-            override fun onTransferSucceed(senderFileId: UUID, receiverFileId: UUID) {
-                room.userManager.currentUser.avatarFileId = receiverFileId
-            }
-        })
+        val avatarFile = File(getAvatarPath())
+        if(avatarFile.exists()){
+            room.uploadAvatar(avatarFile,object: IFileTransferringPanel{
+                override fun onTransferSucceed(senderFileId: UUID, receiverFileId: UUID) {
+                    room.userManager.currentUser.avatarFileId = receiverFileId
+                }
+            })
+        }
     }
 
     override fun onConnectionBroke() {
